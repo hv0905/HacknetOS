@@ -90,3 +90,12 @@ void Util::setCursorPos(int x, int y)
     SetConsoleCursorPosition(hOut, Position);
 
 }
+
+void Util::printOneByOne(std::string str, int breakTime)
+{
+    for(char i : str)
+    {
+        std::cout << i;
+        Util::sleep(breakTime);
+    }
+}
