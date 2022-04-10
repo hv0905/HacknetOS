@@ -19,7 +19,7 @@ void AdjustWindowsSize() {
             break;
         }
 
-        Util::sleep(80);
+        Util::sleep(10);
     }
 }
 
@@ -33,18 +33,19 @@ HacknetApplication* CreateStarterOS() {
 
 void PlayIntro() {
     Util::clearScreen();
+    Util::setCursorPos(30, 10);
     Util::printOneByOne("已过期14天...正在启用FailSafe模式...");
-    cout << endl;
+    Util::setCursorPos(30, 11);
     Util::printOneByOne("------------------------------------------------------");
-    cout << endl;
+    Util::setCursorPos(30, 12);
     Util::printOneByOne("你好.");
-    cout << endl;
+    Util::setCursorPos(30, 13);
     Util::printOneByOne("这件事不对劲......比我想象中的还要奇怪.");
-    cout << endl;
+    Util::setCursorPos(30, 14);
     Util::printOneByOne("我原以为我应该用过去时来写这段话, 不过恐怕我得承认......这件事还没有画上句号.");
-    cout << endl;
+    Util::setCursorPos(30, 15);
     Util::printOneByOne("我的名字是Bit, 如果你正在阅读这封邮件, 那意味着我已经死了.");
-    cout << endl;
+    Util::setCursorPos(30, 16);
 
     Util::sleep(3000);
     Util::clearScreen();
