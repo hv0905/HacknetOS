@@ -12,8 +12,9 @@ namespace Util {
     void clearScreen();
     void setCursorPos(int x, int y);
     std::pair<int,int> getScreenSize();
-    void printOneByOne(std::string str, int breakTime = 50);
+    void printOneByOne(const std::wstring& str, int breakTime = 50);
     void sleep(int ms);
+    void setupScreenSize(int w, int h);
 }
 
 #endif //HACKNETOS_UTIL_H

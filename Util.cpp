@@ -91,11 +91,18 @@ void Util::setCursorPos(int x, int y)
 
 }
 
-void Util::printOneByOne(std::string str, int breakTime)
+void Util::printOneByOne(const std::wstring& str, int breakTime)
 {
-    for(char i : str)
+    for(auto& i : str)
     {
-        std::cout << i;
+        std::wcout << i;
         Util::sleep(breakTime);
     }
 }
+
+void Util::setupScreenSize(int w, int h) {
+    char setting[30];
+    sprintf_s(setting, "mode con:cols=%d lines=%d", w, h);
+    system(setting);
+}
+
