@@ -106,3 +106,33 @@ void Util::setupScreenSize(int w, int h) {
     system(setting);
 }
 
+void Util::moveCursorPos(int vecX, int vecY)
+{
+    auto initPos = getCursorPos();
+    HANDLE hOut;
+    COORD Position;
+
+    hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    Position.X = initPos.first + vecX;
+    Position.Y = initPos.second + vecY;
+
+    SetConsoleCursorPosition(hOut, Position);
+}
+
+std::pair<int, int> Util::getCursorPos()
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    HANDLE hOut;
+    COORD Position;
+
+    hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    GetConsoleScreenBufferInfo(hOut, &csbi);
+
+    Position.X = csbi.dwCursorPosition.X;
+    Position.Y = csbi.dwCursorPosition.Y;
+
+    return std::pair<int, int>(Position.X, Position.Y);
+}
+
