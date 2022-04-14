@@ -6,12 +6,20 @@
 #ifndef HACKNETOS_MUSICUTIL_H
 #define HACKNETOS_MUSICUTIL_H
 
-namespace MusicUtil {
+class MusicUtil {
 
-    constexpr const char * const bgm[] = {"bgm\\0.mp3"};
+    static constexpr const char * const bgm[] = {"bgm\\0.mp3"};
+    static inline bool loaded = false;
 
-    void playBgm(int id);
-}
+public:
+    static void playBgm(int id);
+    static void stopAndClose();
+
+    static bool isLoaded()
+    {
+        return loaded;
+    }
+};
 
 
 #endif //HACKNETOS_MUSICUTIL_H
