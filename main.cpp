@@ -4,9 +4,7 @@
 #include "MusicUtil.h"
 #include <Windows.h>
 #include <codecvt>
-
-// 存
-// 渲染
+#include <conio.h>
 
 using std::cout;
 using std::endl;
@@ -21,10 +19,17 @@ void AdjustWindowsSize() {
         cout << "当前尺寸: " << size.first << " x " << size.second << endl;
 
         if (size.first == 220 && size.second == 50) {
-            break;
+            cout << "按下Enter开始游戏..." << endl;
+            if (_kbhit() && _getch() == 13) {
+                break;
+            }
         }
 
-        Util::sleep(10);
+        while(_kbhit()) {
+            _getch();
+        }
+
+        Util::sleep(50);
     }
 }
 
