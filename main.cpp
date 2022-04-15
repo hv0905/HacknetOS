@@ -2,6 +2,7 @@
 #include "HacknetApplication.h"
 #include "Util.h"
 #include "MusicUtil.h"
+#include "AsciiArt.h"
 #include <Windows.h>
 #include <codecvt>
 #include <conio.h>
@@ -25,7 +26,8 @@ void AdjustWindowsSize() {
             }
         }
 
-        while(_kbhit()) {
+        while (_kbhit())
+        {
             _getch();
         }
 
@@ -33,15 +35,29 @@ void AdjustWindowsSize() {
     }
 }
 
-HacknetApplication* CreateStarterOS() {
-    auto app =  new HacknetApplication();
+void DisplayStartPage()
+{
+    // Display LOGO
+    Util::clearScreen();
+    AsciiArt aa = AsciiArt("ASCII/hacknet-logo.ascii");
+    aa.draw(Coord(62, 15));
+    Util::setCursorPos(92, 35);
+    std::cout << ">  Press Enter to start the game  <";
+
+    while (_getch() != 13);
+}
+
+HacknetApplication *CreateStarterOS()
+{
+    auto app = new HacknetApplication();
 
     // Add Servers, Directories, and Files here...
 
     return app;
 }
 
-void PlayIntro() {
+void PlayIntro()
+{
     Util::clearScreen();
     Util::setCursorPos(30, 10);
     Util::printOneByOne(L"已过期14天...正在启用FailSafe模式...");
@@ -63,10 +79,13 @@ void PlayIntro() {
 
 int main()
 {
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::cout.tie(nullptr);
     SetConsoleOutputCP(CP_UTF8);
 
 #pragma warning (disable: 4996)
-    std::locale utf8( std::locale(), new std::codecvt_utf8_utf16<wchar_t> );
+    std::locale utf8(std::locale(), new std::codecvt_utf8_utf16<wchar_t>);
     std::wcout.imbue(utf8);
 #pragma warning (default: 4996)
 
@@ -74,6 +93,7 @@ int main()
 
     MusicUtil::playBgm(0);
     // Play the intro
+    DisplayStartPage();
     PlayIntro();
 
     // create a starter
