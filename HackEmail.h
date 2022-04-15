@@ -8,15 +8,14 @@
 class HackEmail
 {
 public:
-HackEmail(const string &title,const string &sender);
-void lsMail(int missionid);
-voide cdMail(int id);
+HackEmail(const std::string &title="",const std::string &sender="",int mid=0,bool deleted=1);
+void lsMail(int missionId);
+void cdMail(const std::string &title);
 private:
-   string mailTitle;
-string sender;
-string mailContent;
-int emailId
-int missionid;
+   std::string emailTitle;
+std::string sender;
+std::string emailContent;
+ int missionId;
 bool deleted;
 };
 #endif //HACKNETOS_HACKEMAIL_H
