@@ -6,7 +6,8 @@
 #include "string"
 class HackEmail {
 public:
-     HackEmail(std::string title = "", std::string sender = "", std::string content = "",int mid = 1000);
+    HackEmail::HackEmail(const std::string &title = "", const std::string &sender = "", const std::string &content = "",
+                         int mid = 1000);
 
     static void lsMail(int missionId);
 

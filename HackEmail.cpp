@@ -4,20 +4,28 @@
 #include"HackEmail.h"
 
 #include <utility>
- HackEmail:: HackEmail(std::string title,std::string sender,std::string content,int mid):
-emailTitle(std::move(title)),sender(std::move(sender)),emailContent(std::move(content)),missionId(mid){};
-const HackEmail Email[100]={
+
+HackEmail::HackEmail(const std::string &title, const std::string &sender, const std::string &content, int mid) :
+        emailTitle(title), sender(sender), emailContent(content), missionId(mid)
+{};
+const HackEmail Email[] = {
         HackEmail("Diana", "Diana", "Diana", 1)
 };
-void HackEmail::lsMail(int missionId) {
-    for (const auto & i : Email)
-        if (i.missionId <= missionId ) {
+
+void HackEmail::lsMail(int missionId)
+{
+    for (const auto &i: Email)
+        if (i.missionId <= missionId)
+        {
             //显示邮件
         }
 }
-void HackEmail::cdMail(const std::string& title) {
-    for (const auto & i : Email)
-        if (i.emailTitle == title ) {
+
+void HackEmail::cdMail(const std::string &title)
+{
+    for (const auto &i: Email)
+        if (i.emailTitle == title)
+        {
             //显示邮件内容
         }
 }
