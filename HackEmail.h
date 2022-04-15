@@ -6,8 +6,7 @@
 #include "string"
 class HackEmail {
 public:
-    explicit HackEmail(std::string title = "", std::string sender = "", std::string content = "",
-              int mid = 1000, bool deleted = 1);
+     HackEmail(std::string title = "", std::string sender = "", std::string content = "",int mid = 1000);
 
     static void lsMail(int missionId);
 
@@ -17,7 +16,6 @@ private:
     std::string emailTitle;
     std::string sender;
     std::string emailContent;
-    int missionId;
-    bool deleted;
+    int missionId{};
 };
 #endif //HACKNETOS_HACKEMAIL_H
