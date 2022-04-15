@@ -8,7 +8,7 @@
 class HackEmail
 {
 public:
-HackEmail(const std::string &title="",const std::string &sender="",int mid=0,bool deleted=1);
+HackEmail(const std::string &title="",const std::string &sender="",const std::string &content="",int mid=0,bool deleted=1);
 void lsMail(int missionId);
 void cdMail(const std::string &title);
 private:

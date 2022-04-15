@@ -2,11 +2,11 @@
 // Created by 16950 on 2022/4/15.
 //
 #include"HackEmail.h"
-HackEmail::HackEmail(const std::string &title=,const std::string &sender=,int mid,bool deleted):
-emailTitle(title),sender(sender),missionId(mid),deleted(deleted)
+HackEmail::HackEmail(const std::string &title,const std::string &sender,const std::string &content,int mid,bool deleted):
+emailTitle(title),sender(sender),emailContent(content),missionId(mid),deleted(deleted)
 {};
 const HackEmail Email[100]={
-        HackEmail("Diana","Diana",1,0)
+        HackEmail("Diana","Diana","Diana",1,0)
 };
 void HackEmail::lsMail(int missionId){
     for(int i=0;i<100;i++)
