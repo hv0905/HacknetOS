@@ -28,7 +28,8 @@ class HackServer
     bool HTTPLocked;
     bool FTPLocked;
     bool SMTPLocked;
-
+public:
+    std::string getIp();
 };
 
 

@@ -3,3 +3,8 @@
 //
 
 #include "HackServer.h"
+
+std::string HackServer::getIp()
+{
+    return (*this).ip;
+}
