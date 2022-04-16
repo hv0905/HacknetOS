@@ -13,10 +13,10 @@ struct Coord
     int x;
     int y;
 
-    explicit Coord(int x = 0, int y = 0) : x(x), y(y)
+    explicit constexpr Coord(int x = 0, int y = 0) : x(x), y(y)
     {}
 
-    Coord(const std::pair<int, int> &p) : x(p.first), y(p.second) // NOLINT(google-explicit-constructor)
+    constexpr Coord(const std::pair<int, int> &p) : x(p.first), y(p.second) // NOLINT(google-explicit-constructor)
     {}
 };
 
@@ -24,7 +24,7 @@ struct Size2D {
     int width;
     int height;
 
-    explicit Size2D(int width = 0, int height = 0) : width(width), height(height)
+    explicit constexpr Size2D(int width = 0, int height = 0) : width(width), height(height)
     {}
 };
 

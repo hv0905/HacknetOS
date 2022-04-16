@@ -18,9 +18,19 @@ class AsciiArt
 public:
     AsciiArt(const Size2D &size, const std::vector<std::string> &data);
 
-    AsciiArt(const std::string &asciiFile);
+    explicit AsciiArt(const std::string &asciiFile);
 
     void draw(Coord begin);
+
+    [[nodiscard]] const Size2D &getSize() const
+    {
+        return size;
+    }
+
+    [[nodiscard]] const std::vector<std::string> &getData() const
+    {
+        return data;
+    }
 
 };
 

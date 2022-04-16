@@ -3,6 +3,7 @@
 #include "Util.h"
 #include "MusicUtil.h"
 #include "AsciiArt.h"
+#include "UiUtil.h"
 #include <Windows.h>
 #include <codecvt>
 #include <conio.h>
@@ -39,12 +40,12 @@ void DisplayStartPage()
 {
     // Display LOGO
     Util::clearScreen();
-    AsciiArt aa = AsciiArt("ASCII/hacknet-logo.ascii");
+    AsciiArt aa("ASCII/hacknet-logo.ascii");
     aa.draw(Coord(62, 15));
     Util::setCursorPos(5, 42);
     std::cout << "Created by: ";
     Util::moveCursorPos(0, -2);
-    AsciiArt creator = AsciiArt("ASCII/creator.ascii");
+    AsciiArt creator("ASCII/creator.ascii");
     creator.draw(Util::getCursorPos());
     Util::setCursorPos(92, 35);
     std::cout << ">  Press Enter to start the game  <";
@@ -87,9 +88,6 @@ void PlayIntro()
 
 int main()
 {
-    std::ios_base::sync_with_stdio(false);
-    std::cin.tie(nullptr);
-    std::cout.tie(nullptr);
     SetConsoleOutputCP(CP_UTF8);
 
 #pragma warning (disable: 4996)
@@ -112,6 +110,7 @@ int main()
 
     delete app;
 
-    Util::sleep(1000);
+    UIUtil::drawFramework();
+    Util::sleep(10000);
     return 0;
 }
