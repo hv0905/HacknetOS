@@ -15,6 +15,7 @@ protected:
     HacknetApplication *ref;
     std::string thread_name;
     int pid;
+    bool stopped;
 
 public:
 
@@ -23,16 +24,23 @@ public:
     virtual int getMemorySize() = 0;
 
     virtual void kill()
-    {}
+    {
+        stopped = true;
+    }
 
-    const std::string &getThreadName() const
+    [[nodiscard]] const std::string &getThreadName() const
     {
         return thread_name;
     }
 
-    int getPid() const
+    [[nodiscard]] int getPid() const
     {
         return pid;
+    }
+
+    [[nodiscard]] bool isStopped() const
+    {
+        return stopped;
     }
 };
 

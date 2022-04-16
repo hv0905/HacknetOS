@@ -7,19 +7,39 @@
 #include <Windows.h>
 #include <iostream>
 
+/* https://stackoverflow.com/questions/4053837/colorizing-text-in-the-console-with-c
+ * Name            FG  BG
+ * Black           30  40
+ * Red             31  41
+ * Green           32  42
+ * Yellow          33  43
+ * Blue            34  44
+ * Magenta         35  45
+ * Cyan            36  46
+ * White           37  47
+ * Bright Black    90  100
+ * Bright Red      91  101
+ * Bright Green    92  102
+ * Bright Yellow   93  103
+ * Bright Blue     94  104
+ * Bright Magenta  95  105
+ * Bright Cyan     96  106
+ * Bright White    97  107
+ * */
+
 void Util::clearScreen()
 {
 //    setCursorPos(0,0);
 //    std::cout << "\033[2J\033[1;1H";
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD coordScreen = { 0, 0 };    // home for the cursor
+    COORD coordScreen = {0, 0};    // home for the cursor
     DWORD cCharsWritten;
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     DWORD dwConSize;
 
 
     // Get the number of character cells in the current buffer.
-    if( !GetConsoleScreenBufferInfo( hConsole, &csbi ))
+    if( !GetConsoleScreenBufferInfo(hConsole, &csbi ))
     {
         return;
     }
@@ -28,11 +48,11 @@ void Util::clearScreen()
 
     // Fill the entire screen with blanks.
 
-    if( !FillConsoleOutputCharacter( hConsole,        // Handle to console screen buffer
-                                     (TCHAR) ' ',     // Character to write to the buffer
-                                     dwConSize,       // Number of cells to write
-                                     coordScreen,     // Coordinates of first cell
-                                     &cCharsWritten ))// Receive number of characters written
+    if( !FillConsoleOutputCharacter(hConsole,        // Handle to console screen buffer
+                                    (TCHAR) ' ',     // Character to write to the buffer
+                                    dwConSize,       // Number of cells to write
+                                    coordScreen,     // Coordinates of first cell
+                                    &cCharsWritten ))// Receive number of characters written
     {
         return;
     }
@@ -46,11 +66,11 @@ void Util::clearScreen()
 
     // Set the buffer's attributes accordingly.
 
-    if( !FillConsoleOutputAttribute( hConsole,         // Handle to console screen buffer
-                                     csbi.wAttributes, // Character attributes to use
-                                     dwConSize,        // Number of cells to set attribute
-                                     coordScreen,      // Coordinates of first cell
-                                     &cCharsWritten )) // Receive number of characters written
+    if( !FillConsoleOutputAttribute(hConsole,         // Handle to console screen buffer
+                                    csbi.wAttributes, // Character attributes to use
+                                    dwConSize,        // Number of cells to set attribute
+                                    coordScreen,      // Coordinates of first cell
+                                    &cCharsWritten )) // Receive number of characters written
     {
         return;
     }

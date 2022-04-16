@@ -15,6 +15,7 @@ class HacknetApplication
     HackDirectory* CurrentDir;
     HackServer* CurrentConnected;
     int missionId{};
+    std::vector<std::string> displayedCommand;
 
 public:
     void Exec();

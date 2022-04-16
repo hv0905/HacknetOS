@@ -6,5 +6,5 @@
 
 std::string HackServer::getIp()
 {
-    return (*this).ip;
+    return ip;
 }

@@ -13,7 +13,7 @@ std::string HackDirectory::getDirName()
     return (*this).name;
 }
 
-std::vector<HackDirectory> &HackDirectory::getsubDirs()
+std::vector<HackDirectory *> &HackDirectory::getsubDirs()
 {
     return subDirs;
 }

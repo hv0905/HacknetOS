@@ -14,14 +14,17 @@ class HackDirectory
 {
 public:
     HackDirectory(std::string name);
- std::string getDirName();
-    std::vector<HackDirectory>&getsubDirs();
+
+    std::string getDirName();
+
+    std::vector<HackDirectory *> &getsubDirs();
+
 private:
 
     std::string name;
-    HackDirectory* rootDirs;
-    std::vector<HackDirectory> subDirs;
-    std::vector<HackFile> files;
+    HackDirectory *rootDirs;
+    std::vector<HackDirectory *> subDirs;
+    std::vector<HackFile *> files;
 };
 
 
