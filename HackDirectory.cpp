@@ -18,4 +18,21 @@ std::vector<HackDirectory *> &HackDirectory::getsubDirs()
     return subDirs;
 }
 
+std::vector<HackFile *> &HackDirectory::getfiles()
+{
+    return files;
+}
+
+HackDirectory *HackDirectory::getParentDir()
+{
+    return parentDirs;
+}
+
+HackDirectory *HackDirectory::getRootDir()
+{
+    return rootDirs;
+}
+
+
+
 

@@ -20,7 +20,12 @@ class HacknetApplication
 public:
     void Exec();
     void Draw();
-    void cdDir();
+    void lsDir();
+    void rmsubDir();
+    void cdDir(const std::string& dirName);
+    void rmDir(const std::string& dirName);
+    void cdParentDir();
+    void cdRootDir();
 };
 
 

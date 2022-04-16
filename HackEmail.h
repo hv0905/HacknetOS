@@ -6,17 +6,17 @@
 #include "string"
 class HackEmail {
 public:
-    HackEmail::HackEmail(const std::string &title = "", const std::string &sender = "", const std::string &content = "",
+    HackEmail(const std::wstring &title = L"", const std::wstring &sender = L"", const std::wstring &content = L"",
                          int mid = 1000);
 
     static void lsMail(int missionId);
 
-    static void cdMail(const std::string &title);
+    static void cdMail(const std::wstring &title);
 
 private:
-    std::string emailTitle;
-    std::string sender;
-    std::string emailContent;
+    std::wstring emailTitle;
+    std::wstring sender;
+    std::wstring emailContent;
     int missionId{};
 };
 #endif //HACKNETOS_HACKEMAIL_H
