@@ -41,6 +41,11 @@ void DisplayStartPage()
     Util::clearScreen();
     AsciiArt aa = AsciiArt("ASCII/hacknet-logo.ascii");
     aa.draw(Coord(62, 15));
+    Util::setCursorPos(5, 42);
+    std::cout << "Created by: ";
+    Util::moveCursorPos(0, -2);
+    AsciiArt creator = AsciiArt("ASCII/creator.ascii");
+    creator.draw(Util::getCursorPos());
     Util::setCursorPos(92, 35);
     std::cout << ">  Press Enter to start the game  <";
 
@@ -61,18 +66,21 @@ void PlayIntro()
     Util::clearScreen();
     Util::setCursorPos(30, 10);
     Util::printOneByOne(L"已过期14天...正在启用FailSafe模式...");
+    Util::sleep(200);
     Util::setCursorPos(30, 11);
     Util::printOneByOne(L"------------------------------------------------------");
+    Util::sleep(200);
     Util::setCursorPos(30, 12);
     Util::printOneByOne(L"你好.");
+    Util::sleep(200);
     Util::setCursorPos(30, 13);
     Util::printOneByOne(L"这件事不对劲......比我想象中的还要奇怪.");
+    Util::sleep(200);
     Util::setCursorPos(30, 14);
     Util::printOneByOne(L"我原以为我应该用过去时来写这段话, 不过恐怕我得承认......这件事还没有画上句号.");
+    Util::sleep(200);
     Util::setCursorPos(30, 15);
     Util::printOneByOne(L"我的名字是Bit, 如果你正在阅读这封邮件, 那意味着我已经死了.");
-    Util::setCursorPos(30, 16);
-
     Util::sleep(3000);
     Util::clearScreen();
 }

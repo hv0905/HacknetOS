@@ -15,7 +15,7 @@ namespace Util {
     void moveCursorPos(int vecX, int vecY);
     std::pair<int, int> getScreenSize();
 
-    void printOneByOne(const std::wstring &str, int breakTime = 70);
+    void printOneByOne(const std::wstring &str, int breakTime = 50);
 
     void sleep(int ms);
     void setupScreenSize(int w, int h);

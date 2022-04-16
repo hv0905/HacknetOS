@@ -6,13 +6,18 @@
 #ifndef HACKNETOS_COMMONTYPE_H
 #define HACKNETOS_COMMONTYPE_H
 
-struct Coord {
+#include <utility>
+
+struct Coord
+{
     int x;
     int y;
 
     explicit Coord(int x = 0, int y = 0) : x(x), y(y)
     {}
 
+    Coord(const std::pair<int, int> &p) : x(p.first), y(p.second) // NOLINT(google-explicit-constructor)
+    {}
 };
 
 struct Size2D {

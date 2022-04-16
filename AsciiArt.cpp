@@ -14,10 +14,8 @@ void AsciiArt::draw(Coord begin)
     {
         Util::setCursorPos(begin.x, begin.y++);
         std::cout << item;
-        std::cout.flush();
     }
 
-    Util::setCursorPos(begin.x, begin.y++);
 }
 
 AsciiArt::AsciiArt(const Size2D &size, const std::vector<std::string> &data) : size(size), data(data)
