@@ -11,6 +11,7 @@
 class HacknetApplication
 {
     int gameStatus = 0;
+    bool doRender = true;
 
     HackDirectory root;
 
