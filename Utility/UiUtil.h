@@ -5,7 +5,7 @@
 #ifndef HACKNETOS_UIUTIL_H
 #define HACKNETOS_UIUTIL_H
 
-#include "CommonType.h"
+#include "../CommonType.h"
 
 
 namespace UIUtil

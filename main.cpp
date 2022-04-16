@@ -1,9 +1,9 @@
 #include <iostream>
 #include "HacknetApplication.h"
-#include "Util.h"
-#include "MusicUtil.h"
+#include "Utility/Util.h"
+#include "Utility/MusicUtil.h"
 #include "AsciiArt.h"
-#include "UiUtil.h"
+#include "Utility/UiUtil.h"
 #include <Windows.h>
 #include <codecvt>
 #include <conio.h>
@@ -11,7 +11,8 @@
 using std::cout;
 using std::endl;
 
-void AdjustWindowsSize() {
+void AdjustWindowsSize()
+{
     while (true) {
         Util::clearScreen();
         // 220 x 50

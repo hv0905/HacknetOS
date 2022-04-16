@@ -6,11 +6,12 @@
 #define HACKNETOS_HACKBACKGROUNDTASK_H
 
 #include <string>
-#include "HacknetApplication.h"
-#include "CommonType.h"
+#include "../HacknetApplication.h"
+#include "../CommonType.h"
 
 class HackBackgroundTask
 {
+protected:
     HacknetApplication *ref;
     std::string thread_name;
     int pid;

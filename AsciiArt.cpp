@@ -6,7 +6,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <iostream>
-#include "Util.h"
+#include "Utility/Util.h"
 
 void AsciiArt::draw(Coord begin)
 {

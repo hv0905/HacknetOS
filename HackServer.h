@@ -13,9 +13,11 @@
 class HackServer
 {
     std::string ip;
-    HackDirectory *directory;
+    HackDirectory directory;
 
     bool accessible;
+
+    int minRequired;
 
     bool SSHExist;
     bool FTPExist;
