@@ -107,6 +107,36 @@ void HacknetApplication::cdRootDir()
     displayedCommand.push_back(CurrentConnected->getIp()+"@>"+CurrentDir->getDirName());
 }
 
+void HacknetApplication::namp()
+{
+    displayedCommand.emplace_back("----------------------------------");
+   displayedCommand.emplace_back("Probe Complete-Open ports:");
+    displayedCommand.emplace_back("----------------------------------");
+    if(CurrentConnected->HTTPExist)
+    {
+        displayedCommand.emplace_back("Port# 80: - HTTP WebServer: "+
+        (std::string)((CurrentConnected->HTTPLocked)?"locked":"unlocked"));
+    }
+    if(CurrentConnected->SMTPExist)
+    {
+        displayedCommand.emplace_back("Port# 25: - SMTP MailServer: "+
+        (std::string)((CurrentConnected->SMTPLocked)?"locked":"unlocked"));
+    }
+    if(CurrentConnected->FTPExist)
+    {
+        displayedCommand.emplace_back("Port# 21: - FTP Server: "+
+        (std::string)((CurrentConnected->FTPLocked)?"locked":"unlocked"));
+    }
+    if(CurrentConnected->SSHExist)
+    {
+        displayedCommand.emplace_back("Port# 22: - SSH: "+
+        (std::string)((CurrentConnected->SSHLocked)?"locked":"unlocked"));
+    }
+    displayedCommand.emplace_back("----------------------------------");
+    displayedCommand.emplace_back("Open Ports:Required for Crack:  "+std::to_string(CurrentConnected->minRequired));
+}
+
+
 
 
 

@@ -26,6 +26,7 @@ public:
     void rmDir(const std::string& dirName);
     void cdParentDir();
     void cdRootDir();
+    void namp();
 };
 
 
