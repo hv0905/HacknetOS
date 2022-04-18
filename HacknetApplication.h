@@ -11,6 +11,7 @@
 #include "HackServer.h"
 #include "InputService.h"
 #include "BackgroundTasks/HackBackgroundTask.h"
+#include "HackCommand.h"
 
 class HacknetApplication
 {
@@ -20,21 +21,21 @@ class HacknetApplication
     HackDirectory *CurrentDir;
     HackServer *CurrentConnected;
     int missionId{};
-    std::vector<std::string> commandBuffer;
-    InputService inputService;
-    std::vector<HackBackgroundTask *> backgroundTasks;
-   std::vector<HackServer>serverList;
+    std::vector<std::string> commandBuffer{};
+    InputService inputService{};
+    std::vector<HackBackgroundTask *> backgroundTasks{};
+    std::vector<HackServer> serverList{};
 
 public:
     void Exec();
 
     void Draw();
 
-    void lsDir();
+    void lsDir(std::stringstream &);
 
     void rmSubDir();
 
-    void cdDir(const std::string &dirName);
+    void cdDir(std::stringstream &dirName);
 
     void rmDir(const std::string &dirName);
 
