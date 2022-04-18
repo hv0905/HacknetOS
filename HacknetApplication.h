@@ -45,9 +45,11 @@ public:
 
     void namp();
 
-    void command_ps();
+    void command_ps(std::stringstream &);
 
-    void command_kill(const std::string &pid);
+    void command_kill(std::stringstream &input);
+
+    void command_help(std::stringstream &);
 
     void connect(std::string ip);
 

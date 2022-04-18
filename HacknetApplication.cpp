@@ -6,13 +6,13 @@
 #include "Utility/Util.h"
 
 static const HackCommand globalCommands[] = {
-        HackCommand(nullptr, "help", "显示本帮助列表"),
+        HackCommand(&HacknetApplication::command_help, "help", "显示本帮助列表"),
         HackCommand(nullptr, "scp", "从远程计算机复制文件[filename]至指定本地文件夹(/home或/bin为默认)", "[filename] [OPTIONAL: dest]", true,
                     true),
         HackCommand(nullptr, "scan", "在已连接计算机上扫描链接", "", true, true),
         HackCommand(nullptr, "rm", "删除文件", "[filename (or use * for all files in the folder)]", true, true),
-        HackCommand(nullptr, "ps", "列出正在运行的程序以及它们的PID"),
-        HackCommand(nullptr, "kill", "结束进程", "[PID]"),
+        HackCommand(&HacknetApplication::command_ps, "ps", "列出正在运行的程序以及它们的PID"),
+        HackCommand(&HacknetApplication::command_kill, "kill", "结束进程", "[PID]"),
         HackCommand(&HacknetApplication::lsDir, "ls", "列出目录所有内容", "", true, true),
         HackCommand(&HacknetApplication::cdDir, "cd", "切换目录", "<dir>", true, true),
         HackCommand(nullptr, "mv", "移动或重命名文件", "<src> <dst>", true, true),
@@ -89,23 +89,23 @@ void HacknetApplication::cdDir(std::stringstream &dirStream)
             break;
         }
     }
-    if(!flag)
+    if (!flag)
         commandBuffer.emplace_back("Can't find the directory.");
 }
 
 [[maybe_unused]] void HacknetApplication::rmSubDir()
 {
-    if(!CurrentConnected->accessible)
+    if (!CurrentConnected->accessible)
     {
         HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
         return;
     }
-    for (auto i:CurrentDir->getsubDirs())
+    for (auto i: CurrentDir->getsubDirs())
     {
         commandBuffer.emplace_back("Deleting");
         commandBuffer.emplace_back(i->getDirName());
     }
-    for (auto i:CurrentDir->getfiles())
+    for (auto i: CurrentDir->getfiles())
     {
         commandBuffer.emplace_back("Deleting");
         commandBuffer.emplace_back(i->getName());
@@ -115,12 +115,12 @@ void HacknetApplication::cdDir(std::stringstream &dirStream)
 
 void HacknetApplication::rmDir(const std::string &dirName)
 {
-    if(!CurrentConnected->accessible)
+    if (!CurrentConnected->accessible)
     {
         HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
         return;
     }
-    if(CurrentDir->getsubDirs().empty())
+    if (CurrentDir->getsubDirs().empty())
     {
         commandBuffer.emplace_back("");
     }
@@ -150,26 +150,26 @@ void HacknetApplication::cdParentDir()
 {
     CurrentDir = CurrentDir->getParentDir();
     commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
-    if(!CurrentConnected->accessible)
+    if (!CurrentConnected->accessible)
     {
         HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
         return;
     }
-    CurrentDir=CurrentDir->getParentDir();
-    commandBuffer.push_back(CurrentConnected->getIp()+"@>"+CurrentDir->getDirName());
+    CurrentDir = CurrentDir->getParentDir();
+    commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
 }
 
 void HacknetApplication::cdRootDir()
 {
     CurrentDir = CurrentDir->getRootDir();
     commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
-    if(!CurrentConnected->accessible)
+    if (!CurrentConnected->accessible)
     {
         HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
         return;
     }
-    CurrentDir=CurrentDir->getRootDir();
-    commandBuffer.push_back(CurrentConnected->getIp()+"@>"+CurrentDir->getDirName());
+    CurrentDir = CurrentDir->getRootDir();
+    commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
 }
 
 void HacknetApplication::namp()
@@ -201,7 +201,7 @@ void HacknetApplication::namp()
     commandBuffer.emplace_back("Open Ports:Required for Crack:  " + std::to_string(CurrentConnected->minRequired));
 }
 
-void HacknetApplication::command_ps()
+void HacknetApplication::command_ps(std::stringstream &)
 {
     commandBuffer.emplace_back("PID    NAME");
     for (auto &item: backgroundTasks)
@@ -211,28 +211,27 @@ void HacknetApplication::command_ps()
     }
 }
 
-void HacknetApplication::command_kill(const std::string &pid)
+void HacknetApplication::command_kill(std::stringstream &input)
 {
-    try
+    int p;
+    input >> p;
+    if (input.fail())
     {
-        int p = stoi(pid);
-        auto th = std::find_if(backgroundTasks.begin(), backgroundTasks.end(), [&p](HackBackgroundTask *item)
-        {
-            return item->getPid() == p && !item->isStopped();
-        });
-        if (th == backgroundTasks.end())
-        {
-            commandBuffer.emplace_back("PID为 " + pid + " 的进程不存在");
-        }
-        else
-        {
-            (*th)->kill();
-        }
-
-    } catch (...)
-    {
-        commandBuffer.emplace_back(pid + "不是一个合法的PID.");
+        commandBuffer.emplace_back("输入内容不是一个合法的PID.");
         return;
+    }
+
+    auto th = std::find_if(backgroundTasks.begin(), backgroundTasks.end(), [&p](HackBackgroundTask *item)
+    {
+        return item->getPid() == p && !item->isStopped();
+    });
+    if (th == backgroundTasks.end())
+    {
+        commandBuffer.emplace_back("PID为 " + std::to_string(p) + " 的进程不存在");
+    }
+    else
+    {
+        (*th)->kill();
     }
 }
 
@@ -294,6 +293,35 @@ bool HacknetApplication::isEnding() const
 void HacknetApplication::setEnding(bool ending)
 {
     HacknetApplication::ending = ending;
+}
+
+void HacknetApplication::command_help(std::stringstream &ss)
+{
+    int page;
+    ss >> page;
+    if (!ss)
+    {
+        page = 1;
+    }
+
+    int size = std::extent<decltype(globalCommands)>::value;
+    int skip = (page - 1) * 8;
+    if (skip >= size)
+    {
+        commandBuffer.emplace_back("FATAL: 不存在本帮助页面");
+        return;
+    }
+    int end = std::min(skip + 7, size - 1);
+    commandBuffer.emplace_back("------------------------------");
+    for (int i = skip; i <= end; ++i)
+    {
+        commandBuffer.push_back(globalCommands->getPattern() + " " + globalCommands->getPrefix());
+        commandBuffer.push_back(globalCommands->getHelpText());
+        commandBuffer.emplace_back("");
+    }
+    commandBuffer.emplace_back("------------------------------");
+
+
 }
 
 
