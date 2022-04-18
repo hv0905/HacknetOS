@@ -47,24 +47,18 @@ public:
     void command_ps();
 
     void command_kill(const std::string &pid);
+
     void connect(std::string ip);
+
     void Scan();
+
     void porkHack();
-    void SSHCrack();
-    bool  isEnding() const;
-    void  setEnding(bool ending);
+
+    void processCommand(const std::string &command);
+
+    bool isEnding() const;
+
+    void setEnding(bool ending);
 };
-
-
-    bool  HacknetApplication::isEnding() const
-    {
-        return ending;
-    }
-
-    void  HacknetApplication::setEnding(bool ending)
-    {
-        HacknetApplication::ending = ending;
-    }
-
 
 #endif //HACKNETOS_HACKNETAPPLICATION_H

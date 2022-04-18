@@ -259,15 +259,20 @@ void HacknetApplication::Scan()
     }
 }
 
-void HacknetApplication::SSHCrack()
+void HacknetApplication::processCommand(const std::string &command)
 {
 
 }
 
+bool HacknetApplication::isEnding() const
+{
+    return ending;
+}
 
-
-
-
+void HacknetApplication::setEnding(bool ending)
+{
+    HacknetApplication::ending = ending;
+}
 
 
 
