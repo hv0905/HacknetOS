@@ -5,8 +5,9 @@
 #include <conio.h>
 
 #include "InputService.h"
+#include "Utility/StringUtil.h"
 
-void InputService::tickInput()
+std::optional<std::string> InputService::tickInput()
 {
     while (_kbhit())
     {
@@ -14,7 +15,7 @@ void InputService::tickInput()
         if (key == 0xE0 || key == 0)
         { // Hit a function key or arrow key
             key = _getch();
-            if (!acceptCommand) return;
+            if (!acceptCommand) continue;
             switch (key)
             {
                 case 72:
@@ -43,7 +44,7 @@ void InputService::tickInput()
         else
         {
             lastKey = key;
-            if (!acceptCommand) return;
+            if (!acceptCommand) continue;
             if (key >= 0x20 && key <= 0x7E)
             { // standard character zone
                 if (position != 0)
@@ -58,6 +59,14 @@ void InputService::tickInput()
             else if (key == 0x0D)
             { // enter
                 // accept command
+                StringUtil::trim(commandBuffer);
+                if (commandBuffer.length() > 0)
+                {
+                    std::string ac = std::move(commandBuffer);
+                    commandBuffer = std::string();
+                    history.push_back(ac);
+                    return ac;
+                }
             }
             else if (key == 0x08)
             { // backspace
@@ -68,6 +77,8 @@ void InputService::tickInput()
             }
         }
     }
+
+    return {};
 }
 
 InputService::InputService() : commandBuffer()

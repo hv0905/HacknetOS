@@ -306,7 +306,7 @@ void HacknetApplication::command_help(std::stringstream &ss)
 
     int size = std::extent<decltype(globalCommands)>::value;
     int skip = (page - 1) * 8;
-    if (skip >= size)
+    if (skip >= size || skip < 0)
     {
         commandBuffer.emplace_back("FATAL: 不存在本帮助页面");
         return;

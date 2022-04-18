@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include <optional>
 
 typedef void AcceptedCommandCallback(std::string cmd);
 
@@ -27,7 +28,7 @@ class InputService
 public:
     InputService();
 
-    void tickInput();
+    std::optional<std::string> tickInput();
 
     void renderCMD(std::string prompt, int x, int y);
 

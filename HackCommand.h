@@ -10,8 +10,6 @@
 
 class HacknetApplication;
 
-//typedef void CommandHandler(std::stringstream& args);
-
 typedef void (HacknetApplication::*CommandHandler)(std::stringstream &args);
 
 
