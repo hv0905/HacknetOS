@@ -12,12 +12,12 @@ const HackEmail Email[] = {
         HackEmail(L"Diana", L"Diana", L"Diana", 1)
 };
  std::wstring displayedEmail[1000];
-void HackEmail::lsMail(int missionId)
+void HackEmail::lsMail(int missionid)
 {
     int pos=0;
     for (const auto &i: Email)
     {
-        if (i.missionId <= missionId)
+        if (i.missionId <= missionid)
         {
             if(pos>=40)
                 break;

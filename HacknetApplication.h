@@ -23,6 +23,7 @@ class HacknetApplication
     std::vector<std::string> commandBuffer;
     InputService inputService;
     std::vector<HackBackgroundTask *> backgroundTasks;
+   std::vector<HackServer>serverList;
 
 public:
     void Exec();
@@ -31,7 +32,7 @@ public:
 
     void lsDir();
 
-    void rmsubDir();
+    void rmSubDir();
 
     void cdDir(const std::string &dirName);
 
@@ -46,16 +47,24 @@ public:
     void command_ps();
 
     void command_kill(const std::string &pid);
+    void connect(std::string ip);
+    void Scan();
+    void porkHack();
+    void SSHCrack();
+    bool  isEnding() const;
+    void  setEnding(bool ending);
+};
 
-    bool isEnding() const
+
+    bool  HacknetApplication::isEnding() const
     {
         return ending;
     }
 
-    void setEnding(bool ending)
+    void  HacknetApplication::setEnding(bool ending)
     {
         HacknetApplication::ending = ending;
     }
-};
+
 
 #endif //HACKNETOS_HACKNETAPPLICATION_H

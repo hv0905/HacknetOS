@@ -25,7 +25,12 @@ void HacknetApplication::Draw()
 
 void HacknetApplication::lsDir()
 {
-    if (CurrentDir->getsubDirs().empty() && CurrentDir->getfiles().empty())
+    if(!CurrentConnected->accessible)
+    {
+       HacknetApplication:: commandBuffer.emplace_back("The server isn't hacked.");
+       return;
+    }
+    if (CurrentDir->getsubDirs().empty()&&CurrentDir->getfiles().empty())
     {
         commandBuffer.emplace_back("There is no file and directory in this folder.");
         return;
@@ -46,6 +51,11 @@ void HacknetApplication::lsDir()
 
 void HacknetApplication::cdDir(const std::string& dirName)
 {
+    if(!CurrentConnected->accessible)
+    {
+        HacknetApplication:: commandBuffer.emplace_back("The server isn't hacked.");
+        return;
+    }
     bool flag = false;
     for (int i=0;i<CurrentDir->getsubDirs().size();i++)
     {
@@ -61,8 +71,13 @@ void HacknetApplication::cdDir(const std::string& dirName)
         commandBuffer.emplace_back("Can't find the directory.");
 }
 
-[[maybe_unused]] void HacknetApplication::rmsubDir()
+[[maybe_unused]] void HacknetApplication::rmSubDir()
 {
+    if(!CurrentConnected->accessible)
+    {
+        HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
+        return;
+    }
     for (auto i:CurrentDir->getsubDirs())
     {
         commandBuffer.emplace_back("Deleting");
@@ -78,6 +93,11 @@ void HacknetApplication::cdDir(const std::string& dirName)
 
 void HacknetApplication::rmDir(const std::string &dirName)
 {
+    if(!CurrentConnected->accessible)
+    {
+        HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
+        return;
+    }
     if(CurrentDir->getsubDirs().empty())
     {
         commandBuffer.emplace_back("");
@@ -108,12 +128,26 @@ void HacknetApplication::cdParentDir()
 {
     CurrentDir = CurrentDir->getParentDir();
     commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
+    if(!CurrentConnected->accessible)
+    {
+        HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
+        return;
+    }
+    CurrentDir=CurrentDir->getParentDir();
+    commandBuffer.push_back(CurrentConnected->getIp()+"@>"+CurrentDir->getDirName());
 }
 
 void HacknetApplication::cdRootDir()
 {
     CurrentDir = CurrentDir->getRootDir();
     commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
+    if(!CurrentConnected->accessible)
+    {
+        HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
+        return;
+    }
+    CurrentDir=CurrentDir->getRootDir();
+    commandBuffer.push_back(CurrentConnected->getIp()+"@>"+CurrentDir->getDirName());
 }
 
 void HacknetApplication::namp()
@@ -178,6 +212,56 @@ void HacknetApplication::command_kill(const std::string &pid)
         commandBuffer.emplace_back(pid + "不是一个合法的PID.");
         return;
     }
+}
+
+void HacknetApplication::connect(std::string ip)
+{
+    HacknetApplication::commandBuffer.emplace_back("Disconnected");
+    for (int i = 0; i < serverList.size(); i++)
+    {
+        if (serverList[i].ip == ip)
+        {
+            HacknetApplication::commandBuffer.emplace_back("Connection Established ::");
+            HacknetApplication::commandBuffer.emplace_back(
+                    "Connect To " + serverList[i].name + " in" + serverList[i].ip);
+            CurrentConnected = &serverList[i];
+            CurrentDir = &serverList[i].rootDirectory;
+        }
+    }
+}
+
+void HacknetApplication::porkHack()
+{
+    HacknetApplication::commandBuffer.emplace_back("PortHack Initialized --Running");
+    if (CurrentConnected->checkAccessibility())
+        HacknetApplication::commandBuffer.emplace_back("--PortHack Complete--");
+    else
+        HacknetApplication::commandBuffer.emplace_back("--PortHack Fail--");
+}
+
+void HacknetApplication::Scan()
+{
+    if (!CurrentConnected->accessible)
+    {
+        HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
+        return;
+    }
+    HacknetApplication::commandBuffer.emplace_back("Scanning For " + CurrentConnected->ip);
+    if (CurrentConnected->ConnectedNodes.empty())
+        HacknetApplication::commandBuffer.emplace_back("This node does not connect to other nodes");
+    else
+    {
+        HacknetApplication::commandBuffer.emplace_back("The nodes connected to the node:");
+        for (auto i: CurrentConnected->ConnectedNodes)
+        {
+            HacknetApplication::commandBuffer.emplace_back(":" + i->name + "  " + i->ip);
+        }
+    }
+}
+
+void HacknetApplication::SSHCrack()
+{
+
 }
 
 

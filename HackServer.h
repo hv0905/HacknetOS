@@ -8,12 +8,16 @@
 
 #include <string>
 #include "HackDirectory.h"
-
+class HacknetApplication;
 class HackServer
 {
     friend class HacknetApplication;
+
     std::string ip;
-    HackDirectory directory;
+
+    std::string name;
+
+    HackDirectory rootDirectory;
 
     bool accessible;
 
@@ -28,10 +32,17 @@ class HackServer
     bool HTTPLocked;
     bool FTPLocked;
     bool SMTPLocked;
+
+    int missionId;
+
+    std::vector<HackServer*>ConnectedNodes;
 public:
 
     std::string getIp();
 
+    bool checkAccessibility();
+
+    int getmissionId();
 };
 
 
