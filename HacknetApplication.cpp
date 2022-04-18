@@ -29,7 +29,12 @@ void HacknetApplication::Exec()
     while (true)
     {
         Draw();
-        inputService.tickInput();
+        auto result = inputService.tickInput();
+        if (result.has_value())
+        {
+            // process the incoming command
+            processCommand(result.value());
+        }
         Util::sleep(50);
         if (ending)
         {
@@ -282,7 +287,26 @@ void HacknetApplication::Scan()
 
 void HacknetApplication::processCommand(const std::string &command)
 {
+    std::stringstream ss(command);
+    std::string prefix;
+    ss >> prefix;
+    // Phrase 1: global
+    int globalSize = std::extent<decltype(globalCommands)>::value;
+    auto globalP = std::find_if(globalCommands, globalCommands + globalSize, [&prefix](const HackCommand &cmd)
+    {
+        return cmd.getPrefix() == prefix;
+    });
 
+    if (globalP != globalCommands + globalSize)
+    {
+        auto handler = globalP->getHandler();
+        if (handler != nullptr)
+            (this->*handler)(ss);
+        else commandBuffer.emplace_back("Not implemented yet.");
+        return;
+    }
+
+    // Phrase 2: executive files TODO
 }
 
 bool HacknetApplication::isEnding() const
