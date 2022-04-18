@@ -156,3 +156,8 @@ std::pair<int, int> Util::getCursorPos()
     return std::pair<int, int>(Position.X, Position.Y);
 }
 
+void Util::setColorAttr(int attr)
+{
+    std::cout << ESC << "[" << attr << "m";
+}
+

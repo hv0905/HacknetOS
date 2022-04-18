@@ -8,7 +8,6 @@
 
 #include <string>
 #include "HackDirectory.h"
-#include "HacknetApplication.h"
 
 class HackServer
 {

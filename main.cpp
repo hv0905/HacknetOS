@@ -49,7 +49,9 @@ void DisplayStartPage()
     AsciiArt creator("ASCII/creator.ascii");
     creator.draw(Util::getCursorPos());
     Util::setCursorPos(92, 35);
+    Util::setColorAttr(Util::FG_LIGHT_GREEN);
     std::cout << ">  Press Enter to start the game  <";
+    Util::setColorAttr(Util::ATTR_NORMAL);
 
     while (_getch() != 13);
 }

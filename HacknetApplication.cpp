@@ -160,7 +160,7 @@ void HacknetApplication::command_kill(const std::string &pid)
     try
     {
         int p = stoi(pid);
-        auto th = std::find(backgroundTasks.begin(), backgroundTasks.end(), [&p](HackBackgroundTask *item)
+        auto th = std::find_if(backgroundTasks.begin(), backgroundTasks.end(), [&p](HackBackgroundTask *item)
         {
             return item->getPid() == p && !item->isStopped();
         });

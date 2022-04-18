@@ -31,8 +31,6 @@ private:
     HackDirectory *parentDirs;
     std::vector<HackDirectory *> subDirs;
     std::vector<HackFile *> files;
-
-    HackDirectory *getParentDir();
 };
 
 
