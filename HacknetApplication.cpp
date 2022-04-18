@@ -21,7 +21,7 @@ static const HackCommand globalCommands[] = {
         HackCommand(nullptr, "dc", "断开连接"),
         HackCommand(nullptr, "cat", "显示文件内容", "[filename]", true, true),
         HackCommand(nullptr, "porthack", "通过已开放的端口破解计算机管理员密码"),
-        HackCommand(nullptr, "clear", "清除终端")
+        HackCommand(&HacknetApplication::command_clear, "clear", "清除终端")
 };
 
 void HacknetApplication::Exec()
@@ -322,6 +322,11 @@ void HacknetApplication::command_help(std::stringstream &ss)
     commandBuffer.emplace_back("------------------------------");
 
 
+}
+
+void HacknetApplication::command_clear(std::stringstream &)
+{
+    commandBuffer.clear();
 }
 
 

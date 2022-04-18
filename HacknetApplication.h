@@ -51,6 +51,8 @@ public:
 
     void command_help(std::stringstream &);
 
+    void command_clear(std::stringstream &);
+
     void connect(std::string ip);
 
     void Scan();
