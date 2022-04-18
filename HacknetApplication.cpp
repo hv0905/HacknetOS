@@ -3,10 +3,19 @@
 //
 
 #include "HacknetApplication.h"
-std::vector<std::string>displayedCommand;
+#include "Utility/Util.h"
 void HacknetApplication::Exec()
 {
-
+    while (true)
+    {
+        Draw();
+        inputService.tickInput();
+        Util::sleep(50);
+        if (ending)
+        {
+            break;
+        }
+    }
 }
 
 void HacknetApplication::Draw()
@@ -16,23 +25,23 @@ void HacknetApplication::Draw()
 
 void HacknetApplication::lsDir()
 {
-    if (CurrentDir->getsubDirs().empty()&&CurrentDir->getfiles().empty())
+    if (CurrentDir->getsubDirs().empty() && CurrentDir->getfiles().empty())
     {
-        displayedCommand.emplace_back("There is no file and directory in this folder.");
+        commandBuffer.emplace_back("There is no file and directory in this folder.");
         return;
     }
 
-    displayedCommand.emplace_back("-----------------------------");
-    displayedCommand.push_back("The contain of" + CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
+    commandBuffer.emplace_back("-----------------------------");
+    commandBuffer.push_back("The contain of" + CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
     for (auto i: CurrentDir->getsubDirs())
     {
-        displayedCommand.push_back(":" + i->getDirName());
+        commandBuffer.push_back(":" + i->getDirName());
     }
     for (auto i: CurrentDir->getfiles())
     {
-        displayedCommand.push_back(":" + i->getName());
+        commandBuffer.push_back(":" + i->getName());
     }
-    displayedCommand.emplace_back("-----------------------------");
+    commandBuffer.emplace_back("-----------------------------");
 }
 
 void HacknetApplication::cdDir(const std::string& dirName)
@@ -44,25 +53,25 @@ void HacknetApplication::cdDir(const std::string& dirName)
         {
             flag = true;
             CurrentDir = (CurrentDir->getsubDirs()[i]);
-            displayedCommand.push_back(CurrentConnected->getIp()+"@>"+dirName);
+            commandBuffer.push_back(CurrentConnected->getIp() + "@>" + dirName);
             break;
         }
     }
     if(!flag)
-        displayedCommand.emplace_back("Can't find the directory.");
+        commandBuffer.emplace_back("Can't find the directory.");
 }
 
 [[maybe_unused]] void HacknetApplication::rmsubDir()
 {
     for (auto i:CurrentDir->getsubDirs())
     {
-        displayedCommand.emplace_back("Deleting");
-        displayedCommand.emplace_back(i->getDirName());
+        commandBuffer.emplace_back("Deleting");
+        commandBuffer.emplace_back(i->getDirName());
     }
     for (auto i:CurrentDir->getfiles())
     {
-        displayedCommand.emplace_back("Deleting");
-        displayedCommand.emplace_back(i->getName());
+        commandBuffer.emplace_back("Deleting");
+        commandBuffer.emplace_back(i->getName());
     }
     CurrentDir->getsubDirs().clear();
 }
@@ -71,15 +80,15 @@ void HacknetApplication::rmDir(const std::string &dirName)
 {
     if(CurrentDir->getsubDirs().empty())
     {
-        displayedCommand.emplace_back("");
+        commandBuffer.emplace_back("");
     }
     for (int i = 0; i < CurrentDir->getsubDirs().size(); i++)
     {
         if (CurrentDir->getsubDirs()[i]->getDirName() == dirName)
         {
             CurrentDir->getsubDirs().erase(CurrentDir->getsubDirs().begin() + i);
-            displayedCommand.emplace_back("Deleting");
-            displayedCommand.emplace_back(CurrentDir->getsubDirs()[i]->getDirName());
+            commandBuffer.emplace_back("Deleting");
+            commandBuffer.emplace_back(CurrentDir->getsubDirs()[i]->getDirName());
             break;
         }
     }
@@ -88,8 +97,8 @@ void HacknetApplication::rmDir(const std::string &dirName)
         if (CurrentDir->getfiles()[i]->getName() == dirName)
         {
             CurrentDir->getfiles().erase(CurrentDir->getfiles().begin() + i);
-            displayedCommand.emplace_back("Deleting");
-            displayedCommand.emplace_back(CurrentDir->getfiles()[i]->getName());
+            commandBuffer.emplace_back("Deleting");
+            commandBuffer.emplace_back(CurrentDir->getfiles()[i]->getName());
             break;
         }
     }
@@ -97,43 +106,78 @@ void HacknetApplication::rmDir(const std::string &dirName)
 
 void HacknetApplication::cdParentDir()
 {
-    CurrentDir=CurrentDir->getParentDir();
-    displayedCommand.push_back(CurrentConnected->getIp()+"@>"+CurrentDir->getDirName());
+    CurrentDir = CurrentDir->getParentDir();
+    commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
 }
 
 void HacknetApplication::cdRootDir()
 {
-    CurrentDir=CurrentDir->getRootDir();
-    displayedCommand.push_back(CurrentConnected->getIp()+"@>"+CurrentDir->getDirName());
+    CurrentDir = CurrentDir->getRootDir();
+    commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
 }
 
 void HacknetApplication::namp()
 {
-    displayedCommand.emplace_back("----------------------------------");
-   displayedCommand.emplace_back("Probe Complete-Open ports:");
-    displayedCommand.emplace_back("----------------------------------");
-    if(CurrentConnected->HTTPExist)
+    commandBuffer.emplace_back("----------------------------------");
+    commandBuffer.emplace_back("Probe Complete-Open ports:");
+    commandBuffer.emplace_back("----------------------------------");
+    if (CurrentConnected->HTTPExist)
     {
-        displayedCommand.emplace_back("Port# 80: - HTTP WebServer: "+
-        (std::string)((CurrentConnected->HTTPLocked)?"locked":"unlocked"));
+        commandBuffer.emplace_back("Port# 80: - HTTP WebServer: " +
+                                   (std::string) ((CurrentConnected->HTTPLocked) ? "locked" : "unlocked"));
     }
-    if(CurrentConnected->SMTPExist)
+    if (CurrentConnected->SMTPExist)
     {
-        displayedCommand.emplace_back("Port# 25: - SMTP MailServer: "+
-        (std::string)((CurrentConnected->SMTPLocked)?"locked":"unlocked"));
+        commandBuffer.emplace_back("Port# 25: - SMTP MailServer: " +
+                                   (std::string) ((CurrentConnected->SMTPLocked) ? "locked" : "unlocked"));
     }
-    if(CurrentConnected->FTPExist)
+    if (CurrentConnected->FTPExist)
     {
-        displayedCommand.emplace_back("Port# 21: - FTP Server: "+
-        (std::string)((CurrentConnected->FTPLocked)?"locked":"unlocked"));
+        commandBuffer.emplace_back("Port# 21: - FTP Server: " +
+                                   (std::string) ((CurrentConnected->FTPLocked) ? "locked" : "unlocked"));
     }
-    if(CurrentConnected->SSHExist)
+    if (CurrentConnected->SSHExist)
     {
-        displayedCommand.emplace_back("Port# 22: - SSH: "+
-        (std::string)((CurrentConnected->SSHLocked)?"locked":"unlocked"));
+        commandBuffer.emplace_back("Port# 22: - SSH: " +
+                                   (std::string) ((CurrentConnected->SSHLocked) ? "locked" : "unlocked"));
     }
-    displayedCommand.emplace_back("----------------------------------");
-    displayedCommand.emplace_back("Open Ports:Required for Crack:  "+std::to_string(CurrentConnected->minRequired));
+    commandBuffer.emplace_back("----------------------------------");
+    commandBuffer.emplace_back("Open Ports:Required for Crack:  " + std::to_string(CurrentConnected->minRequired));
+}
+
+void HacknetApplication::command_ps()
+{
+    commandBuffer.emplace_back("PID    NAME");
+    for (auto &item: backgroundTasks)
+    {
+        if (!item->isStopped())
+            commandBuffer.emplace_back(std::to_string(item->getPid()) + "   " + item->getThreadName());
+    }
+}
+
+void HacknetApplication::command_kill(const std::string &pid)
+{
+    try
+    {
+        int p = stoi(pid);
+        auto th = std::find(backgroundTasks.begin(), backgroundTasks.end(), [&p](HackBackgroundTask *item)
+        {
+            return item->getPid() == p && !item->isStopped();
+        });
+        if (th == backgroundTasks.end())
+        {
+            commandBuffer.emplace_back("PID为 " + pid + " 的进程不存在");
+        }
+        else
+        {
+            (*th)->kill();
+        }
+
+    } catch (...)
+    {
+        commandBuffer.emplace_back(pid + "不是一个合法的PID.");
+        return;
+    }
 }
 
 

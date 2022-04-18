@@ -6,8 +6,9 @@
 #define HACKNETOS_HACKBACKGROUNDTASK_H
 
 #include <string>
-#include "../HacknetApplication.h"
 #include "../CommonType.h"
+
+class HacknetApplication; // required for forward declaration
 
 class HackBackgroundTask
 {
@@ -18,6 +19,12 @@ protected:
     bool stopped;
 
 public:
+
+    HackBackgroundTask(HacknetApplication *ref, const std::string &threadName, int pid) : ref(ref),
+                                                                                          thread_name(threadName),
+                                                                                          pid(pid),
+                                                                                          stopped(false)
+    {}
 
     virtual void drawMemory(Coord begin) = 0;
 
