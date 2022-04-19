@@ -64,6 +64,11 @@ public:
     bool isEnding() const;
 
     void setEnding(bool ending);
+
+    void rm(std::stringstream & command);
+
+    void cd(std::stringstream & command);
+
 };
 
 #endif //HACKNETOS_HACKNETAPPLICATION_H

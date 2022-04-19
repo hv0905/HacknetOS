@@ -50,11 +50,7 @@ void HacknetApplication::Draw()
 
 void HacknetApplication::lsDir(std::stringstream &)
 {
-    if (!CurrentConnected->accessible)
-    {
-        HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
-        return;
-    }
+
     if (CurrentDir->getsubDirs().empty() && CurrentDir->getfiles().empty())
     {
         commandBuffer.emplace_back("There is no file and directory in this folder.");
@@ -78,11 +74,6 @@ void HacknetApplication::cdDir(std::stringstream &dirStream)
 {
     std::string dirName;
     dirStream >> dirName;
-    if (!CurrentConnected->accessible)
-    {
-        HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
-        return;
-    }
     bool flag = false;
     for (int i = 0; i < CurrentDir->getsubDirs().size(); i++)
     {
@@ -100,11 +91,6 @@ void HacknetApplication::cdDir(std::stringstream &dirStream)
 
 [[maybe_unused]] void HacknetApplication::rmSubDir()
 {
-    if (!CurrentConnected->accessible)
-    {
-        HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
-        return;
-    }
     for (auto i: CurrentDir->getsubDirs())
     {
         commandBuffer.emplace_back("Deleting");
@@ -116,15 +102,11 @@ void HacknetApplication::cdDir(std::stringstream &dirStream)
         commandBuffer.emplace_back(i->getName());
     }
     CurrentDir->getsubDirs().clear();
+    CurrentDir->getfiles().clear();
 }
 
 void HacknetApplication::rmDir(const std::string &dirName)
 {
-    if (!CurrentConnected->accessible)
-    {
-        HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
-        return;
-    }
     if (CurrentDir->getsubDirs().empty())
     {
         commandBuffer.emplace_back("");
@@ -155,24 +137,10 @@ void HacknetApplication::cdParentDir()
 {
     CurrentDir = CurrentDir->getParentDir();
     commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
-    if (!CurrentConnected->accessible)
-    {
-        HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
-        return;
-    }
-    CurrentDir = CurrentDir->getParentDir();
-    commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
 }
 
 void HacknetApplication::cdRootDir()
 {
-    CurrentDir = CurrentDir->getRootDir();
-    commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
-    if (!CurrentConnected->accessible)
-    {
-        HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
-        return;
-    }
     CurrentDir = CurrentDir->getRootDir();
     commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
 }
@@ -267,11 +235,6 @@ void HacknetApplication::porkHack()
 
 void HacknetApplication::Scan()
 {
-    if (!CurrentConnected->accessible)
-    {
-        HacknetApplication::commandBuffer.emplace_back("The server isn't hacked.");
-        return;
-    }
     HacknetApplication::commandBuffer.emplace_back("Scanning For " + CurrentConnected->ip);
     if (CurrentConnected->ConnectedNodes.empty())
         HacknetApplication::commandBuffer.emplace_back("This node does not connect to other nodes");
@@ -352,6 +315,51 @@ void HacknetApplication::command_clear(std::stringstream &)
 {
     commandBuffer.clear();
 }
+
+void HacknetApplication::rm( std::stringstream & commandStream)
+{
+    std::string command;
+    commandStream>>command;
+    if(command=="*")
+        rmSubDir();
+    else
+        rmDir(command);
+}
+
+void HacknetApplication::cd(std::stringstream &commandStream)
+{
+    std::string command;
+    commandStream>>command;
+    if (command == "/")
+    {
+        cdRootDir();
+        return;
+    }
+    std::vector<std::string> splitCommand;
+    int start = 0, end = 0;
+    for (int i = 0; i < command.size(); i++)
+    {
+        if (command[i] == '/')
+        {
+            splitCommand.push_back(command.substr(start, end - start));
+            start = end + 1;
+        }
+        end++;
+    }
+    splitCommand.push_back(command.substr(start, end - start));
+    for (auto i: splitCommand)
+    {
+        if (i == "..")
+            cdParentDir();
+        else
+        {
+            std::stringstream subCommandStream;
+            subCommandStream<<i;
+            cdDir(subCommandStream);
+        }
+    }
+}
+
 
 
 
