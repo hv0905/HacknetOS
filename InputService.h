@@ -32,12 +32,12 @@ public:
 
     void renderCMD(std::string prompt, int x, int y);
 
-    const std::string &getCommandBuffer() const
+    [[nodiscard]] const std::string &getCommandBuffer() const
     {
         return commandBuffer;
     }
 
-    bool isAcceptCommand() const
+    [[nodiscard]] bool isAcceptCommand() const
     {
         return acceptCommand;
     }
@@ -47,7 +47,7 @@ public:
         InputService::acceptCommand = acceptCommand;
     }
 
-    char getLastKey() const
+    [[nodiscard]] char getLastKey() const
     {
         return lastKey;
     }

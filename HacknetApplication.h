@@ -11,7 +11,7 @@
 #include "HackServer.h"
 #include "InputService.h"
 #include "BackgroundTasks/HackBackgroundTask.h"
-#include "HackCommand.h"
+
 
 class HacknetApplication
 {
@@ -62,7 +62,7 @@ public:
 
     void processCommand(const std::string &command);
 
-    bool isEnding() const;
+    [[nodiscard]] bool isEnding() const;
 
     void setEnding(bool ending);
 

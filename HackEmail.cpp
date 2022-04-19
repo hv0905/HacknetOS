@@ -7,7 +7,7 @@
 
 HackEmail::HackEmail(const std::wstring &title, const std::wstring &sender, const std::wstring &content, int mid) :
         emailTitle(title), sender(sender), emailContent(content), missionId(mid)
-{};
+{}
 const HackEmail Email[] = {
         HackEmail(L"Diana", L"Diana", L"Diana", 1)
 };

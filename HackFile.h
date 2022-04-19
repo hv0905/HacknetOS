@@ -17,8 +17,10 @@ public:
 
     virtual std::string cat() = 0;
 
-    virtual HackFile* copy()=0;
-    const std::string& getName() {
+    virtual HackFile *clone() = 0;
+
+    const std::string &getName()
+    {
         return name;
     }
 
@@ -26,20 +28,6 @@ public:
     {
         HackFile::name = name;
     }
-
-};
-class HackTxtFile:HackFile
-{
-    std::wstring contain;
-public:
-   virtual std::string cat();
-    HackFile * copy() override;
-};
-class HackBinFile:HackFile
-{
-    virtual std::string cat();
-    std::wstring contain;
-    HackBinFile* copy() override;
 
 };
 

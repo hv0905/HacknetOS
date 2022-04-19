@@ -2,10 +2,12 @@
 // Created by epiphyllum on 22/04/09.
 //
 
+#include "HackCommand.h"
 #include "HacknetApplication.h"
 #include "Utility/Util.h"
+#include "Utility/UiUtil.h"
 
-static const HackCommand globalCommands[] = {
+const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_help, "help", "显示本帮助列表"),
         HackCommand(nullptr, "scp", "从远程计算机复制文件[filename]至指定本地文件夹(/home或/bin为默认)", "[filename] [OPTIONAL: dest]", true,
                     true),
@@ -45,7 +47,8 @@ void HacknetApplication::Exec()
 
 void HacknetApplication::Draw()
 {
-
+    Util::clearScreen();
+    UIUtil::drawFramework();
 }
 
 void HacknetApplication::lsDir(std::stringstream &)
@@ -428,7 +431,7 @@ void HacknetApplication::scp(std::stringstream &command)
     {
         if (CurrentDir->getfiles()[i]->getName() == dirName)
         {
-            copied = CurrentDir->getfiles()[i]->copy();
+            copied = CurrentDir->getfiles()[i]->clone();
             CurrentConnected = localSever;
             CurrentDir = &(localSever->rootDirectory);
             cd(command);
