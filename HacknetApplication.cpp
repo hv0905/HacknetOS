@@ -81,7 +81,6 @@ void HacknetApplication::cdDir(std::stringstream &dirStream)
         {
             flag = true;
             CurrentDir = (CurrentDir->getsubDirs()[i]);
-            commandBuffer.push_back(CurrentConnected->getIp() + "@>" + dirName);
             break;
         }
     }
@@ -136,13 +135,11 @@ void HacknetApplication::rmDir(const std::string &dirName)
 void HacknetApplication::cdParentDir()
 {
     CurrentDir = CurrentDir->getParentDir();
-    commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
 }
 
 void HacknetApplication::cdRootDir()
 {
     CurrentDir = CurrentDir->getRootDir();
-    commandBuffer.push_back(CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
 }
 
 void HacknetApplication::namp()
@@ -422,25 +419,26 @@ void HacknetApplication::mv(std::stringstream &commandStream)
 
 void HacknetApplication::scp(std::stringstream &command)
 {
-    std::string dirName;
-    command>>dirName;
-    for (int i = 0; i < CurrentDir->getsubDirs().size(); i++)
-    {
-        if (CurrentDir->getsubDirs()[i]->getDirName() == dirName)
-        {
-            localSever->rootDirectory.getsubDirs()[0]->getsubDirs().push_back(CurrentDir->getsubDirs()[i]);
-            return;
-        }
-    }
+    std::string dirName, address;
+    command >> dirName;
+    HackServer *tempConnect = CurrentConnected;
+    HackDirectory *tempDirectory = CurrentDir;
+    HackFile *copied;
     for (int i = 0; i < CurrentDir->getfiles().size(); i++)
     {
         if (CurrentDir->getfiles()[i]->getName() == dirName)
         {
-localSever->rootDirectory.getsubDirs()[0]->getfiles().push_back(CurrentDir->getfiles()[i]);
-return;
+            copied = CurrentDir->getfiles()[i]->copy();
+            CurrentConnected = localSever;
+            CurrentDir = &(localSever->rootDirectory);
+            cd(command);
+            CurrentDir->getfiles().push_back(copied);
         }
     }
-
+    CurrentDir = tempDirectory;
+    CurrentConnected = tempConnect;
+    tempDirectory = nullptr;
+    tempConnect = nullptr;
 }
 
 

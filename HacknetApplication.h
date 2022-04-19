@@ -75,6 +75,8 @@ public:
     void mv(std::stringstream &command);
 
     void scp(std::stringstream &command);
+
+
 };
 
 #endif //HACKNETOS_HACKNETAPPLICATION_H
