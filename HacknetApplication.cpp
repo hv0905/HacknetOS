@@ -6,6 +6,7 @@
 #include "HacknetApplication.h"
 #include "Utility/Util.h"
 #include "Utility/UiUtil.h"
+#include "Utility/StringUtil.h"
 
 const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_help, "help", "显示本帮助列表"),
@@ -122,7 +123,7 @@ void HacknetApplication::rmDir(const std::string &dirName)
             CurrentDir->getsubDirs().erase(CurrentDir->getsubDirs().begin() + i);
             commandBuffer.emplace_back("Deleting");
             commandBuffer.emplace_back(CurrentDir->getsubDirs()[i]->getDirName());
-           return;
+            return;
         }
     }
     for (int i = 0; i < CurrentDir->getfiles().size(); i++)
@@ -132,7 +133,7 @@ void HacknetApplication::rmDir(const std::string &dirName)
             CurrentDir->getfiles().erase(CurrentDir->getfiles().begin() + i);
             commandBuffer.emplace_back("Deleting");
             commandBuffer.emplace_back(CurrentDir->getfiles()[i]->getName());
-           return;
+            return;
         }
     }
 }
@@ -360,7 +361,7 @@ void HacknetApplication::command_cd(std::stringstream &commandStream)
         else
         {
             std::stringstream subCommandStream;
-            subCommandStream<<i;
+            subCommandStream << i;
             cdDir(subCommandStream);
         }
     }
@@ -419,7 +420,7 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
             }
         }
     }
-        commandBuffer.emplace_back("Don't find " + firstCommand);
+    commandBuffer.emplace_back("Don't find " + firstCommand);
 }
 
 void HacknetApplication::command_scp(std::stringstream &command)
@@ -451,4 +452,112 @@ void HacknetApplication::internalDisconnect()
     CurrentDir = nullptr;
     CurrentConnected = nullptr;
     commandBuffer.emplace_back("Disconnected");
+}
+
+HackDirectory *HacknetApplication::locateDir(const std::string &path, bool local)
+{
+    auto vec = StringUtil::split(path, "/");
+    if (vec.size() == 0)
+    {
+        return nullptr;
+    }
+
+    HackDirectory *head;
+    if (vec[0] == "")
+    {
+        head = local ? &(localSever->rootDirectory) : &(CurrentConnected->rootDirectory);
+        vec.erase(vec.begin());
+    }
+    else
+    {
+        head = CurrentDir;
+    }
+
+    if (vec.back() == "")
+    {
+        vec.pop_back();
+    }
+
+    for (auto &item: vec)
+    {
+        if (item == "..")
+        {
+            if (head->getParentDir() == nullptr)
+            {
+                return nullptr;
+            }
+            head = head->getParentDir();
+        }
+        else
+        {
+            auto it = std::find_if(head->getsubDirs().begin(), head->getsubDirs().end(), [&item](HackDirectory *t)
+            {
+                return t->getDirName() == item;
+            });
+            if (it == head->getsubDirs().end())
+            {
+                return nullptr;
+            }
+            else
+            {
+                head = *it;
+            }
+        }
+    }
+
+    return head;
+
+}
+
+HackFile *HacknetApplication::locateFile(std::string path)
+{
+    if (path.empty() || path.back() == '/')
+    {
+        return nullptr; // Not a valid filepath
+    }
+
+    int lastS = path.find_last_of('/');
+    if (lastS == std::string::npos)
+    {
+        // pure file name
+        auto it = std::find_if(CurrentDir->getfiles().begin(), CurrentDir->getfiles().end(), [&path](HackFile *t)
+        {
+            return t->getName() == path;
+        });
+        return it == CurrentDir->getfiles().end() ? nullptr : *it;
+    }
+    else if (lastS == 0)
+    {
+        path.erase(path.begin());
+        // file in root directory
+        auto it = std::find_if(CurrentConnected->rootDirectory.getfiles().begin(),
+                               CurrentConnected->rootDirectory.getfiles().end(), [&path](HackFile *t)
+                               {
+                                   return t->getName() == path;
+                               });
+        return it == CurrentConnected->rootDirectory.getfiles().end() ? nullptr : *it;
+    }
+    else
+    {
+        // file in subdirectory, get the target path first
+        // /home/user/file
+        // 0123456789^1234
+        std::string targetPath = path.substr(0, lastS);
+        path.erase(0, lastS + 1);
+
+        auto dir = locateDir(targetPath);
+        if (!dir)
+        {
+            return nullptr;
+        }
+
+        auto it = std::find_if(dir->getfiles().begin(), dir->getfiles().end(), [&path](HackFile *t)
+        {
+            return t->getName() == path;
+        });
+
+        return it == dir->getfiles().end() ? nullptr : *it;
+    }
+
+
 }

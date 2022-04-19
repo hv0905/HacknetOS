@@ -6,6 +6,7 @@
 #define HACKNETOS_STRINGUTIL_H
 
 #include <string>
+#include <vector>
 
 namespace StringUtil
 {
@@ -14,6 +15,8 @@ namespace StringUtil
     void rtrim(std::string &s);
 
     void trim(std::string &s);
+
+    std::vector<std::string> split(const std::string &s, const std::string &delim);
 
 }
 

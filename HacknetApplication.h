@@ -29,6 +29,10 @@ class HacknetApplication
 
     void internalDisconnect();
 
+    HackDirectory *locateDir(const std::string &path, bool local = false);
+
+    HackFile *locateFile(std::string path);
+
 public:
     void Exec();
 
