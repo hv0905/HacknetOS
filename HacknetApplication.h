@@ -27,6 +27,8 @@ class HacknetApplication
     std::vector<HackBackgroundTask *> backgroundTasks{};
     std::vector<HackServer> serverList{};
 
+    void internalDisconnect();
+
 public:
     void Exec();
 
@@ -44,18 +46,6 @@ public:
 
     void cdRootDir();
 
-    void namp();
-
-    void command_ps(std::stringstream &);
-
-    void command_kill(std::stringstream &input);
-
-    void command_help(std::stringstream &);
-
-    void command_clear(std::stringstream &);
-
-    void connect(const std::string& ip);
-
     void Scan();
 
     void porkHack();
@@ -66,15 +56,31 @@ public:
 
     void setEnding(bool ending);
 
-    void rm(std::stringstream & command);
+    // region handler for global commands
 
-    void cd(std::stringstream & command);
+    void command_connect(std::stringstream &ss);
 
-    void dc();
+    void command_ps(std::stringstream &);
 
-    void mv(std::stringstream &command);
+    void command_kill(std::stringstream &input);
 
-    void scp(std::stringstream &command);
+    void command_nmap(std::stringstream &);
+
+    void command_help(std::stringstream &);
+
+    void command_clear(std::stringstream &);
+
+    void command_rm(std::stringstream &commandStream);
+
+    void command_cd(std::stringstream &commandStream);
+
+    void command_dc(std::stringstream &);
+
+    void command_mv(std::stringstream &commandStream);
+
+    void command_scp(std::stringstream &commandStream);
+
+    // endregion
 
 
 };

@@ -9,18 +9,20 @@
 
 const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_help, "help", "显示本帮助列表"),
-        HackCommand(nullptr, "scp", "从远程计算机复制文件[filename]至指定本地文件夹(/home或/bin为默认)", "[filename] [OPTIONAL: dest]", true,
+        HackCommand(&HacknetApplication::command_scp, "scp", "从远程计算机复制文件[filename]至指定本地文件夹(/home或/bin为默认)",
+                    "[filename] [OPTIONAL: dest]", true,
                     true),
-        HackCommand(nullptr, "scan", "在已连接计算机上扫描链接", "", true, true),
-        HackCommand(nullptr, "rm", "删除文件", "[filename (or use * for all files in the folder)]", true, true),
+        HackCommand(&HacknetApplication::command_connect, "scan", "在已连接计算机上扫描链接", "", true, true),
+        HackCommand(&HacknetApplication::command_rm, "rm", "删除文件", "[filename (or use * for all files in the folder)]",
+                    true, true),
         HackCommand(&HacknetApplication::command_ps, "ps", "列出正在运行的程序以及它们的PID"),
         HackCommand(&HacknetApplication::command_kill, "kill", "结束进程", "[PID]"),
         HackCommand(&HacknetApplication::lsDir, "ls", "列出目录所有内容", "", true, true),
         HackCommand(&HacknetApplication::cdDir, "cd", "切换目录", "<dir>", true, true),
-        HackCommand(nullptr, "mv", "移动或重命名文件", "<src> <dst>", true, true),
-        HackCommand(nullptr, "connect", "连接到服务器", "<target_ip>"),
-        HackCommand(nullptr, "nmap", "扫描已连接计算机的活动端口及保安级别"),
-        HackCommand(nullptr, "dc", "断开连接"),
+        HackCommand(&HacknetApplication::command_mv, "mv", "移动或重命名文件", "<src> <dst>", true, true),
+        HackCommand(&HacknetApplication::command_connect, "connect", "连接到服务器", "<target_ip>"),
+        HackCommand(&HacknetApplication::command_nmap, "nmap", "扫描已连接计算机的活动端口及保安级别"),
+        HackCommand(&HacknetApplication::command_dc, "dc", "断开连接"),
         HackCommand(nullptr, "cat", "显示文件内容", "[filename]", true, true),
         HackCommand(nullptr, "porthack", "通过已开放的端口破解计算机管理员密码"),
         HackCommand(&HacknetApplication::command_clear, "clear", "清除终端")
@@ -145,7 +147,7 @@ void HacknetApplication::cdRootDir()
     CurrentDir = CurrentDir->getRootDir();
 }
 
-void HacknetApplication::namp()
+void HacknetApplication::command_nmap(std::stringstream &)
 {
     commandBuffer.emplace_back("----------------------------------");
     commandBuffer.emplace_back("Probe Complete-Open ports:");
@@ -208,11 +210,13 @@ void HacknetApplication::command_kill(std::stringstream &input)
     }
 }
 
-void HacknetApplication::connect(const std::string& ip)
+void HacknetApplication::command_connect(std::stringstream &ss)
 {
-    if(CurrentDir==nullptr||CurrentConnected==nullptr);
+    std::string ip;
+    ss >> ip;
+    if (CurrentDir == nullptr || CurrentConnected == nullptr);
     else
-        dc();
+        internalDisconnect();
     for (int i = 0; i < serverList.size(); i++)
     {
         if (serverList[i].ip == ip)
@@ -318,20 +322,20 @@ void HacknetApplication::command_clear(std::stringstream &)
     commandBuffer.clear();
 }
 
-void HacknetApplication::rm( std::stringstream & commandStream)
+void HacknetApplication::command_rm(std::stringstream &commandStream)
 {
     std::string command;
-    commandStream>>command;
-    if(command=="*")
+    commandStream >> command;
+    if (command == "*")
         rmSubDir();
     else
         rmDir(command);
 }
 
-void HacknetApplication::cd(std::stringstream &commandStream)
+void HacknetApplication::command_cd(std::stringstream &commandStream)
 {
     std::string command;
-    commandStream>>command;
+    commandStream >> command;
     if (command == "/")
     {
         cdRootDir();
@@ -362,14 +366,12 @@ void HacknetApplication::cd(std::stringstream &commandStream)
     }
 }
 
-void HacknetApplication::dc()
+void HacknetApplication::command_dc(std::stringstream &)
 {
-    CurrentDir=nullptr;
-    CurrentConnected=nullptr;
-    commandBuffer.emplace_back("Disconnected");
+    internalDisconnect();
 }
 
-void HacknetApplication::mv(std::stringstream &commandStream)
+void HacknetApplication::command_mv(std::stringstream &commandStream)
 {
     std::string firstCommand, secondCommand;
     commandStream >> firstCommand >> secondCommand;
@@ -420,7 +422,7 @@ void HacknetApplication::mv(std::stringstream &commandStream)
         commandBuffer.emplace_back("Don't find " + firstCommand);
 }
 
-void HacknetApplication::scp(std::stringstream &command)
+void HacknetApplication::command_scp(std::stringstream &command)
 {
     std::string dirName, address;
     command >> dirName;
@@ -434,7 +436,7 @@ void HacknetApplication::scp(std::stringstream &command)
             copied = CurrentDir->getfiles()[i]->clone();
             CurrentConnected = localSever;
             CurrentDir = &(localSever->rootDirectory);
-            cd(command);
+            command_cd(command);
             CurrentDir->getfiles().push_back(copied);
         }
     }
@@ -444,7 +446,9 @@ void HacknetApplication::scp(std::stringstream &command)
     tempConnect = nullptr;
 }
 
-
-
-
-
+void HacknetApplication::internalDisconnect()
+{
+    CurrentDir = nullptr;
+    CurrentConnected = nullptr;
+    commandBuffer.emplace_back("Disconnected");
+}
