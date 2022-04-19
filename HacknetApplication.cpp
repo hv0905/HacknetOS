@@ -24,7 +24,7 @@ const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_connect, "connect", "连接到服务器", "<target_ip>"),
         HackCommand(&HacknetApplication::command_nmap, "nmap", "扫描已连接计算机的活动端口及保安级别"),
         HackCommand(&HacknetApplication::command_dc, "dc", "断开连接"),
-        HackCommand(nullptr, "cat", "显示文件内容", "[filename]", true, true),
+        HackCommand(&HacknetApplication::command_cat, "cat", "显示文件内容", "[filename]", true, true),
         HackCommand(nullptr, "porthack", "通过已开放的端口破解计算机管理员密码"),
         HackCommand(&HacknetApplication::command_clear, "clear", "清除终端")
 };
@@ -560,4 +560,23 @@ HackFile *HacknetApplication::locateFile(std::string path)
     }
 
 
+}
+
+void HacknetApplication::command_cat(std::stringstream &commandStream)
+{
+    std::string filePath;
+    commandStream >> filePath;
+
+    auto file = locateFile(filePath);
+    if (!file)
+    {
+        commandBuffer.emplace_back("File not found");
+        return;
+    }
+
+    auto lns = StringUtil::splitLines(StringUtil::s2ws(file->cat()), 170);
+    for (auto &ln: lns)
+    {
+        commandBuffer.emplace_back(StringUtil::ws2s(ln));
+    }
 }

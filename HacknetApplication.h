@@ -29,6 +29,8 @@ class HacknetApplication
 
     void internalDisconnect();
 
+    void wrapAppend(const std::string str);
+
     HackDirectory *locateDir(const std::string &path, bool local = false);
 
     HackFile *locateFile(std::string path);
@@ -83,6 +85,8 @@ public:
     void command_mv(std::stringstream &commandStream);
 
     void command_scp(std::stringstream &commandStream);
+
+    void command_cat(std::stringstream &commandStream);
 
     // endregion
 

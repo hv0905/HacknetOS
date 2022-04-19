@@ -18,6 +18,15 @@ namespace StringUtil
 
     std::vector<std::string> split(const std::string &s, const std::string &delim);
 
+    inline bool isAscii(wchar_t wc);
+
+    std::vector<std::wstring> splitLines(const std::wstring &src, int lenPerLine);
+
+    std::wstring s2ws(const std::string &s);
+
+    std::string ws2s(const std::wstring &ws);
+
+
 }
 
 
