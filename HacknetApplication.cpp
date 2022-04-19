@@ -2,6 +2,7 @@
 // Created by epiphyllum on 22/04/09.
 //
 
+#include <iostream>
 #include "HackCommand.h"
 #include "HacknetApplication.h"
 #include "Utility/Util.h"
@@ -31,6 +32,9 @@ const HackCommand globalCommands[] = {
 
 void HacknetApplication::Exec()
 {
+    // First, connect to local server
+    CurrentConnected = localSever;
+    inputService.setAcceptCommand(true);
     while (true)
     {
         Draw();
@@ -52,6 +56,7 @@ void HacknetApplication::Draw()
 {
     Util::clearScreen();
     UIUtil::drawFramework();
+    RenderStatusBar();
 }
 
 void HacknetApplication::lsDir(std::stringstream &)
@@ -578,5 +583,22 @@ void HacknetApplication::command_cat(std::stringstream &commandStream)
     for (auto &ln: lns)
     {
         commandBuffer.emplace_back(StringUtil::ws2s(ln));
+    }
+}
+
+void HacknetApplication::RenderStatusBar()
+{
+    // write time
+
+    if (CurrentConnected == nullptr)
+    {
+        // disconnected
+        Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(84, 2));
+        std::cout << "已断开连接";
+    }
+    else
+    {
+        Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(84, 2));
+        std::cout << "没断开连接";
     }
 }

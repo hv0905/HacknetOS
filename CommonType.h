@@ -13,6 +13,15 @@ struct Coord
     int x;
     int y;
 
+    Coord operator+(const Coord &c) const;
+
+    Coord operator-(const Coord &c) const;
+
+    Coord &operator+=(const Coord &c);
+
+    Coord &operator-=(const Coord &c);
+
+
     explicit constexpr Coord(int x = 0, int y = 0) : x(x), y(y)
     {}
 

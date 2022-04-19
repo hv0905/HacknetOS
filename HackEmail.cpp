@@ -8,20 +8,22 @@
 HackEmail::HackEmail(const std::wstring &title, const std::wstring &sender, const std::wstring &content, int mid) :
         emailTitle(title), sender(sender), emailContent(content), missionId(mid)
 {}
+
 const HackEmail Email[] = {
         HackEmail(L"Diana", L"Diana", L"Diana", 1)
 };
- std::wstring displayedEmail[1000];
+std::wstring displayedEmail[1000];
+
 void HackEmail::lsMail(int missionid)
 {
-    int pos=0;
+    int pos = 0;
     for (const auto &i: Email)
     {
         if (i.missionId <= missionid)
         {
-            if(pos>=40)
+            if (pos >= 40)
                 break;
-            displayedEmail[pos++]=i.emailTitle;
+            displayedEmail[pos++] = i.emailTitle;
         }
     }
 }

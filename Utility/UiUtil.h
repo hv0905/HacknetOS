@@ -10,6 +10,9 @@
 
 namespace UIUtil
 {
+    const Coord START_STATUSPANEL(41, 1);
+    const Size2D SIZE_STATUSPANEL(179, 5);
+
     void drawFramework();
 }
 

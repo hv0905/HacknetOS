@@ -90,6 +90,10 @@ public:
 
     // endregion
 
+    // region Method for render
+    void RenderStatusBar();
+    // endregion
+
 
 };
 
