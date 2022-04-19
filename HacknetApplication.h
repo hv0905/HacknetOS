@@ -20,6 +20,7 @@ class HacknetApplication
     bool doRender = true;
     HackDirectory *CurrentDir;
     HackServer *CurrentConnected;
+    HackServer *localSever;
     int missionId{};
     std::vector<std::string> commandBuffer{};
     InputService inputService{};
@@ -53,7 +54,7 @@ public:
 
     void command_clear(std::stringstream &);
 
-    void connect(std::string ip);
+    void connect(const std::string& ip);
 
     void Scan();
 
@@ -69,6 +70,11 @@ public:
 
     void cd(std::stringstream & command);
 
+    void dc();
+
+    void mv(std::stringstream &command);
+
+    void scp(std::stringstream &command);
 };
 
 #endif //HACKNETOS_HACKNETAPPLICATION_H

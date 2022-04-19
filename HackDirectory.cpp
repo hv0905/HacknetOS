@@ -33,6 +33,12 @@ HackDirectory *HackDirectory::getRootDir()
     return rootDirs;
 }
 
+std::string HackDirectory::setDirName(std::string newName)
+{
+    (*this).name=newName;
+    return newName;
+}
+
 
 
 

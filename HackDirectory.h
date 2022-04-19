@@ -24,6 +24,8 @@ public:
     HackDirectory * getParentDir();
 
     HackDirectory * getRootDir();
+
+    std::string setDirName(std::string newName);
 private:
 
     std::string name;

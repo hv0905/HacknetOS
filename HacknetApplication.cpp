@@ -118,7 +118,7 @@ void HacknetApplication::rmDir(const std::string &dirName)
             CurrentDir->getsubDirs().erase(CurrentDir->getsubDirs().begin() + i);
             commandBuffer.emplace_back("Deleting");
             commandBuffer.emplace_back(CurrentDir->getsubDirs()[i]->getDirName());
-            break;
+           return;
         }
     }
     for (int i = 0; i < CurrentDir->getfiles().size(); i++)
@@ -128,7 +128,7 @@ void HacknetApplication::rmDir(const std::string &dirName)
             CurrentDir->getfiles().erase(CurrentDir->getfiles().begin() + i);
             commandBuffer.emplace_back("Deleting");
             commandBuffer.emplace_back(CurrentDir->getfiles()[i]->getName());
-            break;
+           return;
         }
     }
 }
@@ -208,9 +208,11 @@ void HacknetApplication::command_kill(std::stringstream &input)
     }
 }
 
-void HacknetApplication::connect(std::string ip)
+void HacknetApplication::connect(const std::string& ip)
 {
-    HacknetApplication::commandBuffer.emplace_back("Disconnected");
+    if(CurrentDir==nullptr||CurrentConnected==nullptr);
+    else
+        dc();
     for (int i = 0; i < serverList.size(); i++)
     {
         if (serverList[i].ip == ip)
@@ -359,6 +361,88 @@ void HacknetApplication::cd(std::stringstream &commandStream)
         }
     }
 }
+
+void HacknetApplication::dc()
+{
+    CurrentDir=nullptr;
+    CurrentConnected=nullptr;
+    commandBuffer.emplace_back("Disconnected");
+}
+
+void HacknetApplication::mv(std::stringstream &commandStream)
+{
+    std::string firstCommand, secondCommand;
+    commandStream >> firstCommand >> secondCommand;
+    if (secondCommand.empty() || firstCommand.empty())
+    {
+        commandBuffer.emplace_back("Enter the wrong command");
+        return;
+    }
+    else
+    {
+        for (int i = 0; i < CurrentDir->getsubDirs().size(); i++)
+        {
+            if (CurrentDir->getsubDirs()[i]->getDirName() == firstCommand)
+            {
+                if (secondCommand == "..")
+                {
+                    commandBuffer.emplace_back("Move the file to its superior directory");
+                    CurrentDir->getParentDir()->getsubDirs().push_back(CurrentDir->getsubDirs()[i]);
+                    CurrentDir->getsubDirs().erase(CurrentDir->getsubDirs().begin() + i);
+                }
+                else
+                {
+                    CurrentDir->getsubDirs()[i]->setDirName(secondCommand);
+                    commandBuffer.emplace_back("Rename " + firstCommand + " to " + secondCommand);
+                }
+                return;
+            }
+        }
+        for (int i = 0; i < CurrentDir->getfiles().size(); i++)
+        {
+            if (CurrentDir->getfiles()[i]->getName() == firstCommand)
+            {
+                if (secondCommand == "..")
+                {
+                    CurrentDir->getParentDir()->getfiles().push_back(CurrentDir->getfiles()[i]);
+                    CurrentDir->getfiles().erase(CurrentDir->getfiles().begin() + i);
+                    commandBuffer.emplace_back("Move the file to its superior directory");
+                }
+                else
+                {
+                    CurrentDir->getfiles()[i]->setName(secondCommand);
+                    commandBuffer.emplace_back("Rename " + firstCommand + " to " + secondCommand);
+                }
+                return;
+            }
+        }
+    }
+        commandBuffer.emplace_back("Don't find " + firstCommand);
+}
+
+void HacknetApplication::scp(std::stringstream &command)
+{
+    std::string dirName;
+    command>>dirName;
+    for (int i = 0; i < CurrentDir->getsubDirs().size(); i++)
+    {
+        if (CurrentDir->getsubDirs()[i]->getDirName() == dirName)
+        {
+            localSever->rootDirectory.getsubDirs()[0]->getsubDirs().push_back(CurrentDir->getsubDirs()[i]);
+            return;
+        }
+    }
+    for (int i = 0; i < CurrentDir->getfiles().size(); i++)
+    {
+        if (CurrentDir->getfiles()[i]->getName() == dirName)
+        {
+localSever->rootDirectory.getsubDirs()[0]->getfiles().push_back(CurrentDir->getfiles()[i]);
+return;
+        }
+    }
+
+}
+
 
 
 
