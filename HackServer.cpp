@@ -111,4 +111,9 @@ HackServer::HackServer(const std::string &ip, const std::string &name, int minRe
 HackServer::HackServer()
 {}
 
+HackServer::~HackServer()
+{
+
+}
+
 

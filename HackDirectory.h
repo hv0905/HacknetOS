@@ -21,16 +21,31 @@ public:
 
     std::vector<HackFile *> &getfiles();
 
-    HackDirectory * getParentDir();
+    HackDirectory *getParentDir();
 
-    HackDirectory * getRootDir();
+    [[maybe_unused]] HackDirectory *getRootDir();
 
     std::string setDirName(std::string newName);
+
+    void AppendFile(HackFile *file);
+
+    void AppendDirectory(HackDirectory *dir);
+
+    // This method can handle '..' and '.' cases!
+    // Only 1 elem, cannot include '/', for path, use locateDir in HApp instead.
+    HackDirectory *LocateSonDir(std::string item);
+
+    HackDirectory *LocateOrCreateSonDir(std::string item);
+
+    HackFile *LocateFile(std::string item);
+
+    ~HackDirectory();
+
 private:
 
     std::string name;
     HackDirectory *rootDirs;
-    HackDirectory *parentDirs;
+    HackDirectory *parentDir;
     std::vector<HackDirectory *> subDirs;
     std::vector<HackFile *> files;
 

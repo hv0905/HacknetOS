@@ -6,6 +6,7 @@
 #ifndef HACKNETOS_HACKNETAPPLICATION_H
 #define HACKNETOS_HACKNETAPPLICATION_H
 
+#include <thread>
 #include "HackEmail.h"
 #include "HackDirectory.h"
 #include "HackServer.h"
@@ -25,9 +26,12 @@ class HacknetApplication
     std::vector<std::string> commandBuffer{};
     InputService inputService{};
     std::vector<HackBackgroundTask *> backgroundTasks{};
-    std::vector<HackServer*> serverList{};
+    std::vector<HackServer *> serverList{};
+    std::vector<std::thread *> threadPool{};
 
     void internalDisconnect();
+
+    void internalConnect(HackServer *target);
 
     void wrapAppend(const std::string str);
 
@@ -36,6 +40,9 @@ class HacknetApplication
     HackFile *locateFile(std::string path);
 
 public:
+
+    virtual ~HacknetApplication();
+
     void Exec();
 
     void Draw();
@@ -86,6 +93,8 @@ public:
 
     // region Method for render
     void RenderStatusBar();
+
+    std::string getPrompt();
     // endregion
 
     friend class StarterCreator;

@@ -8,3 +8,13 @@ HackDirectory *HackFile::getParentDir()
 {
     return parentDir;
 }
+
+void HackFile::setParentDir(HackDirectory *parentDir)
+{
+    HackFile::parentDir = parentDir;
+}
+
+HackFile::~HackFile()
+{
+
+}

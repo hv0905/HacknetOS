@@ -49,6 +49,11 @@ public:
     {
         return stopped;
     }
+
+    virtual ~HackBackgroundTask()
+    {
+
+    }
 };
 
 

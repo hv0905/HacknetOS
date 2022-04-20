@@ -4,7 +4,7 @@
 
 #include "HackDirectory.h"
 
-HackDirectory::HackDirectory(std::string name):name(name)
+HackDirectory::HackDirectory(std::string name) : name(name)
 {
 }
 
@@ -25,18 +25,84 @@ std::vector<HackFile *> &HackDirectory::getfiles()
 
 HackDirectory *HackDirectory::getParentDir()
 {
-    return parentDirs;
+    return parentDir;
 }
 
-HackDirectory *HackDirectory::getRootDir()
+[[maybe_unused]] HackDirectory *HackDirectory::getRootDir()
 {
     return rootDirs;
 }
 
 std::string HackDirectory::setDirName(std::string newName)
 {
-    (*this).name=newName;
+    (*this).name = newName;
     return newName;
+}
+
+void HackDirectory::AppendFile(HackFile *file)
+{
+    file->setParentDir(this);
+    files.push_back(file);
+}
+
+HackDirectory *HackDirectory::LocateSonDir(std::string item)
+{
+    if (item == ".")
+    {
+        return this;
+    }
+    if (item == "..")
+    {
+        return getParentDir();
+    }
+    else
+    {
+        auto it = std::find_if(getsubDirs().begin(), getsubDirs().end(), [&item](HackDirectory *t)
+        {
+            return t->getDirName() == item;
+        });
+        return it == getsubDirs().end() ? nullptr : *it;
+    }
+}
+
+HackDirectory *HackDirectory::LocateOrCreateSonDir(std::string item)
+{
+    auto d = LocateSonDir(item);
+    if (d == nullptr && item != "..")
+    {
+        d = new HackDirectory(item);
+        d->parentDir = this;
+        subDirs.push_back(d);
+    }
+
+    return d;
+}
+
+HackFile *HackDirectory::LocateFile(std::string item)
+{
+    auto it = std::find_if(getfiles().begin(), getfiles().end(), [&item](HackFile *t)
+    {
+        return t->getName() == item;
+    });
+    return it == getfiles().end() ? nullptr : *it;
+}
+
+void HackDirectory::AppendDirectory(HackDirectory *dir)
+{
+    dir->parentDir = this;
+    subDirs.push_back(dir);
+}
+
+HackDirectory::~HackDirectory()
+{
+    for (auto &i: subDirs)
+    {
+        delete i;
+    }
+    for (auto &i: files)
+    {
+        delete i;
+    }
 }
 
 

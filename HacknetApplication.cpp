@@ -188,24 +188,17 @@ void HacknetApplication::command_connect(std::stringstream &ss)
 {
     std::string ip;
     ss >> ip;
-    if (CurrentDir == nullptr || CurrentConnected == nullptr);
-    else
-        internalDisconnect();
     auto it = std::find_if(serverList.begin(), serverList.end(), [&ip](HackServer *t)
     {
         return t->getIp() == ip;
     });
     if (it == serverList.end())
     {
-       commandBuffer.emplace_back("Don't find such server.");
+        commandBuffer.emplace_back("Don't find such server.");
     }
     else
     {
-        HacknetApplication::commandBuffer.emplace_back("Connection Established ::");
-        HacknetApplication::commandBuffer.emplace_back(
-                "Connect To " + (*it)->getName() + " in" + (*it)->getIp());
-        CurrentConnected =serverList[it-serverList.begin()];
-        CurrentDir = &(*it)->getRootDirectory();
+        internalConnect(*it);
     }
 }
 
@@ -235,26 +228,56 @@ void HacknetApplication::Scan()
 
 void HacknetApplication::processCommand(const std::string &command)
 {
+    commandBuffer.push_back(getPrompt() + command);
     std::stringstream ss(command);
     std::string prefix;
     ss >> prefix;
     // Phrase 1: global
     int globalSize = std::extent<decltype(globalCommands)>::value;
-    auto globalP = std::find_if(globalCommands, globalCommands + globalSize, [&prefix](const HackCommand &cmd)
+    auto targetCommand = std::find_if(globalCommands, globalCommands + globalSize, [&prefix](const HackCommand &cmd)
     {
         return cmd.getPrefix() == prefix;
     });
 
-    if (globalP != globalCommands + globalSize)
+    if (targetCommand == globalCommands + globalSize)
     {
-        auto handler = globalP->getHandler();
+        targetCommand = nullptr;
+    }
+
+    // Phrase 2: executive files TODO
+    if (targetCommand != nullptr)
+    {
+
+    }
+
+    // Phrase 3: exec
+    if (targetCommand != nullptr)
+    {
+        // check permission
+        if (targetCommand->isRequiredHacked())
+        {
+            if (CurrentConnected == nullptr)
+            {
+                internalConnect(localSever);
+            }
+            else if (!CurrentConnected->isAccessible())
+            {
+                commandBuffer.emplace_back("Fatal: require admin access.");
+                return;
+            }
+        }
+        if (targetCommand->isShouldLog())
+        {
+
+        }
+        auto handler = targetCommand->getHandler();
         if (handler != nullptr)
             (this->*handler)(ss);
         else commandBuffer.emplace_back("Not implemented yet.");
         return;
     }
 
-    // Phrase 2: executive files TODO
+    commandBuffer.emplace_back("Command not found. Check syntax.");
 }
 
 bool HacknetApplication::isEnding() const
@@ -339,9 +362,9 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
     auto file = locateFile(firstCommand);
     if (file != nullptr)
     {
-        if(secondCommand=="..")
+        if (secondCommand == "..")
         {
-            HackDirectory*parentDir= file->getParentDir();
+            HackDirectory *parentDir = file->getParentDir();
             parentDir->getfiles().erase
                     (find(parentDir->getfiles().begin(), parentDir->getfiles().end(), file));
             parentDir->getParentDir()->getfiles().push_back(file);
@@ -353,9 +376,9 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
     }
     else if (dir != nullptr)
     {
-        if(secondCommand=="..")
+        if (secondCommand == "..")
         {
-            HackDirectory*parentDir= dir->getParentDir();
+            HackDirectory *parentDir = dir->getParentDir();
             parentDir->getsubDirs().erase
                     (find(parentDir->getsubDirs().begin(), parentDir->getsubDirs().end(), dir));
             parentDir->getParentDir()->getfiles().push_back(file);
@@ -423,28 +446,10 @@ HackDirectory *HacknetApplication::locateDir(const std::string &path, bool local
 
     for (auto &item: vec)
     {
-        if (item == "..")
+        head = head->LocateSonDir(item);
+        if (head == nullptr)
         {
-            if (head->getParentDir() == nullptr)
-            {
-                return nullptr;
-            }
-            head = head->getParentDir();
-        }
-        else
-        {
-            auto it = std::find_if(head->getsubDirs().begin(), head->getsubDirs().end(), [&item](HackDirectory *t)
-            {
-                return t->getDirName() == item;
-            });
-            if (it == head->getsubDirs().end())
-            {
-                return nullptr;
-            }
-            else
-            {
-                head = *it;
-            }
+            return nullptr;
         }
     }
 
@@ -463,22 +468,13 @@ HackFile *HacknetApplication::locateFile(std::string path)
     if (lastS == std::string::npos)
     {
         // pure file name
-        auto it = std::find_if(CurrentDir->getfiles().begin(), CurrentDir->getfiles().end(), [&path](HackFile *t)
-        {
-            return t->getName() == path;
-        });
-        return it == CurrentDir->getfiles().end() ? nullptr : *it;
+        return CurrentDir->LocateFile(path);
     }
     else if (lastS == 0)
     {
         path.erase(path.begin());
         // file in root directory
-        auto it = std::find_if(CurrentConnected->getRootDirectory().getfiles().begin(),
-                               CurrentConnected->getRootDirectory().getfiles().end(), [&path](HackFile *t)
-                               {
-                                   return t->getName() == path;
-                               });
-        return it == CurrentConnected->getRootDirectory().getfiles().end() ? nullptr : *it;
+        return CurrentConnected->getRootDirectory().LocateFile(path);
     }
     else
     {
@@ -494,15 +490,8 @@ HackFile *HacknetApplication::locateFile(std::string path)
             return nullptr;
         }
 
-        auto it = std::find_if(dir->getfiles().begin(), dir->getfiles().end(), [&path](HackFile *t)
-        {
-            return t->getName() == path;
-        });
-
-        return it == dir->getfiles().end() ? nullptr : *it;
+        return dir->LocateFile(path);
     }
-
-
 }
 
 void HacknetApplication::command_cat(std::stringstream &commandStream)
@@ -544,5 +533,45 @@ void HacknetApplication::RenderStatusBar()
         std::cout << CurrentConnected->getName();
         Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 2));
         std::cout << "@" << CurrentConnected->getIp();
+    }
+}
+
+std::string HacknetApplication::getPrompt()
+{
+    if (CurrentConnected == nullptr)
+    {
+        return "> ";
+    }
+    else
+    {
+        return CurrentConnected->getIp() + "@> ";
+    }
+}
+
+void HacknetApplication::internalConnect(HackServer *target)
+{
+    if (CurrentConnected != nullptr)
+        internalDisconnect();
+    HacknetApplication::commandBuffer.emplace_back("Connection Established ::");
+    HacknetApplication::commandBuffer.emplace_back(
+            "Connect To " + target->getName() + " in" + target->getIp());
+    CurrentConnected = target;
+    CurrentDir = &target->getRootDirectory();
+}
+
+HacknetApplication::~HacknetApplication()
+{
+    for (auto &server: serverList)
+    {
+        delete server;
+    }
+
+    for (auto &thread: threadPool)
+    {
+        delete thread;
+    }
+    for (auto &bgtsk: backgroundTasks)
+    {
+        delete bgtsk;
     }
 }
