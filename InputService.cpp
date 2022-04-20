@@ -60,6 +60,7 @@ std::optional<std::string> InputService::tickInput()
             { // enter
                 // accept command
                 StringUtil::trim(commandBuffer);
+                position = 0;
                 if (commandBuffer.length() > 0)
                 {
                     std::string ac = std::move(commandBuffer);
