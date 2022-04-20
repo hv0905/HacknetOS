@@ -8,7 +8,7 @@
 
 #include <string>
 #include "HackDirectory.h"
-class HacknetApplication;
+
 class HackServer
 {
     friend class StarterCreator;

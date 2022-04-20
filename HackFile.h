@@ -7,7 +7,6 @@
 #define HACKNETOS_HACKFILE_H
 
 #include <string>
-#include"HackDirectory.h"
 class HackDirectory;
 class HackFile
 {

@@ -115,7 +115,7 @@ void HacknetApplication::rmDir(const std::string &dirName)
         commandBuffer.emplace_back("Deleting");
         commandBuffer.emplace_back(file->getName());
         HackDirectory *parentDir = file->getParentDir();
-        parentDir->getsubDirs().erase(find(parentDir->getsubDirs().begin(), parentDir->getsubDirs().end(), file));
+        parentDir->getfiles().erase(find(parentDir->getfiles().begin(), parentDir->getfiles().end(), file));
         delete file;
     }
     else if (dir != nullptr)
@@ -191,7 +191,7 @@ void HacknetApplication::command_connect(std::stringstream &ss)
     if (CurrentDir == nullptr || CurrentConnected == nullptr);
     else
         internalDisconnect();
-    auto it = std::find(serverList.begin(), serverList.end(), [&ip](HackServer *t)
+    auto it = std::find_if(serverList.begin(), serverList.end(), [&ip](HackServer *t)
     {
         return t->getIp() == ip;
     });
