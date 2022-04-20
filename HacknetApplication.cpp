@@ -20,7 +20,7 @@ const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_ps, "ps", "列出正在运行的程序以及它们的PID"),
         HackCommand(&HacknetApplication::command_kill, "kill", "结束进程", "[PID]"),
         HackCommand(&HacknetApplication::lsDir, "ls", "列出目录所有内容", "", true, true),
-        HackCommand(&HacknetApplication::cdDir, "cd", "切换目录", "<dir>", true, true),
+        HackCommand(&HacknetApplication::command_cd, "cd", "切换目录", "<dir>", true, true),
         HackCommand(&HacknetApplication::command_mv, "mv", "移动或重命名文件", "<src> <dst>", true, true),
         HackCommand(&HacknetApplication::command_connect, "connect", "连接到服务器", "<target_ip>"),
         HackCommand(&HacknetApplication::command_nmap, "nmap", "扫描已连接计算机的活动端口及保安级别"),
@@ -101,30 +101,67 @@ void HacknetApplication::cdDir(std::stringstream &dirStream)
 
 [[maybe_unused]] void HacknetApplication::rmSubDir()
 {
-    for (auto i: CurrentDir->getsubDirs())
+    while (!CurrentDir->getsubDirs().empty())
     {
         commandBuffer.emplace_back("Deleting");
-        commandBuffer.emplace_back(i->getDirName());
+        commandBuffer.emplace_back(CurrentDir->getsubDirs().back()->getDirName());
+        delete CurrentDir->getsubDirs().back();
+        CurrentDir->getsubDirs().pop_back();
     }
-    for (auto i: CurrentDir->getfiles())
+
+    while (!CurrentDir->getfiles().empty())
     {
         commandBuffer.emplace_back("Deleting");
-        commandBuffer.emplace_back(i->getName());
+        commandBuffer.emplace_back(CurrentDir->getfiles().back()->getName());
+        delete CurrentDir->getfiles().back();
+        CurrentDir->getfiles().pop_back();
     }
-    CurrentDir->getsubDirs().clear();
-    CurrentDir->getfiles().clear();
 }
 
 void HacknetApplication::rmDir(const std::string &dirName)
 {
-    if (CurrentDir->getsubDirs().empty())
+    if (locateDir(dirName) == nullptr && locateFile(dirName) == nullptr)
+    {
+        commandBuffer.emplace_back("There is not such a file or directory");
+    }
+    else
+    {
+        if (locateDir(dirName) != nullptr)
+        {
+            commandBuffer.emplace_back("Deleting");
+            commandBuffer.emplace_back(locateDir(dirName)->getDirName());
+            HackDirectory *parentDir= locateDir(dirName)->getParentDir();
+          parentDir->getsubDirs().erase
+                    (find(parentDir->getsubDirs().begin(),
+                          parentDir->getsubDirs().end(),
+                          locateDir(dirName)));
+          parentDir= nullptr;
+          delete parentDir;
+        }
+        else if (locateFile(dirName) != nullptr)
+        {
+            commandBuffer.emplace_back("Deleting");
+            commandBuffer.emplace_back(locateFile(dirName)->getName());
+            HackDirectory *parentDir= locateFile(dirName)->getParentDir();
+            parentDir->getsubDirs().erase
+                    (find(parentDir->getsubDirs().begin(),
+                          parentDir->getsubDirs().end(),
+                          locateFile(dirName)));
+            parentDir= nullptr;
+            delete parentDir;
+        }
+
+    }
+    /*if (CurrentDir->getsubDirs().empty())
     {
         commandBuffer.emplace_back("");
     }
+
     for (int i = 0; i < CurrentDir->getsubDirs().size(); i++)
     {
         if (CurrentDir->getsubDirs()[i]->getDirName() == dirName)
         {
+            delete CurrentDir->getsubDirs()[i];
             CurrentDir->getsubDirs().erase(CurrentDir->getsubDirs().begin() + i);
             commandBuffer.emplace_back("Deleting");
             commandBuffer.emplace_back(CurrentDir->getsubDirs()[i]->getDirName());
@@ -135,12 +172,13 @@ void HacknetApplication::rmDir(const std::string &dirName)
     {
         if (CurrentDir->getfiles()[i]->getName() == dirName)
         {
+            delete CurrentDir->getfiles()[i];
             CurrentDir->getfiles().erase(CurrentDir->getfiles().begin() + i);
             commandBuffer.emplace_back("Deleting");
             commandBuffer.emplace_back(CurrentDir->getfiles()[i]->getName());
             return;
         }
-    }
+    }*/
 }
 
 void HacknetApplication::cdParentDir()
@@ -342,7 +380,11 @@ void HacknetApplication::command_cd(std::stringstream &commandStream)
 {
     std::string command;
     commandStream >> command;
-    if (command == "/")
+    if(locateDir(command)!= nullptr)
+        CurrentDir= locateDir(command);
+    else
+        commandBuffer.emplace_back("There is no such directory here");
+   /* if (command == "/")
     {
         cdRootDir();
         return;
@@ -369,7 +411,7 @@ void HacknetApplication::command_cd(std::stringstream &commandStream)
             subCommandStream << i;
             cdDir(subCommandStream);
         }
-    }
+    }*/
 }
 
 void HacknetApplication::command_dc(std::stringstream &)
@@ -386,11 +428,11 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
         commandBuffer.emplace_back("Enter the wrong command");
         return;
     }
-    else
+
+    /*else
     {
-        for (int i = 0; i < CurrentDir->getsubDirs().size(); i++)
+        for (int i = 0; i < CurrentDir->getfiles().size(); i++)
         {
-            if (CurrentDir->getsubDirs()[i]->getDirName() == firstCommand)
             {
                 if (secondCommand == "..")
                 {
@@ -403,8 +445,9 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
                     CurrentDir->getsubDirs()[i]->setDirName(secondCommand);
                     commandBuffer.emplace_back("Rename " + firstCommand + " to " + secondCommand);
                 }
-                return;
             }
+
+
         }
         for (int i = 0; i < CurrentDir->getfiles().size(); i++)
         {
@@ -425,14 +468,25 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
             }
         }
     }
-    commandBuffer.emplace_back("Don't find " + firstCommand);
+    commandBuffer.emplace_back("Don't find " + firstCommand);*/
 }
 
 void HacknetApplication::command_scp(std::stringstream &command)
 {
     std::string dirName, address;
     command >> dirName;
-    HackServer *tempConnect = CurrentConnected;
+    command>>address;
+    HackFile *copied;
+   copied= locateFile(dirName)->clone();
+   if( locateDir(address,1)== nullptr)
+   {
+       commandBuffer.emplace_back("Don't find "+address);
+   }
+   else
+   {
+       locateDir(address,1)->getfiles().push_back(copied);
+   }
+   /* HackServer *tempConnect = CurrentConnected;
     HackDirectory *tempDirectory = CurrentDir;
     HackFile *copied;
     for (int i = 0; i < CurrentDir->getfiles().size(); i++)
@@ -449,7 +503,8 @@ void HacknetApplication::command_scp(std::stringstream &command)
     CurrentDir = tempDirectory;
     CurrentConnected = tempConnect;
     tempDirectory = nullptr;
-    tempConnect = nullptr;
+    tempConnect = nullptr;*/
+
 }
 
 void HacknetApplication::internalDisconnect()

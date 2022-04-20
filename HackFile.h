@@ -7,13 +7,15 @@
 #define HACKNETOS_HACKFILE_H
 
 #include <string>
-
+#include"HackDirectory.h"
+class HackDirectory;
 class HackFile
 {
     std::string name;
 
+    HackDirectory *parentDir;
 public:
-
+HackDirectory * getParentDir();
 
     virtual std::string cat() = 0;
 

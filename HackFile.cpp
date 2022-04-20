@@ -4,3 +4,7 @@
 
 #include "HackFile.h"
 
+HackDirectory *HackFile::getParentDir()
+{
+    return parentDir;
+}
