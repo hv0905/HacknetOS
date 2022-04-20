@@ -4,6 +4,7 @@
 #include "Utility/MusicUtil.h"
 #include "AsciiArt.h"
 #include "Utility/UiUtil.h"
+#include "StarterCreator.h"
 #include <Windows.h>
 #include <codecvt>
 #include <conio.h>
@@ -56,15 +57,6 @@ void DisplayStartPage()
     while (_getch() != 13);
 }
 
-HacknetApplication *CreateStarterOS()
-{
-    auto app = new HacknetApplication();
-
-    // Add Servers, Directories, and Files here...
-
-    return app;
-}
-
 void PlayIntro()
 {
     Util::clearScreen();
@@ -106,7 +98,7 @@ int main()
     PlayIntro();
 
     // create a starter
-    auto app = CreateStarterOS();
+    auto app = StarterCreator::createStarterOS();
 
     // start the event loop
     app->Exec();

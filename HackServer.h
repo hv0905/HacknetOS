@@ -11,7 +11,7 @@
 class HacknetApplication;
 class HackServer
 {
-    friend class HacknetApplication;
+    friend class StarterCreator;
 
     std::string ip;
 
@@ -19,30 +19,62 @@ class HackServer
 
     HackDirectory rootDirectory;
 
-    bool accessible;
+    bool accessible = false;
 
     int minRequired;
 
-    bool SSHExist;
-    bool FTPExist;
-    bool HTTPExist;
-    bool SMTPExist;
+    bool SSHLocked = true;
+    bool HTTPLocked = true;
+    bool FTPLocked = true;
+    bool SMTPLocked = true;
 
-    bool SSHLocked;
-    bool HTTPLocked;
-    bool FTPLocked;
-    bool SMTPLocked;
-
-    int missionId;
-
-    std::vector<HackServer*>ConnectedNodes;
+    std::vector<HackServer *> ConnectedNodes;
 public:
 
-    std::string getIp();
+    HackServer(const std::string &ip, const std::string &name, int minRequired);
 
-    bool checkAccessibility();
+    HackServer();
 
-    int getmissionId();
+    [[nodiscard]] const std::string &getIp() const;
+
+    bool checkIfSecureBroken() const;
+
+    const std::string &getName() const;
+
+    bool isAccessible() const;
+
+    bool isSshLocked() const;
+
+    void setSshLocked(bool sshLocked);
+
+    bool isHttpLocked() const;
+
+    void setHttpLocked(bool httpLocked);
+
+    bool isFtpLocked() const;
+
+    void setFtpLocked(bool ftpLocked);
+
+    bool isSmtpLocked() const;
+
+    void setSmtpLocked(bool smtpLocked);
+
+    int getMinRequired() const;
+
+    void setMinRequired(int minRequired);
+
+    const std::vector<HackServer *> &getConnectedNodes() const;
+
+    std::vector<HackServer *> &getConnectedNodes();
+
+    void setConnectedNodes(const std::vector<HackServer *> &connectedNodes);
+
+    const HackDirectory &getRootDirectory() const;
+
+    HackDirectory &getRootDirectory();
+
+    void setRootDirectory(const HackDirectory &rootDirectory);
+
 };
 
 

@@ -13,7 +13,7 @@
 class HackDirectory
 {
 public:
-    HackDirectory(std::string name);
+    HackDirectory(std::string name = "root");
 
     std::string getDirName();
 

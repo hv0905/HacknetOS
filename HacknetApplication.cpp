@@ -8,6 +8,7 @@
 #include "Utility/Util.h"
 #include "Utility/UiUtil.h"
 #include "Utility/StringUtil.h"
+#include "AsciiArt.h"
 
 const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_help, "help", "显示本帮助列表"),
@@ -28,6 +29,11 @@ const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_cat, "cat", "显示文件内容", "[filename]", true, true),
         HackCommand(nullptr, "porthack", "通过已开放的端口破解计算机管理员密码"),
         HackCommand(&HacknetApplication::command_clear, "clear", "清除终端")
+};
+
+const AsciiArt serverLogos[] = {
+        AsciiArt("ASCII/laptop.ascii"),
+        AsciiArt("ASCII/server.ascii"),
 };
 
 void HacknetApplication::Exec()
@@ -196,28 +202,16 @@ void HacknetApplication::command_nmap(std::stringstream &)
     commandBuffer.emplace_back("----------------------------------");
     commandBuffer.emplace_back("Probe Complete-Open ports:");
     commandBuffer.emplace_back("----------------------------------");
-    if (CurrentConnected->HTTPExist)
-    {
-        commandBuffer.emplace_back("Port# 80: - HTTP WebServer: " +
-                                   (std::string) ((CurrentConnected->HTTPLocked) ? "locked" : "unlocked"));
-    }
-    if (CurrentConnected->SMTPExist)
-    {
-        commandBuffer.emplace_back("Port# 25: - SMTP MailServer: " +
-                                   (std::string) ((CurrentConnected->SMTPLocked) ? "locked" : "unlocked"));
-    }
-    if (CurrentConnected->FTPExist)
-    {
-        commandBuffer.emplace_back("Port# 21: - FTP Server: " +
-                                   (std::string) ((CurrentConnected->FTPLocked) ? "locked" : "unlocked"));
-    }
-    if (CurrentConnected->SSHExist)
-    {
-        commandBuffer.emplace_back("Port# 22: - SSH: " +
-                                   (std::string) ((CurrentConnected->SSHLocked) ? "locked" : "unlocked"));
-    }
+    commandBuffer.emplace_back("Port# 80: - HTTP WebServer: " +
+                               (std::string) ((CurrentConnected->isHttpLocked()) ? "locked" : "unlocked"));
+    commandBuffer.emplace_back("Port# 25: - SMTP MailServer: " +
+                               (std::string) ((CurrentConnected->isSmtpLocked()) ? "locked" : "unlocked"));
+    commandBuffer.emplace_back("Port# 21: - FTP Server: " +
+                               (std::string) ((CurrentConnected->isFtpLocked()) ? "locked" : "unlocked"));
+    commandBuffer.emplace_back("Port# 22: - SSH: " +
+                               (std::string) ((CurrentConnected->isSshLocked()) ? "locked" : "unlocked"));
     commandBuffer.emplace_back("----------------------------------");
-    commandBuffer.emplace_back("Open Ports:Required for Crack:  " + std::to_string(CurrentConnected->minRequired));
+    commandBuffer.emplace_back("Open Ports:Required for Crack:  " + std::to_string(CurrentConnected->getMinRequired()));
 }
 
 void HacknetApplication::command_ps(std::stringstream &)
@@ -263,13 +257,13 @@ void HacknetApplication::command_connect(std::stringstream &ss)
         internalDisconnect();
     for (int i = 0; i < serverList.size(); i++)
     {
-        if (serverList[i].ip == ip)
+        if (serverList[i].getIp() == ip)
         {
             HacknetApplication::commandBuffer.emplace_back("Connection Established ::");
             HacknetApplication::commandBuffer.emplace_back(
-                    "Connect To " + serverList[i].name + " in" + serverList[i].ip);
+                    "Connect To " + serverList[i].getName() + " in" + serverList[i].getIp());
             CurrentConnected = &serverList[i];
-            CurrentDir = &serverList[i].rootDirectory;
+            CurrentDir = &serverList[i].getRootDirectory();
         }
     }
 }
@@ -277,7 +271,7 @@ void HacknetApplication::command_connect(std::stringstream &ss)
 void HacknetApplication::porkHack()
 {
     HacknetApplication::commandBuffer.emplace_back("PortHack Initialized --Running");
-    if (CurrentConnected->checkAccessibility())
+    if (CurrentConnected->checkIfSecureBroken())
         HacknetApplication::commandBuffer.emplace_back("--PortHack Complete--");
     else
         HacknetApplication::commandBuffer.emplace_back("--PortHack Fail--");
@@ -285,15 +279,15 @@ void HacknetApplication::porkHack()
 
 void HacknetApplication::Scan()
 {
-    HacknetApplication::commandBuffer.emplace_back("Scanning For " + CurrentConnected->ip);
-    if (CurrentConnected->ConnectedNodes.empty())
+    HacknetApplication::commandBuffer.emplace_back("Scanning For " + CurrentConnected->getIp());
+    if (CurrentConnected->getConnectedNodes().empty())
         HacknetApplication::commandBuffer.emplace_back("This node does not connect to other nodes");
     else
     {
         HacknetApplication::commandBuffer.emplace_back("The nodes connected to the node:");
-        for (auto i: CurrentConnected->ConnectedNodes)
+        for (auto i: CurrentConnected->getConnectedNodes())
         {
-            HacknetApplication::commandBuffer.emplace_back(":" + i->name + "  " + i->ip);
+            HacknetApplication::commandBuffer.emplace_back(":" + i->getName() + "  " + i->getIp());
         }
     }
 }
@@ -495,7 +489,7 @@ void HacknetApplication::command_scp(std::stringstream &command)
         {
             copied = CurrentDir->getfiles()[i]->clone();
             CurrentConnected = localSever;
-            CurrentDir = &(localSever->rootDirectory);
+            CurrentDir = &(localSever->getRootDirectory());
             command_cd(command);
             CurrentDir->getfiles().push_back(copied);
         }
@@ -525,7 +519,7 @@ HackDirectory *HacknetApplication::locateDir(const std::string &path, bool local
     HackDirectory *head;
     if (vec[0] == "")
     {
-        head = local ? &(localSever->rootDirectory) : &(CurrentConnected->rootDirectory);
+        head = local ? &(localSever->getRootDirectory()) : &(CurrentConnected->getRootDirectory());
         vec.erase(vec.begin());
     }
     else
@@ -590,12 +584,12 @@ HackFile *HacknetApplication::locateFile(std::string path)
     {
         path.erase(path.begin());
         // file in root directory
-        auto it = std::find_if(CurrentConnected->rootDirectory.getfiles().begin(),
-                               CurrentConnected->rootDirectory.getfiles().end(), [&path](HackFile *t)
+        auto it = std::find_if(CurrentConnected->getRootDirectory().getfiles().begin(),
+                               CurrentConnected->getRootDirectory().getfiles().end(), [&path](HackFile *t)
                                {
                                    return t->getName() == path;
                                });
-        return it == CurrentConnected->rootDirectory.getfiles().end() ? nullptr : *it;
+        return it == CurrentConnected->getRootDirectory().getfiles().end() ? nullptr : *it;
     }
     else
     {
@@ -653,7 +647,13 @@ void HacknetApplication::RenderStatusBar()
     }
     else
     {
-        Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(84, 2));
-        std::cout << "没断开连接";
+        // connected
+        serverLogos[1].draw(UIUtil::START_STATUSPANEL);
+        Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 0));
+        std::cout << "连接到";
+        Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 1));
+        std::cout << CurrentConnected->getName();
+        Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 2));
+        std::cout << "@" << CurrentConnected->getIp();
     }
 }

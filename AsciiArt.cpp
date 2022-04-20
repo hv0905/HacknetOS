@@ -8,7 +8,7 @@
 #include <iostream>
 #include "Utility/Util.h"
 
-void AsciiArt::draw(Coord begin)
+void AsciiArt::draw(Coord begin) const
 {
     for (auto &item: data)
     {

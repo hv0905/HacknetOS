@@ -20,7 +20,7 @@ public:
 
     explicit AsciiArt(const std::string &asciiFile);
 
-    void draw(Coord begin);
+    void draw(Coord begin) const;
 
     [[nodiscard]] const Size2D &getSize() const
     {

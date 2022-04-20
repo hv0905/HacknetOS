@@ -94,7 +94,7 @@ public:
     void RenderStatusBar();
     // endregion
 
-
+    friend class StarterCreator;
 };
 
 #endif //HACKNETOS_HACKNETAPPLICATION_H
