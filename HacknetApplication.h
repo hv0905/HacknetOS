@@ -25,7 +25,7 @@ class HacknetApplication
     std::vector<std::string> commandBuffer{};
     InputService inputService{};
     std::vector<HackBackgroundTask *> backgroundTasks{};
-    std::vector<HackServer> serverList{};
+    std::vector<HackServer*> serverList{};
 
     void internalDisconnect();
 

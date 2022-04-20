@@ -191,16 +191,21 @@ void HacknetApplication::command_connect(std::stringstream &ss)
     if (CurrentDir == nullptr || CurrentConnected == nullptr);
     else
         internalDisconnect();
-    for (int i = 0; i < serverList.size(); i++)
+    auto it = std::find(serverList.begin(), serverList.end(), [&ip](HackServer *t)
     {
-        if (serverList[i].getIp() == ip)
-        {
-            HacknetApplication::commandBuffer.emplace_back("Connection Established ::");
-            HacknetApplication::commandBuffer.emplace_back(
-                    "Connect To " + serverList[i].getName() + " in" + serverList[i].getIp());
-            CurrentConnected = &serverList[i];
-            CurrentDir = &serverList[i].getRootDirectory();
-        }
+        return t->getIp() == ip;
+    });
+    if (it == serverList.end())
+    {
+       commandBuffer.emplace_back("Don't find such server.");
+    }
+    else
+    {
+        HacknetApplication::commandBuffer.emplace_back("Connection Established ::");
+        HacknetApplication::commandBuffer.emplace_back(
+                "Connect To " + (*it)->getName() + " in" + (*it)->getIp());
+        CurrentConnected =serverList[it-serverList.begin()];
+        CurrentDir = &(*it)->getRootDirectory();
     }
 }
 
@@ -330,47 +335,41 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
         commandBuffer.emplace_back("Enter the wrong command");
         return;
     }
-
-    /*else
+    auto dir = locateDir(firstCommand);
+    auto file = locateFile(firstCommand);
+    if (file != nullptr)
     {
-        for (int i = 0; i < CurrentDir->getfiles().size(); i++)
+        if(secondCommand=="..")
         {
-            {
-                if (secondCommand == "..")
-                {
-                    commandBuffer.emplace_back("Move the file to its superior directory");
-                    CurrentDir->getParentDir()->getsubDirs().push_back(CurrentDir->getsubDirs()[i]);
-                    CurrentDir->getsubDirs().erase(CurrentDir->getsubDirs().begin() + i);
-                }
-                else
-                {
-                    CurrentDir->getsubDirs()[i]->setDirName(secondCommand);
-                    commandBuffer.emplace_back("Rename " + firstCommand + " to " + secondCommand);
-                }
-            }
-
-
+            HackDirectory*parentDir= file->getParentDir();
+            parentDir->getfiles().erase
+                    (find(parentDir->getfiles().begin(), parentDir->getfiles().end(), file));
+            parentDir->getParentDir()->getfiles().push_back(file);
         }
-        for (int i = 0; i < CurrentDir->getfiles().size(); i++)
+        else
         {
-            if (CurrentDir->getfiles()[i]->getName() == firstCommand)
-            {
-                if (secondCommand == "..")
-                {
-                    CurrentDir->getParentDir()->getfiles().push_back(CurrentDir->getfiles()[i]);
-                    CurrentDir->getfiles().erase(CurrentDir->getfiles().begin() + i);
-                    commandBuffer.emplace_back("Move the file to its superior directory");
-                }
-                else
-                {
-                    CurrentDir->getfiles()[i]->setName(secondCommand);
-                    commandBuffer.emplace_back("Rename " + firstCommand + " to " + secondCommand);
-                }
-                return;
-            }
+            file->setName(secondCommand);
         }
     }
-    commandBuffer.emplace_back("Don't find " + firstCommand);*/
+    else if (dir != nullptr)
+    {
+        if(secondCommand=="..")
+        {
+            HackDirectory*parentDir= dir->getParentDir();
+            parentDir->getsubDirs().erase
+                    (find(parentDir->getsubDirs().begin(), parentDir->getsubDirs().end(), dir));
+            parentDir->getParentDir()->getfiles().push_back(file);
+        }
+        else
+        {
+            dir->setDirName(secondCommand);
+        }
+    }
+    else
+    {
+        commandBuffer.emplace_back("There is not such a file or directory");
+    }
+
 }
 
 void HacknetApplication::command_scp(std::stringstream &command)
@@ -389,25 +388,6 @@ void HacknetApplication::command_scp(std::stringstream &command)
     {
         locateDir(address, true)->getfiles().push_back(copied);
     }
-    /* HackServer *tempConnect = CurrentConnected;
-     HackDirectory *tempDirectory = CurrentDir;
-     HackFile *copied;
-     for (int i = 0; i < CurrentDir->getfiles().size(); i++)
-     {
-         if (CurrentDir->getfiles()[i]->getName() == dirName)
-         {
-             copied = CurrentDir->getfiles()[i]->clone();
-             CurrentConnected = localSever;
-             CurrentDir = &(localSever->getRootDirectory());
-             command_cd(command);
-             CurrentDir->getfiles().push_back(copied);
-         }
-     }
-     CurrentDir = tempDirectory;
-     CurrentConnected = tempConnect;
-     tempDirectory = nullptr;
-     tempConnect = nullptr;*/
-
 }
 
 void HacknetApplication::internalDisconnect()
