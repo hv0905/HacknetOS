@@ -42,15 +42,9 @@ public:
 
     void lsDir(std::stringstream &);
 
-    void rmSubDir();
-
-    void cdDir(std::stringstream &dirName);
+    void rmAll();
 
     void rmDir(const std::string &dirName);
-
-    void cdParentDir();
-
-    void cdRootDir();
 
     void Scan();
 

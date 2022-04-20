@@ -87,25 +87,7 @@ void HacknetApplication::lsDir(std::stringstream &)
     commandBuffer.emplace_back("-----------------------------");
 }
 
-void HacknetApplication::cdDir(std::stringstream &dirStream)
-{
-    std::string dirName;
-    dirStream >> dirName;
-    bool flag = false;
-    for (int i = 0; i < CurrentDir->getsubDirs().size(); i++)
-    {
-        if (CurrentDir->getsubDirs()[i]->getDirName() == dirName)
-        {
-            flag = true;
-            CurrentDir = (CurrentDir->getsubDirs()[i]);
-            break;
-        }
-    }
-    if (!flag)
-        commandBuffer.emplace_back("Can't find the directory.");
-}
-
-[[maybe_unused]] void HacknetApplication::rmSubDir()
+void HacknetApplication::rmAll()
 {
     while (!CurrentDir->getsubDirs().empty())
     {
@@ -126,75 +108,29 @@ void HacknetApplication::cdDir(std::stringstream &dirStream)
 
 void HacknetApplication::rmDir(const std::string &dirName)
 {
-    if (locateDir(dirName) == nullptr && locateFile(dirName) == nullptr)
+    auto dir = locateDir(dirName);
+    auto file = locateFile(dirName);
+    if (file != nullptr)
     {
-        commandBuffer.emplace_back("There is not such a file or directory");
+        commandBuffer.emplace_back("Deleting");
+        commandBuffer.emplace_back(file->getName());
+        HackDirectory *parentDir = file->getParentDir();
+        parentDir->getsubDirs().erase(find(parentDir->getsubDirs().begin(), parentDir->getsubDirs().end(), file));
+        delete file;
+    }
+    else if (dir != nullptr)
+    {
+        commandBuffer.emplace_back("Deleting");
+        commandBuffer.emplace_back(dir->getDirName());
+        HackDirectory *parentDir = dir->getParentDir();
+        parentDir->getsubDirs().erase
+                (find(parentDir->getsubDirs().begin(), parentDir->getsubDirs().end(), dir));
+        delete dir;
     }
     else
     {
-        if (locateDir(dirName) != nullptr)
-        {
-            commandBuffer.emplace_back("Deleting");
-            commandBuffer.emplace_back(locateDir(dirName)->getDirName());
-            HackDirectory *parentDir= locateDir(dirName)->getParentDir();
-          parentDir->getsubDirs().erase
-                    (find(parentDir->getsubDirs().begin(),
-                          parentDir->getsubDirs().end(),
-                          locateDir(dirName)));
-          parentDir= nullptr;
-          delete parentDir;
-        }
-        else if (locateFile(dirName) != nullptr)
-        {
-            commandBuffer.emplace_back("Deleting");
-            commandBuffer.emplace_back(locateFile(dirName)->getName());
-            HackDirectory *parentDir= locateFile(dirName)->getParentDir();
-            parentDir->getsubDirs().erase
-                    (find(parentDir->getsubDirs().begin(),
-                          parentDir->getsubDirs().end(),
-                          locateFile(dirName)));
-            parentDir= nullptr;
-            delete parentDir;
-        }
-
+        commandBuffer.emplace_back("There is not such a file or directory");
     }
-    /*if (CurrentDir->getsubDirs().empty())
-    {
-        commandBuffer.emplace_back("");
-    }
-
-    for (int i = 0; i < CurrentDir->getsubDirs().size(); i++)
-    {
-        if (CurrentDir->getsubDirs()[i]->getDirName() == dirName)
-        {
-            delete CurrentDir->getsubDirs()[i];
-            CurrentDir->getsubDirs().erase(CurrentDir->getsubDirs().begin() + i);
-            commandBuffer.emplace_back("Deleting");
-            commandBuffer.emplace_back(CurrentDir->getsubDirs()[i]->getDirName());
-            return;
-        }
-    }
-    for (int i = 0; i < CurrentDir->getfiles().size(); i++)
-    {
-        if (CurrentDir->getfiles()[i]->getName() == dirName)
-        {
-            delete CurrentDir->getfiles()[i];
-            CurrentDir->getfiles().erase(CurrentDir->getfiles().begin() + i);
-            commandBuffer.emplace_back("Deleting");
-            commandBuffer.emplace_back(CurrentDir->getfiles()[i]->getName());
-            return;
-        }
-    }*/
-}
-
-void HacknetApplication::cdParentDir()
-{
-    CurrentDir = CurrentDir->getParentDir();
-}
-
-void HacknetApplication::cdRootDir()
-{
-    CurrentDir = CurrentDir->getRootDir();
 }
 
 void HacknetApplication::command_nmap(std::stringstream &)
@@ -365,7 +301,7 @@ void HacknetApplication::command_rm(std::stringstream &commandStream)
     std::string command;
     commandStream >> command;
     if (command == "*")
-        rmSubDir();
+        rmAll();
     else
         rmDir(command);
 }
@@ -374,38 +310,10 @@ void HacknetApplication::command_cd(std::stringstream &commandStream)
 {
     std::string command;
     commandStream >> command;
-    if(locateDir(command)!= nullptr)
-        CurrentDir= locateDir(command);
+    if (locateDir(command) != nullptr)
+        CurrentDir = locateDir(command);
     else
         commandBuffer.emplace_back("There is no such directory here");
-   /* if (command == "/")
-    {
-        cdRootDir();
-        return;
-    }
-    std::vector<std::string> splitCommand;
-    int start = 0, end = 0;
-    for (int i = 0; i < command.size(); i++)
-    {
-        if (command[i] == '/')
-        {
-            splitCommand.push_back(command.substr(start, end - start));
-            start = end + 1;
-        }
-        end++;
-    }
-    splitCommand.push_back(command.substr(start, end - start));
-    for (auto i: splitCommand)
-    {
-        if (i == "..")
-            cdParentDir();
-        else
-        {
-            std::stringstream subCommandStream;
-            subCommandStream << i;
-            cdDir(subCommandStream);
-        }
-    }*/
 }
 
 void HacknetApplication::command_dc(std::stringstream &)
@@ -469,35 +377,36 @@ void HacknetApplication::command_scp(std::stringstream &command)
 {
     std::string dirName, address;
     command >> dirName;
-    command>>address;
+    command >> address;
     HackFile *copied;
-   copied= locateFile(dirName)->clone();
-   if( locateDir(address,1)== nullptr)
-   {
-       commandBuffer.emplace_back("Don't find "+address);
-   }
-   else
-   {
-       locateDir(address,1)->getfiles().push_back(copied);
-   }
-   /* HackServer *tempConnect = CurrentConnected;
-    HackDirectory *tempDirectory = CurrentDir;
-    HackFile *copied;
-    for (int i = 0; i < CurrentDir->getfiles().size(); i++)
+    copied = locateFile(dirName)->clone();
+    if (locateDir(address, true) == nullptr)
     {
-        if (CurrentDir->getfiles()[i]->getName() == dirName)
-        {
-            copied = CurrentDir->getfiles()[i]->clone();
-            CurrentConnected = localSever;
-            CurrentDir = &(localSever->getRootDirectory());
-            command_cd(command);
-            CurrentDir->getfiles().push_back(copied);
-        }
+        commandBuffer.emplace_back("Don't find " + address);
+        delete copied;
     }
-    CurrentDir = tempDirectory;
-    CurrentConnected = tempConnect;
-    tempDirectory = nullptr;
-    tempConnect = nullptr;*/
+    else
+    {
+        locateDir(address, true)->getfiles().push_back(copied);
+    }
+    /* HackServer *tempConnect = CurrentConnected;
+     HackDirectory *tempDirectory = CurrentDir;
+     HackFile *copied;
+     for (int i = 0; i < CurrentDir->getfiles().size(); i++)
+     {
+         if (CurrentDir->getfiles()[i]->getName() == dirName)
+         {
+             copied = CurrentDir->getfiles()[i]->clone();
+             CurrentConnected = localSever;
+             CurrentDir = &(localSever->getRootDirectory());
+             command_cd(command);
+             CurrentDir->getfiles().push_back(copied);
+         }
+     }
+     CurrentDir = tempDirectory;
+     CurrentConnected = tempConnect;
+     tempDirectory = nullptr;
+     tempConnect = nullptr;*/
 
 }
 
