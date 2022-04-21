@@ -1,0 +1,15 @@
+dotnet[94m/[0m       [91m/[0m          [91m\[0m     systemctl
+Search       [91m/[0m            [91m\[0m      Command
+Command     [91m/[0m              [91m\[0m      Search
+AnotherValue       [94m/[0m[94m\[0m       [91m\[0m  Operation
+command1  [91m/[0m       [94m/[0m  [94m\[0m       [91m\[0m   command
+foldername       [94m/[0m    [94m\[0m       [91m\[0m   export
+Pipeline[91m/[0m       [94m/[0m      [94m\[0m       [91m\[0m  Remove
+download       [94m/[0m        [94m\[0m      Operation
+folder[91m/[0m       [94m/[0m          [94m\[0m      command1
+Administrator[94m/[0m            [94m\[0m     command1
+command     [94m/[0m              [94m\[0m  background
+windowsphone       [91m/[0m[91m\[0m       [94m\[0m   command1
+Service   [94m/[0m       [91m/[0m  [91m\[0m       [94m\[0m    Create
+Execute  [94m/[0m       [91m/[0m    [91m\[0m       [94m\[0m   Remove
+[#############################         ]

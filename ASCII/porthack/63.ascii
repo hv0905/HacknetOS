@@ -1,0 +1,15 @@
+Operation[91m/[0m       [94m/[0m    [94m\[0m       [91m\[0m  Feature
+command [91m/[0m       [94m/[0m      [94m\[0m       [91m\[0m   micro
+remember       [94m/[0m        [94m\[0m       [91m\[0m source
+ignore[91m/[0m       [94m/[0m          [94m\[0m   NewDocument
+depth[91m/[0m       [94m/[0m            [94m\[0m       [91m\[0merror
+command     [94m/[0m              [94m\[0m      Detail
+error      [94m/[0m       [91m/[0m[91m\[0m       [94m\[0m      lines
+mybase64  [94m/[0m       [91m/[0m  [91m\[0m       [94m\[0m  command1
+work996  [94m/[0m       [91m/[0m    [91m\[0m       [94m\[0m commands
+Redirect[94m/[0m       [91m/[0m      [91m\[0m       [94m\[0m disable
+command[94m/[0m       [91m/[0m        [91m\[0m    NewDocument
+Redirect      [91m/[0m          [91m\[0m      preserve
+output       [91m/[0m            [91m\[0m   KillSignal
+Locate      [91m/[0m              [91m\[0m      github
+[####################                  ]

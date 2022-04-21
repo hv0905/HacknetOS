@@ -1,0 +1,15 @@
+Example    [91m/[0m       [94m/[0m[94m\[0m       [91m\[0m      input
+system    [91m/[0m       [94m/[0m  [94m\[0m       [91m\[0m   current
+options  [91m/[0m       [94m/[0m    [94m\[0m       [91m\[0m   Status
+Reverse [91m/[0m       [94m/[0m      [94m\[0m       [91m\[0m Manager
+SIGINT [91m/[0m       [94m/[0m        [94m\[0m       [91m\[0mExample
+result[91m/[0m       [94m/[0m          [94m\[0m       work996
+12345[91m/[0m       [94m/[0m            [94m\[0m       invoke
+output      [94m/[0m              [94m\[0m    Register
+Example    [94m/[0m       [91m/[0m[91m\[0m       [94m\[0mDescription
+base64    [94m/[0m       [91m/[0m  [91m\[0m       [94m\[0m   command
+Command  [94m/[0m       [91m/[0m    [91m\[0m       [94m\[0m   random
+convert [94m/[0m       [91m/[0m      [91m\[0m       [94m\[0m   which
+output [94m/[0m       [91m/[0m        [91m\[0m       [94m\[0m remove
+options       [91m/[0m          [91m\[0m       work996
+[########                              ]

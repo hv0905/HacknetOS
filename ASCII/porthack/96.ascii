@@ -1,0 +1,15 @@
+Pipeline[91m/[0m       [94m/[0m      [94m\[0m       [91m\[0m  Remove
+download       [94m/[0m        [94m\[0m      Operation
+folder[91m/[0m       [94m/[0m          [94m\[0m      command1
+Administrator[94m/[0m            [94m\[0m     command1
+command     [94m/[0m              [94m\[0m  background
+windowsphone       [91m/[0m[91m\[0m       [94m\[0m   command1
+Service   [94m/[0m       [91m/[0m  [91m\[0m       [94m\[0m    Create
+Execute  [94m/[0m       [91m/[0m    [91m\[0m       [94m\[0m   Remove
+mindepth[94m/[0m       [91m/[0m      [91m\[0m       [94m\[0mcommand2
+WantedBy       [91m/[0m        [91m\[0m    NewDocument
+target[94m/[0m       [91m/[0m          WorkingDirector
+sources      [91m/[0m            [91m\[0m       [94m\[0mvideo
+Software    [91m/[0m              [91m\[0m     command
+folder     [91m/[0m       [94m/[0m[94m\[0m       [91m\[0m     custom
+[###############################       ]

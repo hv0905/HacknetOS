@@ -1,0 +1,15 @@
+commands   [94m/[0m       [91m/[0m[91m\[0m       [94m\[0m     Stream
+Unused    [94m/[0m       [91m/[0m  [91m\[0m       [94m\[0m    Source
+existing [94m/[0m       [91m/[0m    [91m\[0m       [94m\[0m    touch
+starting[94m/[0m       [91m/[0m      [91m\[0m       [94m\[0m   Count
+Control[94m/[0m       [91m/[0m        [91m\[0m       [94m\[0mExecute
+maxdepth      [91m/[0m          [91m\[0m     Operation
+Check[94m/[0m       [91m/[0m            [91m\[0m      Install
+update      [91m/[0m              [91m\[0m      status
+https      [91m/[0m       [94m/[0m[94m\[0m       [91m\[0m      Files
+NuGet     [91m/[0m       [94m/[0m  [94m\[0m       [91m\[0m     folks
+Example  [91m/[0m       [94m/[0m    [94m\[0m       [91m\[0m  Network
+command1[91m/[0m       [94m/[0m      [94m\[0m       [91m\[0m  append
+xargs  [91m/[0m       [94m/[0m        [94m\[0m       [91m\[0mProcess
+Execute       [94m/[0m          [94m\[0m       Product
+[                                      ]

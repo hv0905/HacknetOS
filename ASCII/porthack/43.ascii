@@ -1,0 +1,15 @@
+Delete       [91m/[0m            [91m\[0m    systemctl
+command     [91m/[0m              [91m\[0m    Software
+systemctl  [91m/[0m       [94m/[0m[94m\[0m       [91m\[0m    OPTIONS
+install   [91m/[0m       [94m/[0m  [94m\[0m       [91m\[0m   Foreach
+micro    [91m/[0m       [94m/[0m    [94m\[0m       [91m\[0mOperation
+error   [91m/[0m       [94m/[0m      [94m\[0m       Operation
+102400 [91m/[0m       [94m/[0m        [94m\[0m       [91m\[0mCommand
+Source[91m/[0m       [94m/[0m          [94m\[0m     Installed
+start[91m/[0m       [94m/[0m            [94m\[0m       [91m\[0mshort
+Examples    [94m/[0m              [94m\[0m    command2
+submodules [94m/[0m       [91m/[0m[91m\[0m       [94m\[0m  Operation
+under     [94m/[0m       [91m/[0m  [91m\[0m       [94m\[0m     input
+longest  [94m/[0m       [91m/[0m    [91m\[0m       [94m\[0mUninstall
+another [94m/[0m       [91m/[0m      [91m\[0m       [94m\[0mRedirect
+[#############                         ]

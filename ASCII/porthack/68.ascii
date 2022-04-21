@@ -1,0 +1,15 @@
+command     [94m/[0m              [94m\[0m      Detail
+error      [94m/[0m       [91m/[0m[91m\[0m       [94m\[0m      lines
+mybase64  [94m/[0m       [91m/[0m  [91m\[0m       [94m\[0m  command1
+work996  [94m/[0m       [91m/[0m    [91m\[0m       [94m\[0m commands
+Redirect[94m/[0m       [91m/[0m      [91m\[0m       [94m\[0m disable
+command[94m/[0m       [91m/[0m        [91m\[0m    NewDocument
+Redirect      [91m/[0m          [91m\[0m      preserve
+output       [91m/[0m            [91m\[0m   KillSignal
+Locate      [91m/[0m              [91m\[0m      github
+command    [91m/[0m       [94m/[0m[94m\[0m       [91m\[0m    Example
+NewDocument       [94m/[0m  [94m\[0m       [91m\[0m     bytes
+without  [91m/[0m       [94m/[0m    [94m\[0m       [91m\[0m  Command
+dotnet  [91m/[0m       [94m/[0m      [94m\[0m       [91m\[0mPipeline
+command1       [94m/[0m        [94m\[0m       [91m\[0m  lines
+[#####################                 ]
