@@ -43,11 +43,11 @@ public:
 
 private:
 
-    std::string name;
-    HackDirectory *rootDirs;
-    HackDirectory *parentDir;
-    std::vector<HackDirectory *> subDirs;
-    std::vector<HackFile *> files;
+    std::string name{};
+    HackDirectory *rootDirs{};
+    HackDirectory *parentDir{};
+    std::vector<HackDirectory *> subDirs{};
+    std::vector<HackFile *> files{};
 
 };
 
