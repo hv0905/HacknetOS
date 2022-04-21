@@ -308,11 +308,13 @@ void HacknetApplication::command_help(std::stringstream &ss)
         return;
     }
     int end = std::min(skip + 7, size - 1);
+    commandBuffer.emplace_back(
+            "显示帮助列表的第" + std::to_string(page) + "/" + std::to_string(size / 8 + (size % 8 ? 1 : 0)) + "页");
     commandBuffer.emplace_back("------------------------------");
     for (int i = skip; i <= end; ++i)
     {
-        commandBuffer.push_back(globalCommands->getPattern() + " " + globalCommands->getPrefix());
-        commandBuffer.push_back(globalCommands->getHelpText());
+        commandBuffer.push_back(globalCommands[i].getPrefix() + " " + globalCommands[i].getPattern());
+        commandBuffer.push_back(globalCommands[i].getHelpText());
         commandBuffer.emplace_back("");
     }
     commandBuffer.emplace_back("------------------------------");

@@ -79,6 +79,7 @@ namespace Util
 
     void setColorAttr(int attr);
 
+    bool EnableVTMode();
 }
 
 #endif //HACKNETOS_UTIL_H

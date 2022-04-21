@@ -8,10 +8,10 @@ HacknetApplication *StarterCreator::createStarterOS()
 {
     auto app = new HacknetApplication();
     auto *local = new HackServer("127.0.0.1", "Aiden Pearce", 4);
-    local->getRootDirectory().getsubDirs().push_back(new HackDirectory("home"));
-    local->getRootDirectory().getsubDirs().push_back(new HackDirectory("bin"));
-    local->getRootDirectory().getsubDirs().push_back(new HackDirectory("log"));
-    local->getRootDirectory().getsubDirs().push_back(new HackDirectory("sys"));
+    local->getRootDirectory().AppendDirectory(new HackDirectory("home"));
+    local->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
+    local->getRootDirectory().AppendDirectory(new HackDirectory("log"));
+    local->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
 
     local->accessible = true;
     app->serverList.push_back(local);
