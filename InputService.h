@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <optional>
+#include "CommonType.h"
 
 typedef void AcceptedCommandCallback(std::string cmd);
 
@@ -30,7 +31,7 @@ public:
 
     std::optional<std::string> tickInput();
 
-    void renderCMD(std::string prompt, int x, int y);
+    void renderCMD(std::string prompt, Coord start);
 
     [[nodiscard]] const std::string &getCommandBuffer() const
     {

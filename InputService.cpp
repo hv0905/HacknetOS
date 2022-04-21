@@ -3,9 +3,11 @@
 //
 
 #include <conio.h>
+#include <iostream>
 
 #include "InputService.h"
 #include "Utility/StringUtil.h"
+#include "Utility/Util.h"
 
 std::optional<std::string> InputService::tickInput()
 {
@@ -85,4 +87,12 @@ std::optional<std::string> InputService::tickInput()
 InputService::InputService() : commandBuffer()
 {
     commandBuffer.reserve(256);
+}
+
+void InputService::renderCMD(std::string prompt, Coord start)
+{
+    Util::setCursorPos(start);
+    std::cout << prompt;
+    std::cout << commandBuffer;
+    Util::moveCursorPos(-position, 0);
 }

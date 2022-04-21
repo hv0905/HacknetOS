@@ -94,6 +94,8 @@ public:
     // region Method for render
     void RenderStatusBar();
 
+    void RenderTerminal();
+
     std::string getPrompt();
     // endregion
 

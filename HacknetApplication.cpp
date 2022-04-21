@@ -39,7 +39,7 @@ const AsciiArt serverLogos[] = {
 void HacknetApplication::Exec()
 {
     // First, connect to local server
-    CurrentConnected = localSever;
+    internalConnect(localSever);
     inputService.setAcceptCommand(true);
     while (true)
     {
@@ -63,6 +63,7 @@ void HacknetApplication::Draw()
     Util::clearScreen();
     UIUtil::drawFramework();
     RenderStatusBar();
+    RenderTerminal();
 }
 
 void HacknetApplication::lsDir(std::stringstream &)
@@ -533,6 +534,24 @@ void HacknetApplication::RenderStatusBar()
         std::cout << CurrentConnected->getName();
         Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 2));
         std::cout << "@" << CurrentConnected->getIp();
+        if (CurrentConnected->isAccessible())
+        {
+            // :: 您是本系统的管理员 ::
+            Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 4));
+            Util::setColorAttr(Util::BG_LIGHT_BLUE);
+            Util::setColorAttr(Util::FG_BLACK);
+            // 72
+            for (int i = 0; i < 72; ++i)
+            {
+                std::cout << ' ';
+            }
+            std::cout << ":: 您是本系统的管理员 ::";
+            for (int i = 0; i < 72; ++i)
+            {
+                std::cout << ' ';
+            }
+            Util::setColorAttr(Util::ATTR_NORMAL);
+        }
     }
 }
 
@@ -574,4 +593,20 @@ HacknetApplication::~HacknetApplication()
     {
         delete bgtsk;
     }
+}
+
+void HacknetApplication::RenderTerminal()
+{
+    // Area buffer
+
+    int buffSize = std::min(UIUtil::SIZE_TERMINAL.height - 2, static_cast<int>(commandBuffer.size()));
+    int h = 0;
+    for (auto it = commandBuffer.end() - buffSize; it != commandBuffer.end(); ++it)
+    {
+        Util::setCursorPos(UIUtil::START_TERMINAL + Coord(0, h++));
+        std::cout << *it;
+    }
+
+    // Area prompt
+    inputService.renderCMD(getPrompt(), UIUtil::START_TERMINAL + Coord(0, UIUtil::SIZE_TERMINAL.height - 1));
 }

@@ -21,7 +21,7 @@ namespace UIUtil
     const Size2D SIZE_MEMORYPANEL(40, 49);
 
     const Coord START_TERMINAL(41, 7);
-    const Coord SIZE_TERMINAL(179, 43);
+    const Size2D SIZE_TERMINAL(179, 43);
 
     void drawFramework();
 }

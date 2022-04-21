@@ -17,15 +17,15 @@ void UIUtil::drawFramework()
     setCursorPos(0, 0);
     setColorAttr(BG_WHITE);
     setColorAttr(FG_BLACK);
-    cout << " <MEMORY>"; // 9
-    for (int i = 0; i < 31; i++)
+    cout << " :: MEMORY ::"; // 13
+    for (int i = 0; i < 27; i++)
     {
         cout << ' ';
     }
     cout << ' ';
     // Title of STATUS
-    cout << " <STATUS>"; // 9
-    for (int i = 0; i < 170; i++)
+    cout << " :: STATUS ::"; // 13
+    for (int i = 0; i < 166; i++)
     {
         cout << ' ';
     }
@@ -38,8 +38,8 @@ void UIUtil::drawFramework()
 
     // Draw a horizontal line for STATUS | TERM
     setCursorPos(41, 6);
-    cout << " <TERMINAL>"; // 11
-    for (int i = 0; i < 168; i++)
+    cout << " :: TERMINAL ::"; // 15
+    for (int i = 0; i < 164; i++)
     {
         cout << ' ';
     }
