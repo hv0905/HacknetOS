@@ -15,7 +15,7 @@ const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_scp, "scp", "从远程计算机复制文件[filename]至指定本地文件夹(/home或/bin为默认)",
                     "[filename] [OPTIONAL: dest]", true,
                     true),
-        HackCommand(&HacknetApplication::command_connect, "scan", "在已连接计算机上扫描链接", "", true, true),
+        HackCommand(&HacknetApplication::command_Scan, "scan", "在已连接计算机上扫描链接", "", true, true),
         HackCommand(&HacknetApplication::command_rm, "rm", "删除文件", "[filename (or use * for all files in the folder)]",
                     true, true),
         HackCommand(&HacknetApplication::command_ps, "ps", "列出正在运行的程序以及它们的PID"),
@@ -27,7 +27,7 @@ const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_nmap, "nmap", "扫描已连接计算机的活动端口及保安级别"),
         HackCommand(&HacknetApplication::command_dc, "dc", "断开连接"),
         HackCommand(&HacknetApplication::command_cat, "cat", "显示文件内容", "[filename]", true, true),
-        HackCommand(nullptr, "porthack", "通过已开放的端口破解计算机管理员密码"),
+        HackCommand(&HacknetApplication::command_hackPort, "porthack", "通过已开放的端口破解计算机管理员密码"),
         HackCommand(&HacknetApplication::command_clear, "clear", "清除终端")
 };
 
@@ -41,7 +41,9 @@ void HacknetApplication::Exec()
     // First, connect to local server
     internalConnect(localSever);
     inputService.setAcceptCommand(true);
-    while (true)
+    requireUpdate= true;
+    Draw();
+    while(true)
     {
         Draw();
         auto result = inputService.tickInput();
@@ -82,7 +84,7 @@ void HacknetApplication::lsDir(std::stringstream &)
     }
 
     commandBuffer.emplace_back("-----------------------------");
-    commandBuffer.push_back("The contain of" + CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
+    commandBuffer.push_back("The contain of " + CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
     for (auto i: CurrentDir->getsubDirs())
     {
         commandBuffer.push_back(":" + i->getDirName());
@@ -209,7 +211,7 @@ void HacknetApplication::command_connect(std::stringstream &ss)
     }
 }
 
-void HacknetApplication::porkHack()
+void HacknetApplication::command_hackPort(std::stringstream&s)
 {
     HacknetApplication::commandBuffer.emplace_back("PortHack Initialized --Running");
     if (CurrentConnected->checkIfSecureBroken())
@@ -218,7 +220,7 @@ void HacknetApplication::porkHack()
         HacknetApplication::commandBuffer.emplace_back("--PortHack Fail--");
 }
 
-void HacknetApplication::Scan()
+void HacknetApplication::command_Scan(std::stringstream&s)
 {
     HacknetApplication::commandBuffer.emplace_back("Scanning For " + CurrentConnected->getIp());
     if (CurrentConnected->getConnectedNodes().empty())

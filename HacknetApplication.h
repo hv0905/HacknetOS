@@ -54,9 +54,9 @@ public:
 
     void rmDir(const std::string &dirName);
 
-    void Scan();
+    void command_Scan(std::stringstream &s);
 
-    void porkHack();
+    void command_hackPort(std::stringstream &s);
 
     void processCommand(const std::string &command);
 
