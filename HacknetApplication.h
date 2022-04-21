@@ -13,12 +13,13 @@
 #include "InputService.h"
 #include "BackgroundTasks/HackBackgroundTask.h"
 
-
 class HacknetApplication
 {
     bool ending = false;
     int gameStatus = 0;
     bool doRender = true;
+
+    bool requireUpdate = true;
     HackDirectory *CurrentDir;
     HackServer *CurrentConnected;
     HackServer *localSever;

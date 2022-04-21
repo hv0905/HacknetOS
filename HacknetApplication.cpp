@@ -49,6 +49,7 @@ void HacknetApplication::Exec()
         {
             // process the incoming command
             processCommand(result.value());
+            requireUpdate = true;
         }
         Util::sleep(50);
         if (ending)
@@ -60,10 +61,15 @@ void HacknetApplication::Exec()
 
 void HacknetApplication::Draw()
 {
-    Util::clearScreen();
-    UIUtil::drawFramework();
-    RenderStatusBar();
+    if (requireUpdate)
+    {
+        Util::clearScreen();
+        UIUtil::drawFramework();
+        RenderStatusBar();
+    }
     RenderTerminal();
+
+    requireUpdate = false;
 }
 
 void HacknetApplication::lsDir(std::stringstream &)
@@ -600,13 +606,21 @@ HacknetApplication::~HacknetApplication()
 void HacknetApplication::RenderTerminal()
 {
     // Area buffer
-
-    int buffSize = std::min(UIUtil::SIZE_TERMINAL.height - 2, static_cast<int>(commandBuffer.size()));
-    int h = 0;
-    for (auto it = commandBuffer.end() - buffSize; it != commandBuffer.end(); ++it)
+    if (requireUpdate)
     {
-        Util::setCursorPos(UIUtil::START_TERMINAL + Coord(0, h++));
-        std::cout << *it;
+        int buffSize = std::min(UIUtil::SIZE_TERMINAL.height - 2, static_cast<int>(commandBuffer.size()));
+        int h = 0;
+        for (auto it = commandBuffer.end() - buffSize; it != commandBuffer.end(); ++it)
+        {
+            Util::setCursorPos(UIUtil::START_TERMINAL + Coord(0, h++));
+            std::cout << *it;
+        }
+    }
+    else
+    {
+        // only update prompt
+        Util::clearLine(UIUtil::START_TERMINAL + Coord(0, UIUtil::SIZE_TERMINAL.height - 1),
+                        UIUtil::SIZE_TERMINAL.width);
     }
 
     // Area prompt

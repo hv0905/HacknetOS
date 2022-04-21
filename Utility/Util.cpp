@@ -184,3 +184,49 @@ bool Util::EnableVTMode()
     return true;
 }
 
+void Util::clearLine(Coord start, int len)
+{
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD coordScreen = {static_cast<SHORT>(start.x), static_cast<SHORT>(start.y)};    // home for the cursor
+    DWORD cCharsWritten;
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    DWORD dwConSize = len;
+
+
+    // Get the number of character cells in the current buffer.
+
+    // Fill the entire screen with blanks.
+
+    if (!FillConsoleOutputCharacter(hConsole,        // Handle to console screen buffer
+                                    (TCHAR) ' ',     // Character to write to the buffer
+                                    dwConSize,       // Number of cells to write
+                                    coordScreen,     // Coordinates of first cell
+                                    &cCharsWritten))// Receive number of characters written
+    {
+        return;
+    }
+
+    // Get the current text attribute.
+
+    if (!GetConsoleScreenBufferInfo(hConsole, &csbi))
+    {
+        return;
+    }
+
+    // Set the buffer's attributes accordingly.
+
+    if (!FillConsoleOutputAttribute(hConsole,         // Handle to console screen buffer
+                                    csbi.wAttributes, // Character attributes to use
+                                    dwConSize,        // Number of cells to set attribute
+                                    coordScreen,      // Coordinates of first cell
+                                    &cCharsWritten)) // Receive number of characters written
+    {
+        return;
+    }
+
+    // Put the cursor at its home coordinates.
+
+    SetConsoleCursorPosition(hConsole, coordScreen);
+}
+
+

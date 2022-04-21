@@ -85,6 +85,8 @@ int main()
 {
     SetConsoleOutputCP(CP_UTF8);
     Util::EnableVTMode();
+    std::ios_base::sync_with_stdio(false);
+    cout.tie(nullptr);
 
 #pragma warning (disable: 4996)
     std::locale utf8(std::locale(), new std::codecvt_utf8_utf16<wchar_t>);
