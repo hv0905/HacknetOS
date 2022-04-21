@@ -18,3 +18,9 @@ HackFile::~HackFile()
 {
 
 }
+
+HackFile::HackFile(const std::string &name) : name(name)
+{}
+
+HackFile::HackFile()
+{}
