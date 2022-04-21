@@ -7,13 +7,15 @@
 
 #include "HackFile.h"
 
-class HackTxtFile : HackFile
+class HackTxtFile : public HackFile
 {
     std::wstring contain;
 public:
     HackFile *clone() override;
 
     std::string cat() override;
+
+    HackTxtFile(const std::string &name, const std::wstring &contain);
 };
 
 

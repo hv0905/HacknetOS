@@ -3,12 +3,15 @@
 //
 
 #include <iostream>
+#include <ctime>
 #include "HackCommand.h"
 #include "HacknetApplication.h"
 #include "Utility/Util.h"
 #include "Utility/UiUtil.h"
 #include "Utility/StringUtil.h"
 #include "AsciiArt.h"
+#include "HackTxtFile.h"
+#include <algorithm>
 
 const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_help, "help", "显示本帮助列表"),
@@ -275,7 +278,12 @@ void HacknetApplication::processCommand(const std::string &command)
         }
         if (targetCommand->isShouldLog())
         {
-
+            std::string logString = std::to_string(time(nullptr));
+            logString += "@" + localSever->getIp() + "@" + command;
+            std::wstring logContent = StringUtil::s2ws(logString);
+            std::replace(logString.begin(), logString.end(), ' ', '_');
+            CurrentConnected->getRootDirectory().LocateOrCreateSonDir("log")->AppendFile(
+                    new HackTxtFile(logString, logContent));
         }
         auto handler = targetCommand->getHandler();
         if (handler != nullptr)

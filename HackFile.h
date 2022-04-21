@@ -12,10 +12,16 @@ class HackDirectory;
 
 class HackFile
 {
+protected:
     std::string name;
 
     HackDirectory *parentDir;
 public:
+
+    HackFile(const std::string &name);
+
+    HackFile();
+
     HackDirectory *getParentDir();
 
     virtual std::string cat() = 0;
