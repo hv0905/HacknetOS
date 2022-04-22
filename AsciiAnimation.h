@@ -12,15 +12,15 @@
 class AsciiAnimation
 {
     std::vector<AsciiArt> data{};
-    int currentFrame = 0;
-    int count = 0;
 
 public:
     AsciiAnimation();
 
     AsciiAnimation(std::filesystem::path dir, int frames);
 
+    const std::vector<AsciiArt> &getData() const;
 
+    void setData(const std::vector<AsciiArt> &data);
 };
 
 

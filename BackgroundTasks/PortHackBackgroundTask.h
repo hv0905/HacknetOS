@@ -10,7 +10,10 @@
 
 class PortHackBackgroundTask : public HackBackgroundTask
 {
-    static inline AsciiAnimation animation{"ASCII/porthack/", 120};
+    constexpr static const int FRAME_COUNT = 120;
+    static inline AsciiAnimation animation{"ASCII/porthack/", FRAME_COUNT};
+
+    int currentFrame = 0;
 
 public:
 

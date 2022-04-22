@@ -77,6 +77,8 @@ public:
 
     void setRootDirectory(const HackDirectory &rootDirectory);
 
+    void setAccessible(bool accessible);
+
 };
 
 

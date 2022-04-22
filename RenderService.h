@@ -11,14 +11,12 @@ class HacknetApplication;
 
 class RenderService
 {
-
-
     HacknetApplication *ref;
 
 public:
     bool requireUpdate = true;
 
-    RenderService(HacknetApplication *ref);
+    explicit RenderService(HacknetApplication *ref);
 
     void RenderTick();
 

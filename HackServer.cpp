@@ -116,4 +116,9 @@ HackServer::~HackServer()
 
 }
 
+void HackServer::setAccessible(bool accessible)
+{
+    HackServer::accessible = accessible;
+}
+
 

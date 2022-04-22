@@ -62,6 +62,12 @@ public:
 
     void setEnding(bool ending);
 
+    HackServer *getCurrentConnected() const;
+
+    const std::vector<std::string> &getCommandBuffer() const;
+
+    std::vector<std::string> &getCommandBuffer();
+
     std::string getPrompt();
 
     // region handler for global commands

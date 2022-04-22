@@ -22,9 +22,9 @@ const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_ps, "ps", "列出正在运行的程序以及它们的PID"),
         HackCommand(&HacknetApplication::command_kill, "kill", "结束进程", "[PID]"),
         HackCommand(&HacknetApplication::lsDir, "ls", "列出目录所有内容", "", true, true),
-        HackCommand(&HacknetApplication::command_cd, "cd", "切换目录", "<dir>", true, true),
-        HackCommand(&HacknetApplication::command_mv, "mv", "移动或重命名文件", "<src> <dst>", true, true),
-        HackCommand(&HacknetApplication::command_connect, "connect", "连接到服务器", "<target_ip>"),
+        HackCommand(&HacknetApplication::command_cd, "cd", "切换目录", "[dir]", true, true),
+        HackCommand(&HacknetApplication::command_mv, "mv", "移动或重命名文件", "[src] [dst]", true, true),
+        HackCommand(&HacknetApplication::command_connect, "connect", "连接到服务器", "[target_ip]"),
         HackCommand(&HacknetApplication::command_nmap, "nmap", "扫描已连接计算机的活动端口及保安级别"),
         HackCommand(&HacknetApplication::command_dc, "dc", "断开连接"),
         HackCommand(&HacknetApplication::command_cat, "cat", "显示文件内容", "[filename]", true, true),
@@ -555,4 +555,17 @@ HacknetApplication::~HacknetApplication()
     }
 }
 
+HackServer *HacknetApplication::getCurrentConnected() const
+{
+    return CurrentConnected;
+}
 
+const std::vector<std::string> &HacknetApplication::getCommandBuffer() const
+{
+    return commandBuffer;
+}
+
+std::vector<std::string> &HacknetApplication::getCommandBuffer()
+{
+    return commandBuffer;
+}
