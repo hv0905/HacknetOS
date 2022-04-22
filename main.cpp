@@ -102,7 +102,7 @@ int main()
 
     // create a starter
     auto app = StarterCreator::createStarterOS();
-
+    HacknetApplication::current = app;
     // start the event loop
     app->Exec();
 

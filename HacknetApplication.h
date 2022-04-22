@@ -100,7 +100,11 @@ public:
     std::string getPrompt();
     // endregion
 
+    //region static
+    static inline HacknetApplication *current = nullptr;
+
     friend class StarterCreator;
+    //endregion static
 };
 
 #endif //HACKNETOS_HACKNETAPPLICATION_H

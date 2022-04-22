@@ -192,9 +192,6 @@ void Util::clearLine(Coord start, int len)
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     DWORD dwConSize = len;
 
-
-    // Get the number of character cells in the current buffer.
-
     // Fill the entire screen with blanks.
 
     if (!FillConsoleOutputCharacter(hConsole,        // Handle to console screen buffer
