@@ -46,7 +46,7 @@ public:
 
     void Exec();
 
-    void lsDir(std::stringstream &);
+    void command_ls(std::stringstream &);
 
     void rmAll();
 

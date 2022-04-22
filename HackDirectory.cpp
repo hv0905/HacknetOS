@@ -3,6 +3,7 @@
 //
 
 #include "HackDirectory.h"
+#include <algorithm>
 
 HackDirectory::HackDirectory(std::string name) : name(name)
 {
@@ -120,6 +121,18 @@ std::string HackDirectory::getAbsolutePath()
 void HackDirectory::setParentDir(HackDirectory *parentDir)
 {
     HackDirectory::parentDir = parentDir;
+}
+
+void HackDirectory::sort()
+{
+    std::sort(subDirs.begin(), subDirs.end(), [](HackDirectory *a, HackDirectory *b)
+    {
+        return a->getDirName() < b->getDirName();
+    });
+    std::sort(files.begin(), files.end(), [](HackFile *a, HackFile *b)
+    {
+        return a->getName() < b->getName();
+    });
 }
 
 

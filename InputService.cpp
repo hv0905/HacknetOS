@@ -22,20 +22,38 @@ std::optional<std::string> InputService::tickInput()
             {
                 case 72:
                     // TODO CHECK LOG
+                    if (historyMov < history.size())
+                    {
+                        ++historyMov;
+                        position = 0;
+                        commandBuffer = history[history.size() - historyMov];
+                    }
 //                    _input = Input::UP;
                     break;
                 case 80:
                     // TODO CHECK LOG
+                    if (historyMov > 1)
+                    {
+                        --historyMov;
+                        position = 0;
+                        commandBuffer = history[history.size() - historyMov];
+                    }
 //                    _input = Input::DOWN;
                     break;
                 case 75:
                     if (position < commandBuffer.length())
+                    {
                         position++;
+                        historyMov = 0;
+                    }
 //                    _input = Input::LEFT;
                     break;
                 case 77:
                     if (position > 0)
+                    {
                         position--;
+                        historyMov = 0;
+                    }
 //                    _input = Input::RIGHT;
                     break;
                 default:
@@ -47,6 +65,7 @@ std::optional<std::string> InputService::tickInput()
         {
             lastKey = key;
             if (!acceptCommand) continue;
+            historyMov = 0;
             if (key >= 0x20 && key <= 0x7E)
             { // standard character zone
                 if (position != 0)
@@ -77,6 +96,10 @@ std::optional<std::string> InputService::tickInput()
                 {
                     commandBuffer.erase(commandBuffer.end() - position - 1);
                 }
+            }
+            else if (key == 0x09)
+            {
+                // auto complete
             }
         }
     }

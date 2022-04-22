@@ -33,6 +33,8 @@ public:
 
     void AppendDirectory(HackDirectory *dir);
 
+    void sort();
+
     // This method can handle '..' and '.' cases!
     // Only 1 elem, cannot include '/', for path, use locateDir in HApp instead.
     HackDirectory *LocateSonDir(std::string item);

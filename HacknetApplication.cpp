@@ -22,7 +22,7 @@ const HackCommand globalCommands[] = {
                     true, true),
         HackCommand(&HacknetApplication::command_ps, "ps", "列出正在运行的程序以及它们的PID"),
         HackCommand(&HacknetApplication::command_kill, "kill", "结束进程", "[PID]"),
-        HackCommand(&HacknetApplication::lsDir, "ls", "列出目录所有内容", "", true, true),
+        HackCommand(&HacknetApplication::command_ls, "ls", "列出目录所有内容", "", true, true),
         HackCommand(&HacknetApplication::command_cd, "cd", "切换目录", "[dir]", true, true),
         HackCommand(&HacknetApplication::command_mv, "mv", "移动或重命名文件", "[src] [dst]", true, true),
         HackCommand(&HacknetApplication::command_connect, "connect", "连接到服务器", "[target_ip]"),
@@ -59,7 +59,7 @@ void HacknetApplication::Exec()
 }
 
 
-void HacknetApplication::lsDir(std::stringstream &)
+void HacknetApplication::command_ls(std::stringstream &)
 {
 
     if (CurrentDir->getsubDirs().empty() && CurrentDir->getfiles().empty())
@@ -67,7 +67,7 @@ void HacknetApplication::lsDir(std::stringstream &)
         commandBuffer.emplace_back("There is no file and directory in this folder.");
         return;
     }
-
+    CurrentDir->sort();
     commandBuffer.emplace_back("-----------------------------");
     commandBuffer.push_back("The contain of " + CurrentConnected->getIp() + "@>" + CurrentDir->getAbsolutePath());
     for (auto i: CurrentDir->getsubDirs())
@@ -76,7 +76,7 @@ void HacknetApplication::lsDir(std::stringstream &)
     }
     for (auto i: CurrentDir->getfiles())
     {
-        commandBuffer.push_back(":" + i->getName());
+        commandBuffer.push_back(i->getName());
     }
     commandBuffer.emplace_back("-----------------------------");
 }
