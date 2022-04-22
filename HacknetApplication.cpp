@@ -9,6 +9,7 @@
 #include "Utility/Util.h"
 #include "Utility/StringUtil.h"
 #include "HackTxtFile.h"
+#include "HackBinFile.h"
 #include <algorithm>
 
 const HackCommand globalCommands[] = {
@@ -351,41 +352,101 @@ void HacknetApplication::command_dc(std::stringstream &)
 
 void HacknetApplication::command_mv(std::stringstream &commandStream)
 {
-    std::string firstCommand, secondCommand;
-    commandStream >> firstCommand >> secondCommand;
-    if (secondCommand.empty() || firstCommand.empty())
+    std::string src, dst;
+    commandStream >> src >> dst;
+    if (dst.empty() || src.empty())
     {
         commandBuffer.emplace_back("Enter the wrong command");
         return;
     }
-    auto dir = locateDir(firstCommand);
-    auto file = locateFile(firstCommand);
+    auto dir = locateDir(src);
+    auto file = locateFile(src);
     if (file != nullptr)
     {
-        if (secondCommand == "..")
+        if (dst.back() == '/')
         {
-            HackDirectory *parentDir = file->getParentDir();
-            parentDir->getfiles().erase
-                    (find(parentDir->getfiles().begin(), parentDir->getfiles().end(), file));
-            parentDir->getParentDir()->getfiles().push_back(file);
+            // move to dir
+            auto newDir = locateDir(dst);
+            if (newDir == nullptr)
+            {
+                commandBuffer.emplace_back("Destination directory not found");
+                return;
+            }
+            file->getParentDir()->getfiles().erase(
+                    std::find(file->getParentDir()->getfiles().begin(), file->getParentDir()->getfiles().end(), file));
+            newDir->AppendFile(file);
         }
         else
         {
-            file->setName(secondCommand);
+            // move & rename
+            // /home/dsf
+            HackDirectory *newDir;
+            int pos = dst.find_last_of('/');
+            if (pos == std::string::npos)
+            {
+                newDir = CurrentDir;
+                pos = -1;
+            }
+            else
+            {
+                newDir = locateDir(dst.substr(0, pos + 1));
+            }
+
+            if (newDir == nullptr)
+            {
+                commandBuffer.emplace_back("Destination directory not found");
+                return;
+            }
+            file->getParentDir()->getfiles().erase(
+                    std::find(file->getParentDir()->getfiles().begin(), file->getParentDir()->getfiles().end(), file));
+            file->setName(dst.substr(pos + 1));
+            newDir->AppendFile(file);
         }
     }
     else if (dir != nullptr)
     {
-        if (secondCommand == "..")
+        if (dir->getParentDir() == nullptr)
         {
-            HackDirectory *parentDir = dir->getParentDir();
-            parentDir->getsubDirs().erase
-                    (find(parentDir->getsubDirs().begin(), parentDir->getsubDirs().end(), dir));
-            parentDir->getParentDir()->getfiles().push_back(file);
+            commandBuffer.emplace_back("Can't move root directory");
+            return;
+        }
+        auto dstDir = locateDir(dst);
+
+        if (dstDir == nullptr)
+        {
+            // Move & rename
+            if (dst.back() == '/')
+            {
+                dst.pop_back();
+            }
+            dir->getParentDir()->getsubDirs().erase(
+                    std::find(dir->getParentDir()->getsubDirs().begin(), dir->getParentDir()->getsubDirs().end(), dir));
+
+            int pos = dst.find_last_of('/');
+            if (pos == std::string::npos)
+            {
+                dstDir = CurrentDir;
+                pos = -1;
+            }
+            else
+            {
+                dstDir = locateDir(dst.substr(0, pos + 1));
+            }
+
+            if (dstDir == nullptr)
+            {
+                commandBuffer.emplace_back("Destination directory not found");
+                return;
+            }
+            dir->setDirName(dst.substr(pos + 1));
+            dstDir->AppendDirectory(dir);
         }
         else
         {
-            dir->setDirName(secondCommand);
+            // Move to dst directly
+            dir->getParentDir()->getsubDirs().erase(
+                    std::find(dir->getParentDir()->getsubDirs().begin(), dir->getParentDir()->getsubDirs().end(), dir));
+            dstDir->AppendDirectory(dir);
         }
     }
     else
@@ -397,19 +458,23 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
 
 void HacknetApplication::command_scp(std::stringstream &command)
 {
-    std::string dirName, address;
-    command >> dirName;
-    command >> address;
+    std::string src, dst;
+    command >> src;
+    command >> dst;
     HackFile *copied;
-    copied = locateFile(dirName)->clone();
-    if (locateDir(address, true) == nullptr)
+    copied = locateFile(src)->clone();
+    if (dst.empty())
     {
-        commandBuffer.emplace_back("Don't find " + address);
+        dst = typeid(copied) == typeid(HackBinFile) ? "/bin/" : "/home/";
+    }
+    if (locateDir(dst, true) == nullptr)
+    {
+        commandBuffer.emplace_back("Don't find " + dst);
         delete copied;
     }
     else
     {
-        locateDir(address, true)->getfiles().push_back(copied);
+        locateDir(dst, true)->AppendFile(copied);
     }
 }
 

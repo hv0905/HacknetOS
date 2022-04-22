@@ -3,12 +3,19 @@
 //
 
 #include "StarterCreator.h"
+#include "HackTxtFile.h"
 
 HacknetApplication *StarterCreator::createStarterOS()
 {
     auto app = new HacknetApplication();
     auto *local = new HackServer("127.0.0.1", "Aiden Pearce", 4);
-    local->getRootDirectory().AppendDirectory(new HackDirectory("home"));
+    auto local_home = new HackDirectory("home");
+    local_home->AppendDirectory(new HackDirectory("Sub1"));
+    local_home->AppendFile(new HackTxtFile("file1.txt", L"Hello World!"));
+    local_home->AppendFile(new HackTxtFile("file2.txt", L"Hello World!"));
+    local_home->AppendFile(new HackTxtFile("file3.txt", L"Hello World!"));
+
+    local->getRootDirectory().AppendDirectory(local_home);
     local->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
     local->getRootDirectory().AppendDirectory(new HackDirectory("log"));
     local->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
