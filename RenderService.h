@@ -23,6 +23,12 @@ public:
     void RenderStatusBar();
 
     void RenderTerminal();
+
+    void RenderMemory();
+
+    bool isRequireUpdate() const;
+
+    void setRequireUpdate(bool requireUpdate);
 };
 
 

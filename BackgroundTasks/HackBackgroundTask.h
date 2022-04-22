@@ -12,6 +12,7 @@ class HacknetApplication; // required for forward declaration
 
 class HackBackgroundTask
 {
+    static inline int pidPool = 0;
 protected:
     HacknetApplication *ref;
     std::string thread_name;
@@ -20,10 +21,10 @@ protected:
 
 public:
 
-    HackBackgroundTask(HacknetApplication *ref, const std::string &threadName, int pid) : ref(ref),
-                                                                                          thread_name(threadName),
-                                                                                          pid(pid),
-                                                                                          stopped(false)
+    HackBackgroundTask(HacknetApplication *ref, const std::string &threadName) : ref(ref),
+                                                                                 thread_name(threadName),
+                                                                                 pid(++pidPool),
+                                                                                 stopped(false)
     {}
 
     virtual void drawMemory(Coord begin) = 0;

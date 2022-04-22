@@ -17,6 +17,8 @@ class PortHackBackgroundTask : public HackBackgroundTask
 
 public:
 
+    PortHackBackgroundTask(HacknetApplication *ref, const std::string &threadName);
+
     void drawMemory(Coord begin) override;
 
     int getMemorySize() override;

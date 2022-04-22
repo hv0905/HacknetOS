@@ -134,13 +134,13 @@ void Util::moveCursorPos(int vecX, int vecY)
 
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    Position.X = initPos.first + vecX;
-    Position.Y = initPos.second + vecY;
+    Position.X = initPos.x + vecX;
+    Position.Y = initPos.y + vecY;
 
     SetConsoleCursorPosition(hOut, Position);
 }
 
-std::pair<int, int> Util::getCursorPos()
+Coord Util::getCursorPos()
 {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     HANDLE hOut;
@@ -153,7 +153,7 @@ std::pair<int, int> Util::getCursorPos()
     Position.X = csbi.dwCursorPosition.X;
     Position.Y = csbi.dwCursorPosition.Y;
 
-    return std::pair<int, int>(Position.X, Position.Y);
+    return Coord(Position.X, Position.Y);
 }
 
 void Util::setColorAttr(int attr)
@@ -184,7 +184,7 @@ bool Util::EnableVTMode()
     return true;
 }
 
-void Util::clearLine(Coord start, int len)
+void Util::clearLine(Coord start, int len, bool clearAttr)
 {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD coordScreen = {static_cast<SHORT>(start.x), static_cast<SHORT>(start.y)};    // home for the cursor
@@ -211,19 +211,28 @@ void Util::clearLine(Coord start, int len)
     }
 
     // Set the buffer's attributes accordingly.
-
-    if (!FillConsoleOutputAttribute(hConsole,         // Handle to console screen buffer
-                                    csbi.wAttributes, // Character attributes to use
-                                    dwConSize,        // Number of cells to set attribute
-                                    coordScreen,      // Coordinates of first cell
-                                    &cCharsWritten)) // Receive number of characters written
+    if (clearAttr)
     {
-        return;
+        if (!FillConsoleOutputAttribute(hConsole,         // Handle to console screen buffer
+                                        csbi.wAttributes, // Character attributes to use
+                                        dwConSize,        // Number of cells to set attribute
+                                        coordScreen,      // Coordinates of first cell
+                                        &cCharsWritten)) // Receive number of characters written
+        {
+            return;
+        }
     }
-
     // Put the cursor at its home coordinates.
 
     SetConsoleCursorPosition(hConsole, coordScreen);
+}
+
+void Util::clearArea(Coord start, Size2D size)
+{
+    for (int i = 0; i < size.height; ++i)
+    {
+        clearLine(Coord(start.x, start.y + i), size.width);
+    }
 }
 
 

@@ -8,7 +8,7 @@
 HacknetApplication *StarterCreator::createStarterOS()
 {
     auto app = new HacknetApplication();
-    auto *local = new HackServer("127.0.0.1", "Aiden Pearce", 4);
+    auto *local = new HackServer("127.0.0.1", "Aiden Pearce", 0);
     auto local_home = new HackDirectory("home");
     local_home->AppendDirectory(new HackDirectory("Sub1"));
     local_home->AppendFile(new HackTxtFile("file1.txt", L"Hello World!"));

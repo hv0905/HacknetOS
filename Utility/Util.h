@@ -58,9 +58,11 @@ namespace Util
 
     void clearScreen();
 
-    void clearLine(Coord start, int len);
+    void clearLine(Coord start, int len, bool clearAttr = true);
 
-    std::pair<int, int> getCursorPos();
+    void clearArea(Coord start, Size2D size);
+
+    Coord getCursorPos();
 
     void setCursorPos(int x, int y);
 

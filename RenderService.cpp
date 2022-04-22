@@ -22,6 +22,7 @@ void RenderService::RenderTick()
         UIUtil::drawFramework();
         RenderStatusBar();
     }
+    RenderMemory();
     RenderTerminal();
 
     requireUpdate = false;
@@ -95,4 +96,39 @@ void RenderService::RenderStatusBar()
 RenderService::RenderService(HacknetApplication *ref) : ref(ref)
 {
 
+}
+
+void RenderService::RenderMemory()
+{
+    int totalHeight = 0;
+    for (auto &item: ref->backgroundTasks)
+    {
+        if (item->isStopped())
+        {
+            continue;
+        }
+        // Draw Title
+        Util::setCursorPos(UIUtil::START_MEMORYPANEL + Coord(0, totalHeight));
+        Util::setColorAttr(Util::BG_LIGHT_BLUE);
+        Util::setColorAttr(Util::FG_BLACK);
+        std::cout << "App: " << item->getThreadName();
+        Util::clearLine(Util::getCursorPos(),
+                        UIUtil::SIZE_MEMORYPANEL.width - Util::getCursorPos().x + UIUtil::START_MEMORYPANEL.x);
+        Util::setColorAttr(Util::ATTR_NORMAL);
+        item->drawMemory(UIUtil::START_MEMORYPANEL + Coord(0, totalHeight + 1));
+        totalHeight += item->getMemorySize() + 1;
+    }
+    // clear empty area
+    Util::clearArea(UIUtil::START_MEMORYPANEL + Coord(0, totalHeight),
+                    Size2D(UIUtil::SIZE_MEMORYPANEL.width, UIUtil::SIZE_MEMORYPANEL.height - totalHeight));
+}
+
+bool RenderService::isRequireUpdate() const
+{
+    return requireUpdate;
+}
+
+void RenderService::setRequireUpdate(bool requireUpdate)
+{
+    RenderService::requireUpdate = requireUpdate;
 }

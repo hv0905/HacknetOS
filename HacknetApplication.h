@@ -54,7 +54,7 @@ public:
 
     void command_Scan(std::stringstream &s);
 
-    void command_hackPort(std::stringstream &s);
+    void command_porthack(std::stringstream &s);
 
     void processCommand(const std::string &command);
 
@@ -67,6 +67,8 @@ public:
     const std::vector<std::string> &getCommandBuffer() const;
 
     std::vector<std::string> &getCommandBuffer();
+
+    RenderService &getRenderService();
 
     std::string getPrompt();
 
