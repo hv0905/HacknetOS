@@ -664,3 +664,62 @@ RenderService &HacknetApplication::getRenderService()
 {
     return renderService;
 }
+
+std::string HacknetApplication::getCommandAutoComplete(std::stringstream &commandStream)
+{
+    std::string command;
+    commandStream >> command;
+    std::string result;
+    std::vector<std::string> possibleResult;
+    for (auto i: globalCommands)
+    {
+        if (command == i.getPrefix().substr(0, command.size()))
+        {
+            possibleResult.emplace_back(i.getPrefix());
+        }
+    }
+    for (int i = 1; i < possibleResult.size(); i++)
+    {
+        commandBuffer.emplace_back(possibleResult[i]);
+    }
+    if(possibleResult.empty())
+    return result;
+    else
+        return possibleResult[0];
+}
+
+std::string HacknetApplication::getFilenameAutoComplete(std::stringstream &commandStream)
+{
+    std::string command;
+    commandStream>>command;
+    int pos=-1;
+    std::string result;
+    bool flag = false;
+    std::vector<std::string> possibleResult;
+    for(int i=0;i<command.size();i++)
+        if(i=='/')
+            pos=i;
+    HackDirectory *newDir=CurrentDir;
+    for (auto i: newDir->getsubDirs())
+    {
+        if (command == i->getDirName().substr(0, command.size()))
+        {
+            possibleResult.emplace_back(i->getDirName());
+        }
+    }
+    for (auto i: newDir->getfiles())
+    {
+        if (command == i->getName().substr(0, command.size()))
+        {
+            possibleResult.emplace_back(i->getName());
+        }
+    }
+    for (int i=1;i<possibleResult.size();i++)
+    {
+        commandBuffer.emplace_back(possibleResult[i]);
+    }
+    if(possibleResult.empty())
+        return result;
+    else
+        return possibleResult[0];
+}

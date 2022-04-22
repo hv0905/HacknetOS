@@ -98,6 +98,10 @@ public:
 
     void command_cat(std::stringstream &commandStream);
 
+    std::string getCommandAutoComplete(std::stringstream &commandStream);
+
+    std::string getFilenameAutoComplete(std::stringstream &commandStream);
+
     // endregion
 
     //region static
