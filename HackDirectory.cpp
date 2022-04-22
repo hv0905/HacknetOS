@@ -105,6 +105,23 @@ HackDirectory::~HackDirectory()
     }
 }
 
+std::string HackDirectory::getAbsolutePath()
+{
+    if (parentDir == nullptr)
+    {
+        return "/";
+    }
+    else
+    {
+        return parentDir->getAbsolutePath() + name + "/";
+    }
+}
+
+void HackDirectory::setParentDir(HackDirectory *parentDir)
+{
+    HackDirectory::parentDir = parentDir;
+}
+
 
 
 

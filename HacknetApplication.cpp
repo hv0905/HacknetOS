@@ -33,14 +33,13 @@ const HackCommand globalCommands[] = {
 };
 
 
-
 void HacknetApplication::Exec()
 {
     // First, connect to local server
     internalConnect(localSever);
     inputService.setAcceptCommand(true);
     renderService.requireUpdate = true;
-    while(true)
+    while (true)
     {
         renderService.RenderTick();
         auto result = inputService.tickInput();
@@ -59,7 +58,6 @@ void HacknetApplication::Exec()
 }
 
 
-
 void HacknetApplication::lsDir(std::stringstream &)
 {
 
@@ -70,7 +68,7 @@ void HacknetApplication::lsDir(std::stringstream &)
     }
 
     commandBuffer.emplace_back("-----------------------------");
-    commandBuffer.push_back("The contain of " + CurrentConnected->getIp() + "@>" + CurrentDir->getDirName());
+    commandBuffer.push_back("The contain of " + CurrentConnected->getIp() + "@>" + CurrentDir->getAbsolutePath());
     for (auto i: CurrentDir->getsubDirs())
     {
         commandBuffer.push_back(":" + i->getDirName());
@@ -197,7 +195,7 @@ void HacknetApplication::command_connect(std::stringstream &ss)
     }
 }
 
-void HacknetApplication::command_hackPort(std::stringstream&s)
+void HacknetApplication::command_hackPort(std::stringstream &s)
 {
     HacknetApplication::commandBuffer.emplace_back("PortHack Initialized --Running");
     if (CurrentConnected->checkIfSecureBroken())
@@ -206,7 +204,7 @@ void HacknetApplication::command_hackPort(std::stringstream&s)
         HacknetApplication::commandBuffer.emplace_back("--PortHack Fail--");
 }
 
-void HacknetApplication::command_Scan(std::stringstream&s)
+void HacknetApplication::command_Scan(std::stringstream &s)
 {
     HacknetApplication::commandBuffer.emplace_back("Scanning For " + CurrentConnected->getIp());
     if (CurrentConnected->getConnectedNodes().empty())
@@ -523,7 +521,7 @@ std::string HacknetApplication::getPrompt()
     }
     else
     {
-        return CurrentConnected->getIp() + "@> ";
+        return CurrentConnected->getIp() + "@" + CurrentDir->getDirName() + "> ";
     }
 }
 

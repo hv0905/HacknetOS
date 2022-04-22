@@ -13,7 +13,7 @@
 class HackDirectory
 {
 public:
-    HackDirectory(std::string name = "root");
+    HackDirectory(std::string name = "[root]");
 
     std::string getDirName();
 
@@ -27,6 +27,8 @@ public:
 
     std::string setDirName(std::string newName);
 
+    void setParentDir(HackDirectory *parentDir);
+
     void AppendFile(HackFile *file);
 
     void AppendDirectory(HackDirectory *dir);
@@ -38,6 +40,8 @@ public:
     HackDirectory *LocateOrCreateSonDir(std::string item);
 
     HackFile *LocateFile(std::string item);
+
+    std::string getAbsolutePath();
 
     ~HackDirectory();
 
