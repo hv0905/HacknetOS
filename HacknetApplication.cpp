@@ -372,6 +372,13 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
                 commandBuffer.emplace_back("Destination directory not found");
                 return;
             }
+            std::string fileName=file->getName();
+            auto it = std::find_if(newDir->getfiles().begin(), newDir->getfiles().end(), [&fileName](HackFile *t)
+            {
+                return t->getName() ==fileName ;
+            });
+            if(it!=newDir->getfiles().end())
+                file->setName("_"+file->getName());
             file->getParentDir()->getfiles().erase(
                     std::find(file->getParentDir()->getfiles().begin(), file->getParentDir()->getfiles().end(), file));
             newDir->AppendFile(file);
@@ -397,6 +404,13 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
                 commandBuffer.emplace_back("Destination directory not found");
                 return;
             }
+            std::string fileName=file->getName();
+            auto it = std::find_if(newDir->getfiles().begin(), newDir->getfiles().end(), [&fileName](HackFile *t)
+            {
+                return t->getName() ==fileName ;
+            });
+            if(it!=newDir->getfiles().end())
+                file->setName("_"+file->getName());
             file->getParentDir()->getfiles().erase(
                     std::find(file->getParentDir()->getfiles().begin(), file->getParentDir()->getfiles().end(), file));
             file->setName(dst.substr(pos + 1));
@@ -474,6 +488,14 @@ void HacknetApplication::command_scp(std::stringstream &command)
     }
     else
     {
+        auto newDir= locateDir(dst,true);
+        std::string fileName=copied->getName();
+        auto it = std::find_if(newDir->getfiles().begin(), newDir->getfiles().end(), [&fileName](HackFile *t)
+        {
+            return t->getName() ==fileName ;
+        });
+        if(it!=newDir->getfiles().end())
+            copied->setName("_"+copied->getName());;
         locateDir(dst, true)->AppendFile(copied);
     }
 }
