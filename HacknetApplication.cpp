@@ -7,9 +7,7 @@
 #include "HackCommand.h"
 #include "HacknetApplication.h"
 #include "Utility/Util.h"
-#include "Utility/UiUtil.h"
 #include "Utility/StringUtil.h"
-#include "AsciiArt.h"
 #include "HackTxtFile.h"
 #include <algorithm>
 
@@ -34,27 +32,23 @@ const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_clear, "clear", "清除终端")
 };
 
-const AsciiArt serverLogos[] = {
-        AsciiArt("ASCII/laptop.ascii"),
-        AsciiArt("ASCII/server.ascii"),
-};
+
 
 void HacknetApplication::Exec()
 {
     // First, connect to local server
     internalConnect(localSever);
     inputService.setAcceptCommand(true);
-    requireUpdate= true;
-    Draw();
+    renderService.requireUpdate = true;
     while(true)
     {
-        Draw();
+        renderService.RenderTick();
         auto result = inputService.tickInput();
         if (result.has_value())
         {
             // process the incoming command
             processCommand(result.value());
-            requireUpdate = true;
+            renderService.requireUpdate = true;
         }
         Util::sleep(50);
         if (ending)
@@ -64,18 +58,7 @@ void HacknetApplication::Exec()
     }
 }
 
-void HacknetApplication::Draw()
-{
-    if (requireUpdate)
-    {
-        Util::clearScreen();
-        UIUtil::drawFramework();
-        RenderStatusBar();
-    }
-    RenderTerminal();
 
-    requireUpdate = false;
-}
 
 void HacknetApplication::lsDir(std::stringstream &)
 {
@@ -442,13 +425,13 @@ void HacknetApplication::internalDisconnect()
 HackDirectory *HacknetApplication::locateDir(const std::string &path, bool local)
 {
     auto vec = StringUtil::split(path, "/");
-    if (vec.size() == 0)
+    if (vec.empty())
     {
         return nullptr;
     }
 
     HackDirectory *head;
-    if (vec[0] == "")
+    if (vec[0].empty())
     {
         head = local ? &(localSever->getRootDirectory()) : &(CurrentConnected->getRootDirectory());
         vec.erase(vec.begin());
@@ -458,7 +441,7 @@ HackDirectory *HacknetApplication::locateDir(const std::string &path, bool local
         head = CurrentDir;
     }
 
-    if (vec.back() == "")
+    if (vec.back().empty())
     {
         vec.pop_back();
     }
@@ -532,47 +515,6 @@ void HacknetApplication::command_cat(std::stringstream &commandStream)
     }
 }
 
-void HacknetApplication::RenderStatusBar()
-{
-    // write time
-
-    if (CurrentConnected == nullptr)
-    {
-        // disconnected
-        Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(84, 2));
-        std::cout << "已断开连接";
-    }
-    else
-    {
-        // connected
-        serverLogos[1].draw(UIUtil::START_STATUSPANEL);
-        Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 0));
-        std::cout << "连接到";
-        Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 1));
-        std::cout << CurrentConnected->getName();
-        Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 2));
-        std::cout << "@" << CurrentConnected->getIp();
-        if (CurrentConnected->isAccessible())
-        {
-            // :: 您是本系统的管理员 ::
-            Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 4));
-            Util::setColorAttr(Util::BG_LIGHT_BLUE);
-            Util::setColorAttr(Util::FG_BLACK);
-            // 72
-            for (int i = 0; i < 72; ++i)
-            {
-                std::cout << ' ';
-            }
-            std::cout << ":: 您是本系统的管理员 ::";
-            for (int i = 0; i < 72; ++i)
-            {
-                std::cout << ' ';
-            }
-            Util::setColorAttr(Util::ATTR_NORMAL);
-        }
-    }
-}
-
 std::string HacknetApplication::getPrompt()
 {
     if (CurrentConnected == nullptr)
@@ -613,26 +555,4 @@ HacknetApplication::~HacknetApplication()
     }
 }
 
-void HacknetApplication::RenderTerminal()
-{
-    // Area buffer
-    if (requireUpdate)
-    {
-        int buffSize = std::min(UIUtil::SIZE_TERMINAL.height - 2, static_cast<int>(commandBuffer.size()));
-        int h = 0;
-        for (auto it = commandBuffer.end() - buffSize; it != commandBuffer.end(); ++it)
-        {
-            Util::setCursorPos(UIUtil::START_TERMINAL + Coord(0, h++));
-            std::cout << *it;
-        }
-    }
-    else
-    {
-        // only update prompt
-        Util::clearLine(UIUtil::START_TERMINAL + Coord(0, UIUtil::SIZE_TERMINAL.height - 1),
-                        UIUtil::SIZE_TERMINAL.width);
-    }
 
-    // Area prompt
-    inputService.renderCMD(getPrompt(), UIUtil::START_TERMINAL + Coord(0, UIUtil::SIZE_TERMINAL.height - 1));
-}

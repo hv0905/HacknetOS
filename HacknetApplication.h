@@ -11,21 +11,21 @@
 #include "HackDirectory.h"
 #include "HackServer.h"
 #include "InputService.h"
+#include "RenderService.h"
 #include "BackgroundTasks/HackBackgroundTask.h"
 
 class HacknetApplication
 {
     bool ending = false;
     int gameStatus = 0;
-    bool doRender = true;
 
-    bool requireUpdate = true;
     HackDirectory *CurrentDir;
     HackServer *CurrentConnected;
     HackServer *localSever;
     int missionId{};
     std::vector<std::string> commandBuffer{};
     InputService inputService{};
+    RenderService renderService{this};
     std::vector<HackBackgroundTask *> backgroundTasks{};
     std::vector<HackServer *> serverList{};
     std::vector<std::thread *> threadPool{};
@@ -46,8 +46,6 @@ public:
 
     void Exec();
 
-    void Draw();
-
     void lsDir(std::stringstream &);
 
     void rmAll();
@@ -63,6 +61,8 @@ public:
     [[nodiscard]] bool isEnding() const;
 
     void setEnding(bool ending);
+
+    std::string getPrompt();
 
     // region handler for global commands
 
@@ -92,18 +92,14 @@ public:
 
     // endregion
 
-    // region Method for render
-    void RenderStatusBar();
-
-    void RenderTerminal();
-
-    std::string getPrompt();
-    // endregion
-
     //region static
     static inline HacknetApplication *current = nullptr;
 
     friend class StarterCreator;
+
+    friend class RenderService;
+
+    friend class InputService;
     //endregion static
 };
 
