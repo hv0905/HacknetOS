@@ -3,6 +3,7 @@
 //
 
 #include "HackTxtFile.h"
+#include "Utility/StringUtil.h"
 
 HackFile *HackTxtFile::clone()
 {
@@ -11,7 +12,7 @@ HackFile *HackTxtFile::clone()
 
 std::string HackTxtFile::cat()
 {
-    return "Not Implement Yet";
+    return StringUtil::ws2s(contain);
 }
 
 HackTxtFile::HackTxtFile(const std::string &name, const std::wstring &contain) : contain(contain), HackFile(name)

@@ -665,11 +665,8 @@ RenderService &HacknetApplication::getRenderService()
     return renderService;
 }
 
-std::string HacknetApplication::getCommandAutoComplete(std::stringstream &commandStream)
+std::string HacknetApplication::getCommandAutoComplete(const std::string &command)
 {
-    std::string command;
-    commandStream >> command;
-    std::string result;
     std::vector<std::string> possibleResult;
     for (auto i: globalCommands)
     {
@@ -683,23 +680,20 @@ std::string HacknetApplication::getCommandAutoComplete(std::stringstream &comman
         commandBuffer.emplace_back(possibleResult[i]);
     }
     if(possibleResult.empty())
-    return result;
+        return command;
     else
         return possibleResult[0];
 }
 
-std::string HacknetApplication::getFilenameAutoComplete(std::stringstream &commandStream)
+std::string HacknetApplication::getFilenameAutoComplete(const std::string &command)
 {
-    std::string command;
-    commandStream>>command;
-    int pos=-1;
-    std::string result;
+    int pos = -1;
     bool flag = false;
     std::vector<std::string> possibleResult;
-    for(int i=0;i<command.size();i++)
-        if(i=='/')
-            pos=i;
-    HackDirectory *newDir=CurrentDir;
+    for (int i = 0; i < command.size(); i++)
+        if (i == '/')
+            pos = i;
+    HackDirectory *newDir = CurrentDir;
     for (auto i: newDir->getsubDirs())
     {
         if (command == i->getDirName().substr(0, command.size()))
@@ -719,7 +713,7 @@ std::string HacknetApplication::getFilenameAutoComplete(std::stringstream &comma
         commandBuffer.emplace_back(possibleResult[i]);
     }
     if(possibleResult.empty())
-        return result;
+        return command;
     else
         return possibleResult[0];
 }

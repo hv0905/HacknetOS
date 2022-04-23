@@ -98,9 +98,9 @@ public:
 
     void command_cat(std::stringstream &commandStream);
 
-    std::string getCommandAutoComplete(std::stringstream &commandStream);
+    std::string getCommandAutoComplete(const std::string &command);
 
-    std::string getFilenameAutoComplete(std::stringstream &commandStream);
+    std::string getFilenameAutoComplete(const std::string &command);
 
     // endregion
 

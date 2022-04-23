@@ -234,5 +234,3 @@ void Util::clearArea(Coord start, Size2D size)
         clearLine(Coord(start.x, start.y + i), size.width);
     }
 }
-
-

@@ -8,6 +8,7 @@
 #include "InputService.h"
 #include "Utility/StringUtil.h"
 #include "Utility/Util.h"
+#include "HacknetApplication.h"
 
 std::optional<std::string> InputService::tickInput()
 {
@@ -100,6 +101,21 @@ std::optional<std::string> InputService::tickInput()
             else if (key == 0x09)
             {
                 // auto complete
+                if (position != 0) continue;
+                StringUtil::ltrim(commandBuffer);
+                auto last_space = commandBuffer.find_last_of(' ');
+                if (last_space != std::string::npos)
+                {
+                    // file
+                    auto res = HacknetApplication::current->getFilenameAutoComplete(
+                            commandBuffer.substr(last_space + 1));
+                    commandBuffer = commandBuffer.substr(0, last_space + 1) + res;
+                }
+                else
+                {
+                    // command
+                    commandBuffer = HacknetApplication::current->getCommandAutoComplete(commandBuffer);
+                }
             }
         }
     }

@@ -23,9 +23,6 @@ class InputService
     int historyMov = 0;
     std::vector<std::string> history;
 
-    AcceptedCommandCallback *callback;
-
-
 public:
     InputService();
 
