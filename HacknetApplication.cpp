@@ -2,7 +2,6 @@
 // Created by epiphyllum on 22/04/09.
 //
 
-#include <iostream>
 #include <ctime>
 #include "HackCommand.h"
 #include "HacknetApplication.h"
@@ -377,13 +376,13 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
                 commandBuffer.emplace_back("Destination directory not found");
                 return;
             }
-            std::string fileName=file->getName();
+            std::string fileName = file->getName();
             auto it = std::find_if(newDir->getfiles().begin(), newDir->getfiles().end(), [&fileName](HackFile *t)
             {
-                return t->getName() ==fileName ;
+                return t->getName() == fileName;
             });
-            if(it!=newDir->getfiles().end())
-                file->setName("_"+file->getName());
+            if (it != newDir->getfiles().end())
+                file->setName("_" + file->getName());
             file->getParentDir()->getfiles().erase(
                     std::find(file->getParentDir()->getfiles().begin(), file->getParentDir()->getfiles().end(), file));
             newDir->AppendFile(file);
@@ -409,13 +408,13 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
                 commandBuffer.emplace_back("Destination directory not found");
                 return;
             }
-            std::string fileName=file->getName();
+            std::string fileName = file->getName();
             auto it = std::find_if(newDir->getfiles().begin(), newDir->getfiles().end(), [&fileName](HackFile *t)
             {
-                return t->getName() ==fileName ;
+                return t->getName() == fileName;
             });
-            if(it!=newDir->getfiles().end())
-                file->setName("_"+file->getName());
+            if (it != newDir->getfiles().end())
+                file->setName("_" + file->getName());
             file->getParentDir()->getfiles().erase(
                     std::find(file->getParentDir()->getfiles().begin(), file->getParentDir()->getfiles().end(), file));
             file->setName(dst.substr(pos + 1));
@@ -493,14 +492,14 @@ void HacknetApplication::command_scp(std::stringstream &command)
     }
     else
     {
-        auto newDir= locateDir(dst,true);
-        std::string fileName=copied->getName();
+        auto newDir = locateDir(dst, true);
+        std::string fileName = copied->getName();
         auto it = std::find_if(newDir->getfiles().begin(), newDir->getfiles().end(), [&fileName](HackFile *t)
         {
-            return t->getName() ==fileName ;
+            return t->getName() == fileName;
         });
-        if(it!=newDir->getfiles().end())
-            copied->setName("_"+copied->getName());;
+        if (it != newDir->getfiles().end())
+            copied->setName("_" + copied->getName());;
         locateDir(dst, true)->AppendFile(copied);
     }
 }
@@ -668,9 +667,9 @@ RenderService &HacknetApplication::getRenderService()
 std::string HacknetApplication::getCommandAutoComplete(const std::string &command)
 {
     std::vector<std::string> possibleResult;
-    for (auto i: globalCommands)
+    for (const auto &i: globalCommands)
     {
-        if (command == i.getPrefix().substr(0, command.size()))
+        if (i.getPrefix().rfind(command, 0) == 0)
         {
             possibleResult.emplace_back(i.getPrefix());
         }
@@ -678,8 +677,9 @@ std::string HacknetApplication::getCommandAutoComplete(const std::string &comman
     for (int i = 1; i < possibleResult.size(); i++)
     {
         commandBuffer.emplace_back(possibleResult[i]);
+        renderService.requireUpdate = true;
     }
-    if(possibleResult.empty())
+    if (possibleResult.empty())
         return command;
     else
         return possibleResult[0];
@@ -687,32 +687,41 @@ std::string HacknetApplication::getCommandAutoComplete(const std::string &comman
 
 std::string HacknetApplication::getFilenameAutoComplete(const std::string &command)
 {
-    int pos = -1;
+    auto pos = command.find_last_of('/');
     bool flag = false;
     std::vector<std::string> possibleResult;
-    for (int i = 0; i < command.size(); i++)
-        if (i == '/')
-            pos = i;
-    HackDirectory *newDir = CurrentDir;
+    HackDirectory *newDir;
+    if (pos == std::string::npos)
+    {
+        newDir = CurrentDir;
+        pos = -1;
+    }
+    else
+    {
+        newDir = locateDir(command.substr(0, pos));
+    }
+    std::string right = command.substr(pos + 1);
+
     for (auto i: newDir->getsubDirs())
     {
-        if (command == i->getDirName().substr(0, command.size()))
+        if (i->getDirName().rfind(right, 0) == 0)
         {
             possibleResult.emplace_back(i->getDirName());
         }
     }
     for (auto i: newDir->getfiles())
     {
-        if (command == i->getName().substr(0, command.size()))
+        if (i->getName().rfind(right, 0) == 0)
         {
             possibleResult.emplace_back(i->getName());
         }
     }
-    for (int i=1;i<possibleResult.size();i++)
+    for (int i = 1; i < possibleResult.size(); i++)
     {
         commandBuffer.emplace_back(possibleResult[i]);
+        renderService.requireUpdate = true;
     }
-    if(possibleResult.empty())
+    if (possibleResult.empty())
         return command;
     else
         return possibleResult[0];
