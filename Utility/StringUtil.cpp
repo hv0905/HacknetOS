@@ -4,6 +4,7 @@
 
 #include "StringUtil.h"
 #include <cctype>
+#include <algorithm>
 #include <Windows.h>
 
 void StringUtil::ltrim(std::string &s)
@@ -115,3 +116,16 @@ std::string StringUtil::ws2s(const std::wstring &ws)
     delete[] buf;
     return r;
 }
+
+void StringUtil::toLower(std::string &s)
+{
+    std::transform(s.begin(), s.end(), s.begin(), std::tolower);
+}
+
+std::string StringUtil::toLowerCopy(const std::string &s)
+{
+    std::string r = s;
+    toLower(r);
+    return r;
+}
+

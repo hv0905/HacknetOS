@@ -84,16 +84,14 @@ void HacknetApplication::rmAll()
 {
     while (!CurrentDir->getsubDirs().empty())
     {
-        commandBuffer.emplace_back("Deleting");
-        commandBuffer.emplace_back(CurrentDir->getsubDirs().back()->getDirName());
+        commandBuffer.emplace_back("Deleting " + CurrentDir->getsubDirs().back()->getDirName());
         delete CurrentDir->getsubDirs().back();
         CurrentDir->getsubDirs().pop_back();
     }
 
     while (!CurrentDir->getfiles().empty())
     {
-        commandBuffer.emplace_back("Deleting");
-        commandBuffer.emplace_back(CurrentDir->getfiles().back()->getName());
+        commandBuffer.emplace_back("Deleting " + CurrentDir->getfiles().back()->getName());
         delete CurrentDir->getfiles().back();
         CurrentDir->getfiles().pop_back();
     }
@@ -666,10 +664,11 @@ RenderService &HacknetApplication::getRenderService()
 
 std::string HacknetApplication::getCommandAutoComplete(const std::string &command)
 {
+    auto cmdLower = StringUtil::toLowerCopy(command);
     std::vector<std::string> possibleResult;
     for (const auto &i: globalCommands)
     {
-        if (i.getPrefix().rfind(command, 0) == 0)
+        if (StringUtil::toLowerCopy(i.getPrefix()).rfind(cmdLower, 0) == 0)
         {
             possibleResult.emplace_back(i.getPrefix());
         }
@@ -700,18 +699,24 @@ std::string HacknetApplication::getFilenameAutoComplete(const std::string &comma
     {
         newDir = locateDir(command.substr(0, pos));
     }
+
+    if (newDir == nullptr)
+    {
+        return command;
+    }
     std::string right = command.substr(pos + 1);
+    StringUtil::toLower(right);
 
     for (auto i: newDir->getsubDirs())
     {
-        if (i->getDirName().rfind(right, 0) == 0)
+        if (StringUtil::toLowerCopy(i->getDirName()).rfind(right, 0) == 0)
         {
             possibleResult.emplace_back(i->getDirName());
         }
     }
     for (auto i: newDir->getfiles())
     {
-        if (i->getName().rfind(right, 0) == 0)
+        if (StringUtil::toLowerCopy(i->getName()).rfind(right, 0) == 0)
         {
             possibleResult.emplace_back(i->getName());
         }

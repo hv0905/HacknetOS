@@ -26,6 +26,10 @@ namespace StringUtil
 
     std::string ws2s(const std::wstring &ws);
 
+    void toLower(std::string &s);
+
+    std::string toLowerCopy(const std::string &s);
+
 
 }
 
