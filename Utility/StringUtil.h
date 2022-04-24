@@ -30,6 +30,7 @@ namespace StringUtil
 
     std::string toLowerCopy(const std::string &s);
 
+    bool endsWith(std::string src, std::string suffix);
 
 }
 

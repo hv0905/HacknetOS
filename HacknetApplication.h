@@ -13,6 +13,7 @@
 #include "InputService.h"
 #include "RenderService.h"
 #include "BackgroundTasks/HackBackgroundTask.h"
+#include "HackCommand.h"
 
 class HacknetApplication
 {
@@ -71,6 +72,8 @@ public:
     RenderService &getRenderService();
 
     std::string getPrompt();
+
+    std::vector<HackCommand> getAvailExecutiveCommand();
 
     // region handler for global commands
 

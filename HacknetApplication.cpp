@@ -243,9 +243,15 @@ void HacknetApplication::processCommand(const std::string &command)
     }
 
     // Phrase 2: executive files TODO
-    if (targetCommand != nullptr)
+    std::vector<HackCommand> cmds;
+    if (targetCommand == nullptr)
     {
-
+        cmds = getAvailExecutiveCommand();
+        auto it = std::find_if(cmds.begin(), cmds.end(), [&prefix](const HackCommand &cmd)
+        {
+            return cmd.getPrefix() == prefix;
+        });
+        targetCommand = it == cmds.end() ? nullptr : &(*it);
     }
 
     // Phrase 3: exec
@@ -483,7 +489,7 @@ void HacknetApplication::command_scp(std::stringstream &command)
     copied = locateFile(src)->clone();
     if (dst.empty())
     {
-        dst = typeid(copied) == typeid(HackBinFile) ? "/bin/" : "/home/";
+        dst = typeid(*copied) == typeid(HackBinFile) ? "/bin/" : "/home/";
     }
     if (locateDir(dst, true) == nullptr)
     {
@@ -775,4 +781,29 @@ void HacknetApplication::executive_ftpbounce(std::stringstream &commandStream)
 
     commandBuffer.emplace_back("FTPBounce running...");
     backgroundTasks.push_back(new FTPBounceBgTask(this, "FTPBounce"));
+}
+
+std::vector<HackCommand> HacknetApplication::getAvailExecutiveCommand()
+{
+    auto binDir = localSever->getRootDirectory().LocateSonDir("bin");
+    std::vector<HackCommand> result;
+    for (auto &file: binDir->getfiles())
+    {
+        if (typeid(*file) != typeid(HackBinFile))
+            continue;
+        auto binFile = dynamic_cast<HackBinFile *>(file);
+        auto cmd = binFile->getRelatedCommand();
+
+        if (StringUtil::endsWith(file->getName(), ".exe"))
+        {
+            cmd.setPrefix(file->getName().substr(0, file->getName().size() - 4));
+        }
+        else
+        {
+            cmd.setPrefix(file->getName());
+        }
+        result.push_back(cmd);
+    }
+
+    return result;
 }

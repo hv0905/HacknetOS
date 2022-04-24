@@ -129,3 +129,12 @@ std::string StringUtil::toLowerCopy(const std::string &s)
     return r;
 }
 
+bool StringUtil::endsWith(std::string src, std::string suffix)
+{
+    if (suffix.size() > src.size())
+    {
+        return false;
+    }
+    return std::equal(suffix.rbegin(), suffix.rend(), src.rbegin());
+}
+

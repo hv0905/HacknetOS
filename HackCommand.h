@@ -42,6 +42,8 @@ public:
 
     [[nodiscard]] bool isShouldLog() const;
 
+    void setPrefix(const std::string &prefix);
+
 
 };
 

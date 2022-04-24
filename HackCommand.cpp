@@ -40,3 +40,8 @@ bool HackCommand::isShouldLog() const
     return shouldLog;
 }
 
+void HackCommand::setPrefix(const std::string &prefix)
+{
+    HackCommand::prefix = prefix;
+}
+
