@@ -98,6 +98,10 @@ public:
 
     void command_cat(std::stringstream &commandStream);
 
+    void executive_sshcrack(std::stringstream &commandStream);
+
+    void executive_ftpbounce(std::stringstream &commandStream);
+
     std::string getCommandAutoComplete(const std::string &command);
 
     std::string getFilenameAutoComplete(const std::string &command);

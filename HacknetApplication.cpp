@@ -10,6 +10,8 @@
 #include "HackTxtFile.h"
 #include "HackBinFile.h"
 #include "BackgroundTasks/PortHackBackgroundTask.h"
+#include "BackgroundTasks/SshCrackBgTask.h"
+#include "BackgroundTasks/FtpBounceBgTask.h"
 #include <algorithm>
 
 const HackCommand globalCommands[] = {
@@ -730,4 +732,47 @@ std::string HacknetApplication::getFilenameAutoComplete(const std::string &comma
         return command;
     else
         return possibleResult[0];
+}
+
+void HacknetApplication::executive_sshcrack(std::stringstream &commandStream)
+{
+    int port;
+    commandStream >> port;
+    if (!commandStream)
+    {
+        commandBuffer.emplace_back("未提供端口号.");
+        commandBuffer.emplace_back("Execution failed.");
+        return;
+    }
+    if (port != 22)
+    {
+        commandBuffer.emplace_back("无法连接到目标端口或目标端口正在运行不与此程序兼容的服务.");
+        commandBuffer.emplace_back("Execution failed.");
+        return;
+    }
+
+    commandBuffer.emplace_back("SecureShellCrack running...");
+    backgroundTasks.push_back(new SSHCrackBgTask(this, "SecureShellCrack"));
+
+}
+
+void HacknetApplication::executive_ftpbounce(std::stringstream &commandStream)
+{
+    int port;
+    commandStream >> port;
+    if (!commandStream)
+    {
+        commandBuffer.emplace_back("未提供端口号.");
+        commandBuffer.emplace_back("Execution failed.");
+        return;
+    }
+    if (port != 21)
+    {
+        commandBuffer.emplace_back("无法连接到目标端口或目标端口正在运行不与此程序兼容的服务.");
+        commandBuffer.emplace_back("Execution failed.");
+        return;
+    }
+
+    commandBuffer.emplace_back("FTPBounce running...");
+    backgroundTasks.push_back(new FTPBounceBgTask(this, "FTPBounce"));
 }
