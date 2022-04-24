@@ -12,14 +12,14 @@ void FTPBounceBgTask::drawMemory(Coord begin)
     {
         // failed
         stopped = true;
-        ref->getCommandBuffer().emplace_back("FTPBounce: FATAL: Server disconnected. Stop.");
+        ref->pushLog("FTPBounce: FATAL: Server disconnected. Stop.");
         ref->getRenderService().setRequireUpdate(true);
     }
     if (currentFrame == FRAME_COUNT * 2)
     {
         // unlock the permission
         ref->getCurrentConnected()->setSshLocked(false);
-        ref->getCommandBuffer().emplace_back("FTPBounce: Operation Complete.");
+        ref->pushLog("FTPBounce: Operation Complete.");
         ref->getRenderService().setRequireUpdate(true);
     }
     if (currentFrame == 2 * FRAME_COUNT + 20)

@@ -15,14 +15,14 @@ void PortHackBackgroundTask::drawMemory(Coord begin)
     {
         // failed
         stopped = true;
-        ref->getCommandBuffer().emplace_back("PortHack: FATAL: Server disconnected. Stop.");
+        ref->pushLog("PortHack: FATAL: Server disconnected. Stop.");
         ref->getRenderService().setRequireUpdate(true);
     }
     if (currentFrame == FRAME_COUNT)
     {
         // unlock the permission
         ref->getCurrentConnected()->setAccessible(true);
-        ref->getCommandBuffer().emplace_back("--PortHack complete--");
+        ref->pushLog("--PortHack complete--");
         ref->getRenderService().setRequireUpdate(true);
     }
     if (currentFrame >= FRAME_COUNT)

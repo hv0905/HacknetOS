@@ -7,6 +7,7 @@
 #define HACKNETOS_HACKNETAPPLICATION_H
 
 #include <thread>
+#include <mutex>
 #include "HackEmail.h"
 #include "HackDirectory.h"
 #include "HackServer.h"
@@ -30,6 +31,7 @@ class HacknetApplication
     std::vector<HackBackgroundTask *> backgroundTasks{};
     std::vector<HackServer *> serverList{};
     std::vector<std::thread *> threadPool{};
+    std::mutex commandMutex{};
 
     void internalDisconnect();
 
@@ -74,6 +76,8 @@ public:
     std::string getPrompt();
 
     std::vector<HackCommand> getAvailExecutiveCommand();
+
+    void pushLog(const std::string &log);
 
     // region handler for global commands
 

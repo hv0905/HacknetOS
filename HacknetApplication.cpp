@@ -65,35 +65,35 @@ void HacknetApplication::command_ls(std::stringstream &)
 
     if (CurrentDir->getsubDirs().empty() && CurrentDir->getfiles().empty())
     {
-        commandBuffer.emplace_back("There is no file and directory in this folder.");
+        pushLog("There is no file and directory in this folder.");
         return;
     }
     CurrentDir->sort();
-    commandBuffer.emplace_back("-----------------------------");
-    commandBuffer.push_back("The contain of " + CurrentConnected->getIp() + "@>" + CurrentDir->getAbsolutePath());
+    pushLog("-----------------------------");
+    pushLog("The contain of " + CurrentConnected->getIp() + "@>" + CurrentDir->getAbsolutePath());
     for (auto i: CurrentDir->getsubDirs())
     {
-        commandBuffer.push_back(":" + i->getDirName());
+        pushLog(":" + i->getDirName());
     }
     for (auto i: CurrentDir->getfiles())
     {
-        commandBuffer.push_back(i->getName());
+        pushLog(i->getName());
     }
-    commandBuffer.emplace_back("-----------------------------");
+    pushLog("-----------------------------");
 }
 
 void HacknetApplication::rmAll()
 {
     while (!CurrentDir->getsubDirs().empty())
     {
-        commandBuffer.emplace_back("Deleting " + CurrentDir->getsubDirs().back()->getDirName());
+        pushLog("Deleting " + CurrentDir->getsubDirs().back()->getDirName());
         delete CurrentDir->getsubDirs().back();
         CurrentDir->getsubDirs().pop_back();
     }
 
     while (!CurrentDir->getfiles().empty())
     {
-        commandBuffer.emplace_back("Deleting " + CurrentDir->getfiles().back()->getName());
+        pushLog("Deleting " + CurrentDir->getfiles().back()->getName());
         delete CurrentDir->getfiles().back();
         CurrentDir->getfiles().pop_back();
     }
@@ -105,16 +105,16 @@ void HacknetApplication::rmDir(const std::string &dirName)
     auto file = locateFile(dirName);
     if (file != nullptr)
     {
-        commandBuffer.emplace_back("Deleting");
-        commandBuffer.emplace_back(file->getName());
+        pushLog("Deleting");
+        pushLog(file->getName());
         HackDirectory *parentDir = file->getParentDir();
         parentDir->getfiles().erase(find(parentDir->getfiles().begin(), parentDir->getfiles().end(), file));
         delete file;
     }
     else if (dir != nullptr)
     {
-        commandBuffer.emplace_back("Deleting");
-        commandBuffer.emplace_back(dir->getDirName());
+        pushLog("Deleting");
+        pushLog(dir->getDirName());
         HackDirectory *parentDir = dir->getParentDir();
         parentDir->getsubDirs().erase
                 (find(parentDir->getsubDirs().begin(), parentDir->getsubDirs().end(), dir));
@@ -122,34 +122,48 @@ void HacknetApplication::rmDir(const std::string &dirName)
     }
     else
     {
-        commandBuffer.emplace_back("There is not such a file or directory");
+        pushLog("There is not such a file or directory");
     }
 }
 
 void HacknetApplication::command_nmap(std::stringstream &)
 {
-    commandBuffer.emplace_back("----------------------------------");
-    commandBuffer.emplace_back("Probe Complete-Open ports:");
-    commandBuffer.emplace_back("----------------------------------");
-    commandBuffer.emplace_back("Port# 80: - HTTP WebServer: " +
-                               (std::string) ((CurrentConnected->isHttpLocked()) ? "locked" : "unlocked"));
-    commandBuffer.emplace_back("Port# 25: - SMTP MailServer: " +
-                               (std::string) ((CurrentConnected->isSmtpLocked()) ? "locked" : "unlocked"));
-    commandBuffer.emplace_back("Port# 21: - FTP Server: " +
-                               (std::string) ((CurrentConnected->isFtpLocked()) ? "locked" : "unlocked"));
-    commandBuffer.emplace_back("Port# 22: - SSH: " +
-                               (std::string) ((CurrentConnected->isSshLocked()) ? "locked" : "unlocked"));
-    commandBuffer.emplace_back("----------------------------------");
-    commandBuffer.emplace_back("Open Ports:Required for Crack:  " + std::to_string(CurrentConnected->getMinRequired()));
+    auto target = CurrentConnected;
+    threadPool.push_back(new std::thread([this, target]
+                                         {
+                                             pushLog("Probing......");
+                                             Util::sleep(200);
+                                             pushLog("Probe Complete-Open ports:");
+                                             Util::sleep(50);
+                                             pushLog("----------------------------------");
+                                             Util::sleep(50);
+                                             pushLog("Port# 80: - HTTP WebServer: " +
+                                                     (std::string) ((target->isHttpLocked()) ? "locked" : "unlocked"));
+                                             Util::sleep(50);
+                                             pushLog("Port# 25: - SMTP MailServer: " +
+                                                     (std::string) ((target->isSmtpLocked()) ? "locked" : "unlocked"));
+                                             Util::sleep(50);
+                                             pushLog("Port# 21: - FTP Server: " +
+                                                     (std::string) ((target->isFtpLocked()) ? "locked" : "unlocked"));
+                                             Util::sleep(50);
+                                             pushLog("Port# 22: - SSH: " +
+                                                     (std::string) ((target->isSshLocked()) ? "locked" : "unlocked"));
+                                             Util::sleep(50);
+                                             pushLog("----------------------------------");
+                                             Util::sleep(50);
+                                             pushLog("Open Ports:Required for Crack:  " +
+                                                     std::to_string(target->getMinRequired()));
+                                         }));
+
 }
 
 void HacknetApplication::command_ps(std::stringstream &)
 {
-    commandBuffer.emplace_back("PID    NAME");
+    pushLog("PID    NAME");
     for (auto &item: backgroundTasks)
     {
         if (!item->isStopped())
-            commandBuffer.emplace_back(std::to_string(item->getPid()) + "   " + item->getThreadName());
+            pushLog(std::to_string(item->getPid()) + "   " + item->getThreadName());
     }
 }
 
@@ -159,7 +173,7 @@ void HacknetApplication::command_kill(std::stringstream &input)
     input >> p;
     if (input.fail())
     {
-        commandBuffer.emplace_back("输入内容不是一个合法的PID.");
+        pushLog("输入内容不是一个合法的PID.");
         return;
     }
 
@@ -169,7 +183,7 @@ void HacknetApplication::command_kill(std::stringstream &input)
     });
     if (th == backgroundTasks.end())
     {
-        commandBuffer.emplace_back("PID为 " + std::to_string(p) + " 的进程不存在");
+        pushLog("PID为 " + std::to_string(p) + " 的进程不存在");
     }
     else
     {
@@ -187,7 +201,7 @@ void HacknetApplication::command_connect(std::stringstream &ss)
     });
     if (it == serverList.end())
     {
-        commandBuffer.emplace_back("Don't find such server.");
+        pushLog("Don't find such server.");
     }
     else
     {
@@ -197,36 +211,36 @@ void HacknetApplication::command_connect(std::stringstream &ss)
 
 void HacknetApplication::command_porthack(std::stringstream &s)
 {
-    HacknetApplication::commandBuffer.emplace_back("PortHack Initialized --Running");
+    HacknetApplication::pushLog("PortHack Initialized --Running");
     if (CurrentConnected->checkIfSecureBroken())
     {
         backgroundTasks.push_back(new PortHackBackgroundTask(this, "PortHack"));
     }
     else
     {
-        commandBuffer.emplace_back("Fatal: 运行所需端口数过少, 在目标计算机上开放更多端口.");
+        pushLog("Fatal: 运行所需端口数过少, 在目标计算机上开放更多端口.");
     }
 
 }
 
 void HacknetApplication::command_Scan(std::stringstream &s)
 {
-    HacknetApplication::commandBuffer.emplace_back("Scanning For " + CurrentConnected->getIp());
+    HacknetApplication::pushLog("Scanning For " + CurrentConnected->getIp());
     if (CurrentConnected->getConnectedNodes().empty())
-        HacknetApplication::commandBuffer.emplace_back("This node does not connect to other nodes");
+        HacknetApplication::pushLog("This node does not connect to other nodes");
     else
     {
-        HacknetApplication::commandBuffer.emplace_back("The nodes connected to the node:");
+        HacknetApplication::pushLog("The nodes connected to the node:");
         for (auto i: CurrentConnected->getConnectedNodes())
         {
-            HacknetApplication::commandBuffer.emplace_back(":" + i->getName() + "  " + i->getIp());
+            HacknetApplication::pushLog(":" + i->getName() + "  " + i->getIp());
         }
     }
 }
 
 void HacknetApplication::processCommand(const std::string &command)
 {
-    commandBuffer.push_back(getPrompt() + command);
+    pushLog(getPrompt() + command);
     std::stringstream ss(command);
     std::string prefix;
     ss >> prefix;
@@ -266,7 +280,7 @@ void HacknetApplication::processCommand(const std::string &command)
             }
             else if (!CurrentConnected->isAccessible())
             {
-                commandBuffer.emplace_back("Fatal: require admin access.");
+                pushLog("Fatal: require admin access.");
                 return;
             }
         }
@@ -282,11 +296,11 @@ void HacknetApplication::processCommand(const std::string &command)
         auto handler = targetCommand->getHandler();
         if (handler != nullptr)
             (this->*handler)(ss);
-        else commandBuffer.emplace_back("Not implemented yet.");
+        else pushLog("Not implemented yet.");
         return;
     }
 
-    commandBuffer.emplace_back("Command not found. Check syntax.");
+    pushLog("Command not found. Check syntax.");
 }
 
 bool HacknetApplication::isEnding() const
@@ -312,20 +326,20 @@ void HacknetApplication::command_help(std::stringstream &ss)
     int skip = (page - 1) * 8;
     if (skip >= size || skip < 0)
     {
-        commandBuffer.emplace_back("FATAL: 不存在本帮助页面");
+        pushLog("FATAL: 不存在本帮助页面");
         return;
     }
     int end = std::min(skip + 7, size - 1);
-    commandBuffer.emplace_back(
+    pushLog(
             "显示帮助列表的第" + std::to_string(page) + "/" + std::to_string(size / 8 + (size % 8 ? 1 : 0)) + "页");
-    commandBuffer.emplace_back("------------------------------");
+    pushLog("------------------------------");
     for (int i = skip; i <= end; ++i)
     {
-        commandBuffer.push_back(globalCommands[i].getPrefix() + " " + globalCommands[i].getPattern());
-        commandBuffer.push_back(globalCommands[i].getHelpText());
-        commandBuffer.emplace_back("");
+        pushLog(globalCommands[i].getPrefix() + " " + globalCommands[i].getPattern());
+        pushLog(globalCommands[i].getHelpText());
+        pushLog("");
     }
-    commandBuffer.emplace_back("------------------------------");
+    pushLog("------------------------------");
 
 
 }
@@ -352,7 +366,7 @@ void HacknetApplication::command_cd(std::stringstream &commandStream)
     if (locateDir(command) != nullptr)
         CurrentDir = locateDir(command);
     else
-        commandBuffer.emplace_back("There is no such directory here");
+        pushLog("There is no such directory here");
 }
 
 void HacknetApplication::command_dc(std::stringstream &)
@@ -366,7 +380,7 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
     commandStream >> src >> dst;
     if (dst.empty() || src.empty())
     {
-        commandBuffer.emplace_back("Enter the wrong command");
+        pushLog("Enter the wrong command");
         return;
     }
     auto dir = locateDir(src);
@@ -379,7 +393,7 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
             auto newDir = locateDir(dst);
             if (newDir == nullptr)
             {
-                commandBuffer.emplace_back("Destination directory not found");
+                pushLog("Destination directory not found");
                 return;
             }
             std::string fileName = file->getName();
@@ -411,7 +425,7 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
 
             if (newDir == nullptr)
             {
-                commandBuffer.emplace_back("Destination directory not found");
+                pushLog("Destination directory not found");
                 return;
             }
             std::string fileName = file->getName();
@@ -431,7 +445,7 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
     {
         if (dir->getParentDir() == nullptr)
         {
-            commandBuffer.emplace_back("Can't move root directory");
+            pushLog("Can't move root directory");
             return;
         }
         auto dstDir = locateDir(dst);
@@ -459,7 +473,7 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
 
             if (dstDir == nullptr)
             {
-                commandBuffer.emplace_back("Destination directory not found");
+                pushLog("Destination directory not found");
                 return;
             }
             dir->setDirName(dst.substr(pos + 1));
@@ -475,7 +489,7 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
     }
     else
     {
-        commandBuffer.emplace_back("There is not such a file or directory");
+        pushLog("There is not such a file or directory");
     }
 
 }
@@ -493,7 +507,7 @@ void HacknetApplication::command_scp(std::stringstream &command)
     }
     if (locateDir(dst, true) == nullptr)
     {
-        commandBuffer.emplace_back("Don't find " + dst);
+        pushLog("Don't find " + dst);
         delete copied;
     }
     else
@@ -514,7 +528,7 @@ void HacknetApplication::internalDisconnect()
 {
     CurrentDir = nullptr;
     CurrentConnected = nullptr;
-    commandBuffer.emplace_back("Disconnected");
+    pushLog("Disconnected");
 }
 
 HackDirectory *HacknetApplication::locateDir(const std::string &path, bool local)
@@ -599,14 +613,14 @@ void HacknetApplication::command_cat(std::stringstream &commandStream)
     auto file = locateFile(filePath);
     if (!file)
     {
-        commandBuffer.emplace_back("File not found");
+        pushLog("File not found");
         return;
     }
 
     auto lns = StringUtil::splitLines(StringUtil::s2ws(file->cat()), 170);
     for (auto &ln: lns)
     {
-        commandBuffer.emplace_back(StringUtil::ws2s(ln));
+        pushLog(StringUtil::ws2s(ln));
     }
 }
 
@@ -626,8 +640,8 @@ void HacknetApplication::internalConnect(HackServer *target)
 {
     if (CurrentConnected != nullptr)
         internalDisconnect();
-    HacknetApplication::commandBuffer.emplace_back("Connection Established ::");
-    HacknetApplication::commandBuffer.emplace_back(
+    HacknetApplication::pushLog("Connection Established ::");
+    HacknetApplication::pushLog(
             "Connect To " + target->getName() + " in" + target->getIp());
     CurrentConnected = target;
     CurrentDir = &target->getRootDirectory();
@@ -683,7 +697,7 @@ std::string HacknetApplication::getCommandAutoComplete(const std::string &comman
     }
     for (int i = 1; i < possibleResult.size(); i++)
     {
-        commandBuffer.emplace_back(possibleResult[i]);
+        pushLog(possibleResult[i]);
         renderService.requireUpdate = true;
     }
     if (possibleResult.empty())
@@ -731,7 +745,7 @@ std::string HacknetApplication::getFilenameAutoComplete(const std::string &comma
     }
     for (int i = 1; i < possibleResult.size(); i++)
     {
-        commandBuffer.emplace_back(possibleResult[i]);
+        pushLog(possibleResult[i]);
         renderService.requireUpdate = true;
     }
     if (possibleResult.empty())
@@ -746,18 +760,18 @@ void HacknetApplication::executive_sshcrack(std::stringstream &commandStream)
     commandStream >> port;
     if (!commandStream)
     {
-        commandBuffer.emplace_back("未提供端口号.");
-        commandBuffer.emplace_back("Execution failed.");
+        pushLog("未提供端口号.");
+        pushLog("Execution failed.");
         return;
     }
     if (port != 22)
     {
-        commandBuffer.emplace_back("无法连接到目标端口或目标端口正在运行不与此程序兼容的服务.");
-        commandBuffer.emplace_back("Execution failed.");
+        pushLog("无法连接到目标端口或目标端口正在运行不与此程序兼容的服务.");
+        pushLog("Execution failed.");
         return;
     }
 
-    commandBuffer.emplace_back("SecureShellCrack running...");
+    pushLog("SecureShellCrack running...");
     backgroundTasks.push_back(new SSHCrackBgTask(this, "SecureShellCrack"));
 
 }
@@ -768,18 +782,18 @@ void HacknetApplication::executive_ftpbounce(std::stringstream &commandStream)
     commandStream >> port;
     if (!commandStream)
     {
-        commandBuffer.emplace_back("未提供端口号.");
-        commandBuffer.emplace_back("Execution failed.");
+        pushLog("未提供端口号.");
+        pushLog("Execution failed.");
         return;
     }
     if (port != 21)
     {
-        commandBuffer.emplace_back("无法连接到目标端口或目标端口正在运行不与此程序兼容的服务.");
-        commandBuffer.emplace_back("Execution failed.");
+        pushLog("无法连接到目标端口或目标端口正在运行不与此程序兼容的服务.");
+        pushLog("Execution failed.");
         return;
     }
 
-    commandBuffer.emplace_back("FTPBounce running...");
+    pushLog("FTPBounce running...");
     backgroundTasks.push_back(new FTPBounceBgTask(this, "FTPBounce"));
 }
 
@@ -806,4 +820,11 @@ std::vector<HackCommand> HacknetApplication::getAvailExecutiveCommand()
     }
 
     return result;
+}
+
+void HacknetApplication::pushLog(const std::string &log)
+{
+    std::lock_guard lock(commandMutex);
+    commandBuffer.push_back(log);
+    renderService.requireUpdate = true;
 }

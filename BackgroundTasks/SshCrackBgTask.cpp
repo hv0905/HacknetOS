@@ -13,14 +13,14 @@ void SSHCrackBgTask::drawMemory(Coord begin)
     {
         // failed
         stopped = true;
-        ref->getCommandBuffer().emplace_back("SSHCrack: FATAL: Server disconnected. Stop.");
+        ref->pushLog("SSHCrack: FATAL: Server disconnected. Stop.");
         ref->getRenderService().setRequireUpdate(true);
     }
     if (currentFrame == FRAME_COUNT * 2)
     {
         // unlock the permission
         ref->getCurrentConnected()->setSshLocked(false);
-        ref->getCommandBuffer().emplace_back("--SecureShellCrack Completed--");
+        ref->pushLog("--SecureShellCrack Completed--");
         ref->getRenderService().setRequireUpdate(true);
     }
     if (currentFrame == 2 * FRAME_COUNT + 20)

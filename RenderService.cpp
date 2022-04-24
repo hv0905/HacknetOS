@@ -16,13 +16,13 @@ const AsciiArt serverLogos[] = {
 
 void RenderService::RenderTick()
 {
+    RenderMemory();
     if (requireUpdate)
     {
         Util::clearScreen();
         UIUtil::drawFramework();
         RenderStatusBar();
     }
-    RenderMemory();
     RenderTerminal();
 
     requireUpdate = false;
