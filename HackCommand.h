@@ -8,7 +8,7 @@
 #include <string>
 #include <sstream>
 
-class HacknetApplication;
+class __single_inheritance HacknetApplication;
 
 typedef void (HacknetApplication::*CommandHandler)(std::stringstream &args);
 

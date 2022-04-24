@@ -11,7 +11,7 @@
 class FTPBounceBgTask : public HackBackgroundTask
 {
     constexpr static const int FRAME_COUNT = 160;
-    static inline AsciiAnimation animation{"ASCII/sshcrack/", FRAME_COUNT};
+    static inline AsciiAnimation animation{"ASCII/ftpbounce/", FRAME_COUNT};
 
     int currentFrame = 0;
 

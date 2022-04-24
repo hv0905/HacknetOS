@@ -4,6 +4,7 @@
 
 #include "StarterCreator.h"
 #include "HackTxtFile.h"
+#include "HackBinFile.h"
 
 HacknetApplication *StarterCreator::createStarterOS()
 {
@@ -20,8 +21,21 @@ HacknetApplication *StarterCreator::createStarterOS()
     local->getRootDirectory().AppendDirectory(new HackDirectory("log"));
     local->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
 
+    auto cheater_zone = new HackServer("1337.1337.1337.1337", "Cheater Zone", 0);
+    auto cheater_zone_bin = new HackDirectory("bin");
+    cheater_zone_bin->AppendFile(
+            new HackBinFile("sshcrack.exe", HackCommand(&HacknetApplication::executive_sshcrack, "sshcrack", "-")));
+    cheater_zone_bin->AppendFile(
+            new HackBinFile("ftpbounce.exe", HackCommand(&HacknetApplication::executive_ftpbounce, "ftpbounce", "-")));
+    cheater_zone->getRootDirectory().AppendDirectory(new HackDirectory("home"));
+    cheater_zone->getRootDirectory().AppendDirectory(cheater_zone_bin);
+    cheater_zone->getRootDirectory().AppendDirectory(new HackDirectory("log"));
+    cheater_zone->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+
+
     local->accessible = true;
     app->serverList.push_back(local);
+    app->serverList.push_back(cheater_zone);
     app->localSever = app->serverList[0];
 
     // Add Servers, Directories, and Files here...

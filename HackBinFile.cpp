@@ -14,3 +14,15 @@ std::string HackBinFile::cat()
 {
     return "Not Implement Yet";
 }
+
+const HackCommand &HackBinFile::getRelatedCommand() const
+{
+    return relatedCommand;
+}
+
+HackBinFile::HackBinFile(const std::string &name, const HackCommand &relatedCommand) : HackFile(name),
+                                                                                       relatedCommand(relatedCommand)
+{}
+
+HackBinFile::HackBinFile(const HackCommand &relatedCommand) : relatedCommand(relatedCommand)
+{}
