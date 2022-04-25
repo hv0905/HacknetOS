@@ -41,7 +41,13 @@ HacknetApplication *StarterCreator::createStarterOS()
     // Add Servers, Directories, and Files here...
     //教程关服务器
     auto *tutorialServer = new HackServer("248.110.68.189", "Dengler Consortium", 0);
+
     auto tutorial_home = new HackDirectory("home");
+    auto tutorial_bin = new HackDirectory("bin");
+
+    auto NewFolder_15 = new HackDirectory("NewFolder_15");
+    auto NewFolder_64 = new HackDirectory("NewFolder_64");
+
     auto IRC_Log_583977_8977 = new HackTxtFile("IRC_Log:583977(8977)",
                                                L"#583977 +(8799)- [X]\n"
                                                "\n"
@@ -63,10 +69,6 @@ HacknetApplication *StarterCreator::createStarterOS()
                                        "－超频CPU: 我们要紧随潮流, 扩展社会内容渠道, 提高网络带宽, 来提高线上占有率, 让公司收入翻两番. \n"
                                        "－质量驱动路线: 授权方案让我们在 Web 2.0 上获得了许多令人惊讶的特色. (我认为这足以称为独立于因特网之外的第二个因特网, 周五之前同 Paul 一起再探讨一下? )(顺手让他帮我修好我的打印机)(顺手也问一下为什么我的打印机驱动文件夹是加密的)\n"
                                        "－未来路线图: 自顶而下的电子化处理方式, 将我们的客户基础成功变现, 重新划分市场, 提高公司收入. ");
-    auto NewFolder_64 = new HackDirectory("NewFolder_64");
-    NewFolder_64->AppendFile(IRC_Log_583977_8977);
-    NewFolder_64->AppendFile(Speech_node);
-    auto NewFolder_15 = new HackDirectory("NewFolder_15");
     auto IRC_Log_178890_14081 = new HackTxtFile("IRC_Log:178890+(14081)",
                                                 L"(译者注: 这段涉及到圣经历史, 汉化组无力)\n"
                                                 "*** Now talking in #christian\n"
@@ -76,23 +78,29 @@ HacknetApplication *StarterCreator::createStarterOS()
                                                 " *** SageRider sets mode: +b *!*@c211-30-208-111.rivrw3.nsw.optusnet.com.au\n"
                                                 " *** Word_of_God was kicked from #christian by SageRider (Please dont Swear)\n"
                                                 " <Abstruse> I know I'm never going to be able to come back in this channel again after this, but damn was it worth it to see that... ");
+    auto config_txt = new HackTxtFile("config.txt", L"config.ini\n"
+                                                    "init_num: \"12\"\n"
+                                                    "continual_spawning \"YES\"\n"
+                                                    "colours_enabled {\"peach\",\"ivory\",\"fudge\",\"chocolate\",\"magenta\"}\n"
+                                                    "behaviors_enabled {\"twirl\",\"thrust\",\"helicopter\"}\n"
+                                                    "resolution: {\"1280\",\"800\"}\n"
+                                                    "fullscreen: \"YES\"\n"
+                                                    "alt_tab_enabled: \"YES\"\n"
+                                                    "texture_folder: \"C:/Documents_and_Settings/Admin/Fax/Not_Porn/Documents/Serious_Documents/System/textures\"");
+    NewFolder_64->AppendFile(IRC_Log_583977_8977);
+    NewFolder_64->AppendFile(Speech_node);
+
     NewFolder_15->AppendFile(IRC_Log_178890_14081);
-tutorial_home->AppendDirectory(NewFolder_64);
-tutorial_home->AppendDirectory(NewFolder_15);
-auto config_txt=new HackTxtFile("config.txt",L"config.ini\n"
-                                             "init_num: \"12\"\n"
-                                             "continual_spawning \"YES\"\n"
-                                             "colours_enabled {\"peach\",\"ivory\",\"fudge\",\"chocolate\",\"magenta\"}\n"
-                                             "behaviors_enabled {\"twirl\",\"thrust\",\"helicopter\"}\n"
-                                             "resolution: {\"1280\",\"800\"}\n"
-                                             "fullscreen: \"YES\"\n"
-                                             "alt_tab_enabled: \"YES\"\n"
-                                             "texture_folder: \"C:/Documents_and_Settings/Admin/Fax/Not_Porn/Documents/Serious_Documents/System/textures\"");
-auto tutorial_bin=new HackDirectory("bin");
-    tutorialServer->getRootDirectory().AppendDirectory(tutorial_home);
+
+    tutorial_home->AppendDirectory(NewFolder_64);
+    tutorial_home->AppendDirectory(NewFolder_15);
+
     tutorial_bin->AppendFile(config_txt);
-    local->getRootDirectory().AppendDirectory(new HackDirectory("log"));
-    local->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+
+    tutorialServer->getRootDirectory().AppendDirectory(tutorial_home);
+    tutorialServer->getRootDirectory().AppendDirectory(tutorial_bin);
+    tutorialServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
+    tutorialServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
     //教程关服务器
 
     return app;
