@@ -2,6 +2,7 @@
 // Created by epiphyllum on 22/04/19.
 //
 
+#include <utility>
 #include "StringUtil.h"
 #include <cctype>
 #include <algorithm>
@@ -97,9 +98,9 @@ std::wstring StringUtil::s2ws(const std::string &s)
 {
     int len;
     int slength = (int) s.length() + 1;
-    len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, nullptr, 0);
+    len = MultiByteToWideChar(CP_UTF8, 0, s.c_str(), slength, nullptr, 0);
     auto *buf = new wchar_t[len];
-    MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+    MultiByteToWideChar(CP_UTF8, 0, s.c_str(), slength, buf, len);
     std::wstring r(buf);
     delete[] buf;
     return r;
@@ -109,9 +110,9 @@ std::string StringUtil::ws2s(const std::wstring &ws)
 {
     int len;
     int slength = (int) ws.length() + 1;
-    len = WideCharToMultiByte(CP_ACP, 0, ws.c_str(), slength, nullptr, 0, nullptr, nullptr);
+    len = WideCharToMultiByte(CP_UTF8, 0, ws.c_str(), slength, nullptr, 0, nullptr, nullptr);
     auto *buf = new char[len];
-    WideCharToMultiByte(CP_ACP, 0, ws.c_str(), slength, buf, len, nullptr, nullptr);
+    WideCharToMultiByte(CP_UTF8, 0, ws.c_str(), slength, buf, len, nullptr, nullptr);
     std::string r(buf);
     delete[] buf;
     return r;
@@ -136,5 +137,34 @@ bool StringUtil::endsWith(std::string src, std::string suffix)
         return false;
     }
     return std::equal(suffix.rbegin(), suffix.rend(), src.rbegin());
+}
+
+std::string StringUtil::getPublicPrefix(std::vector<std::string> &elements)
+{
+    std::string prefix;
+    if (elements.size() == 0)
+    {
+        return "";
+    }
+    int minLen = INT32_MAX;
+    for (auto &item: elements)
+    {
+        minLen = min(minLen, item.size());
+    }
+
+    for (int i = 0; i < minLen; i++)
+    {
+        char c = elements[0][i];
+        for (auto &item: elements)
+        {
+            if (item[i] != c)
+            {
+                return prefix;
+            }
+        }
+        prefix.push_back(c);
+    }
+
+    return prefix;
 }
 

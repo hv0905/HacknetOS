@@ -500,14 +500,20 @@ void HacknetApplication::command_scp(std::stringstream &command)
     command >> src;
     command >> dst;
     HackFile *copied;
-    copied = locateFile(src)->clone();
+    copied = locateFile(src);
+    if (copied == nullptr)
+    {
+        pushLog("FATAL: Cannot find source file to download.");
+        return;
+    }
+    copied = copied->clone();
     if (dst.empty())
     {
         dst = typeid(*copied) == typeid(HackBinFile) ? "/bin/" : "/home/";
     }
     if (locateDir(dst, true) == nullptr)
     {
-        pushLog("Don't find " + dst);
+        pushLog("FATAL: Cannot find target destination path " + dst);
         delete copied;
     }
     else
@@ -521,6 +527,7 @@ void HacknetApplication::command_scp(std::stringstream &command)
         if (it != newDir->getfiles().end())
             copied->setName("_" + copied->getName());;
         locateDir(dst, true)->AppendFile(copied);
+        pushLog("Downloading file " + fileName + "......Success."); // TODO ADD LATENCY
     }
 }
 
@@ -703,7 +710,7 @@ std::string HacknetApplication::getCommandAutoComplete(const std::string &comman
     if (possibleResult.empty())
         return command;
     else
-        return possibleResult[0];
+        return StringUtil::getPublicPrefix(possibleResult);
 }
 
 std::string HacknetApplication::getFilenameAutoComplete(const std::string &command)
@@ -743,15 +750,15 @@ std::string HacknetApplication::getFilenameAutoComplete(const std::string &comma
             possibleResult.emplace_back(i->getName());
         }
     }
-    for (int i = 1; i < possibleResult.size(); i++)
+    for (auto &i: possibleResult)
     {
-        pushLog(possibleResult[i]);
+        pushLog(i);
         renderService.requireUpdate = true;
     }
     if (possibleResult.empty())
         return command;
     else
-        return possibleResult[0];
+        return StringUtil::getPublicPrefix(possibleResult);
 }
 
 void HacknetApplication::executive_sshcrack(std::stringstream &commandStream)

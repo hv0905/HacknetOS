@@ -32,6 +32,8 @@ namespace StringUtil
 
     bool endsWith(std::string src, std::string suffix);
 
+    std::string getPublicPrefix(std::vector<std::string> &elements);
+
 }
 
 

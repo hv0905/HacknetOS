@@ -103,5 +103,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     tutorialServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
     //教程关服务器
 
+    app->serverList.push_back(tutorialServer);
+
     return app;
 }
