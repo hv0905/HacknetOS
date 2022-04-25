@@ -23,6 +23,8 @@ namespace UIUtil
     const Coord START_TERMINAL(41, 7);
     const Size2D SIZE_TERMINAL(179, 43);
 
+    const Size2D SIZE_ALL(220, 50);
+
     void drawFramework();
 }
 

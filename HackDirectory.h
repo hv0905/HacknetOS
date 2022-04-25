@@ -45,6 +45,8 @@ public:
 
     std::string getAbsolutePath();
 
+    HackDirectory *clone();
+
     ~HackDirectory();
 
 private:

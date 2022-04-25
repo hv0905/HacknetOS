@@ -135,6 +135,20 @@ void HackDirectory::sort()
     });
 }
 
+HackDirectory *HackDirectory::clone()
+{
+    auto d = new HackDirectory(name);
+    for (auto &i: subDirs)
+    {
+        d->AppendDirectory(i->clone());
+    }
+    for (auto &i: files)
+    {
+        d->AppendFile(i->clone());
+    }
+    return d;
+}
+
 
 
 
