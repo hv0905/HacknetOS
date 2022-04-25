@@ -11,13 +11,15 @@ HacknetApplication *StarterCreator::createStarterOS()
     auto app = new HacknetApplication();
     auto *local = new HackServer("127.0.0.1", "Aiden Pearce", 0);
     auto local_home = new HackDirectory("home");
+    auto local_bin = new HackDirectory("bin");
+    local_bin->AppendFile(new HackTxtFile("SecurityTracer.exe", L"#SECURITYTRACER_PROGRAM#"));
     local_home->AppendDirectory(new HackDirectory("Sub1"));
     local_home->AppendFile(new HackTxtFile("file1.txt", L"Hello World!"));
     local_home->AppendFile(new HackTxtFile("file2.txt", L"Hello World!"));
     local_home->AppendFile(new HackTxtFile("file3.txt", L"Hello World!"));
 
     local->getRootDirectory().AppendDirectory(local_home);
-    local->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
+    local->getRootDirectory().AppendDirectory(local_bin);
     local->getRootDirectory().AppendDirectory(new HackDirectory("log"));
     local->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
 
@@ -104,9 +106,31 @@ HacknetApplication *StarterCreator::createStarterOS()
     app->serverList.push_back(tutorialServer);
 
     app->serverList[0]->getConnectedNodes().push_back(tutorialServer);
+
     //教程关服务器
 
-    app->serverList.push_back(tutorialServer);
+    //毒蛇——作战基地服务器
+    auto ViperServer = new HackServer("176.198.61.104", "毒蛇作战基地", 0);
+    auto Viper_bin = new HackDirectory("bin");
+    auto Viper_home = new HackDirectory("home");
 
+    Viper_bin->AppendFile(
+            new HackBinFile("sshcrack.exe", HackCommand(&HacknetApplication::executive_sshcrack, "sshcrack", "-")));
+    Viper_home->AppendFile(new HackTxtFile("EmailDraft.txt", L"爸爸, \n"
+                                                             "    很抱歉之前没有及时给你回信 - 我在学校真的很忙 - 今年非常难熬, 不过我想我熬过来了. \n"
+                                                             "    我这次找你其实是想问你要点钱 - 我们学校今年有个新项目, 它叫 \"FTPBounce.exe\", 这个程序特别有用! 不过这个程序也很贵, 而且上次你给我的钱我也花完了... .IT这些项目软件都非常的贵. \n"
+                                                             "    能不能再给我打2000$? 我真的很需要. \n"
+                                                             "\n"
+                                                             "    谢谢! \n"
+                                                             "    爱你的儿子, \n"
+                                                             "    Tim"));
+
+    ViperServer->getRootDirectory().AppendDirectory(Viper_home);
+    ViperServer->getRootDirectory().AppendDirectory(Viper_bin);
+    ViperServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
+    ViperServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+
+    app->serverList.push_back(ViperServer);
+    //毒蛇——作战基地服务器
     return app;
 }
