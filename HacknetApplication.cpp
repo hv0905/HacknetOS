@@ -695,31 +695,32 @@ RenderService &HacknetApplication::getRenderService()
 
 std::string HacknetApplication::getCommandAutoComplete(const std::string &command)
 {
-auto cmdLower = StringUtil::toLowerCopy(command);
-        std::vector<std::string> possibleResult;
-        for (const auto &i: globalCommands)
-        {
+    auto cmdLower = StringUtil::toLowerCopy(command);
+    std::vector<std::string> possibleResult;
+    for (const auto &i: globalCommands)
+    {
         if (StringUtil::toLowerCopy(i.getPrefix()).rfind(cmdLower, 0) == 0)
         {
-        possibleResult.emplace_back(i.getPrefix());
+            possibleResult.emplace_back(i.getPrefix());
         }
-        }
+    }
 
-        for (const auto &i : getAvailExecutiveCommand()) {
+    for (const auto &i: getAvailExecutiveCommand())
+    {
         if (StringUtil::toLowerCopy(i.getPrefix()).rfind(cmdLower, 0) == 0)
         {
-        possibleResult.emplace_back(i.getPrefix());
+            possibleResult.emplace_back(i.getPrefix());
         }
-        }
+    }
 
-        for (int i = 1; i < possibleResult.size(); i++)
-        {
+    for (int i = 1; i < possibleResult.size(); i++)
+    {
         pushLog(possibleResult[i]);
         renderService.requireUpdate = true;
-        }
-        if (possibleResult.empty())
+    }
+    if (possibleResult.empty())
         return command;
-        else
+    else
         return StringUtil::getPublicPrefix(possibleResult);
 }
 
