@@ -51,8 +51,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     auto NewFolder_64 = new HackDirectory("NewFolder_64");
 
     auto IRC_Log_583977_8977 = new HackTxtFile("IRC_Log:583977(8977)",
-                                               L"#583977 +(8799)- [X]\n"
-                                               "\n"
+                                              L"\n"
                                                "<DannyB> 我在街上碰到个妹子问我是否还保有处男之身(if i was saved)\n"
                                                "\n"
                                                " <DannyB> 我跟她说几分钟前我刚经过一个检查点\n"
@@ -72,8 +71,7 @@ HacknetApplication *StarterCreator::createStarterOS()
                                        "－质量驱动路线: 授权方案让我们在 Web 2.0 上获得了许多令人惊讶的特色. (我认为这足以称为独立于因特网之外的第二个因特网, 周五之前同 Paul 一起再探讨一下? )(顺手让他帮我修好我的打印机)(顺手也问一下为什么我的打印机驱动文件夹是加密的)\n"
                                        "－未来路线图: 自顶而下的电子化处理方式, 将我们的客户基础成功变现, 重新划分市场, 提高公司收入. ");
     auto IRC_Log_178890_14081 = new HackTxtFile("IRC_Log:178890+(14081)",
-                                                L"*** Now talking in #christian\n"
-                                                " -Word_of_God- Welcome Abstruse to #christian I am a Bible Bot. For more info type: /msg Word_of_God !info\n"
+                                                L" -Word_of_God- Welcome Abstruse to #christian I am a Bible Bot. For more info type: /msg Word_of_God !info\n"
                                                 " <Abstruse> !kjv numbers 22:21\n"
                                                 " <Word_of_God>  Numbers 22:21 -- And Balaam rose up in the morning, and saddled his ass, and went with the princes of Moab. -  (KJV)\n"
                                                 " *** SageRider sets mode: +b *!*@c211-30-208-111.rivrw3.nsw.optusnet.com.au\n"
@@ -132,5 +130,28 @@ HacknetApplication *StarterCreator::createStarterOS()
 
     app->serverList.push_back(ViperServer);
     //毒蛇——作战基地服务器
+
+    //Bitwise测试PC
+    auto Bitwise =new HackServer("210.175.139.250","Bitwise测试PC",1);
+    auto IRC_Log_139697_8593=new HackTxtFile("IRC_Log:139697+(8593)",L"<frank> 你能教我安装GTA3吗? \n"
+                                                                     "\n"
+                                                                     "<knightmare> 首先, 把你现在不用的程序都关掉\n"
+                                                                     "\n"
+                                                                     "frank离开了IRC聊天室. \n"
+                                                                     "\n"
+                                                                     "<knightmare> ... 智障");
+    auto NewFolder24=new HackDirectory("NewFolder24");
+    auto Bitwise_home=new HackDirectory("home");
+
+    NewFolder24->AppendFile(IRC_Log_139697_8593);
+    Bitwise_home->AppendDirectory(NewFolder24);
+
+    Bitwise->getRootDirectory().AppendDirectory(Bitwise_home);
+    Bitwise->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
+    Bitwise->getRootDirectory().AppendDirectory(new HackDirectory("log"));
+    Bitwise->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+
+    app->serverList.push_back(Bitwise);
+    //Bitwise测试PC
     return app;
 }
