@@ -29,6 +29,8 @@ class HackServer
     bool SMTPLocked = true;
 
     std::vector<HackServer *> ConnectedNodes;
+
+    bool Searchable= false;
 public:
 
     HackServer(const std::string &ip, const std::string &name, int minRequired);
@@ -78,6 +80,8 @@ public:
     void setRootDirectory(const HackDirectory &rootDirectory);
 
     void setAccessible(bool accessible);
+
+    void setSearchable();
 
 };
 

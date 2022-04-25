@@ -205,6 +205,7 @@ void HacknetApplication::command_connect(std::stringstream &ss)
     }
     else
     {
+        (*it)->setSearchable();
         internalConnect(*it);
     }
 }
@@ -233,6 +234,7 @@ void HacknetApplication::command_Scan(std::stringstream &s)
         HacknetApplication::pushLog("The nodes connected to the node:");
         for (auto i: CurrentConnected->getConnectedNodes())
         {
+            i->setSearchable();
             HacknetApplication::pushLog(":" + i->getName() + "  " + i->getIp());
         }
     }

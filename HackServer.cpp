@@ -121,4 +121,9 @@ void HackServer::setAccessible(bool accessible)
     HackServer::accessible = accessible;
 }
 
+void HackServer::setSearchable()
+{
+    Searchable = true;
+}
+
 

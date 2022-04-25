@@ -70,8 +70,7 @@ HacknetApplication *StarterCreator::createStarterOS()
                                        "－质量驱动路线: 授权方案让我们在 Web 2.0 上获得了许多令人惊讶的特色. (我认为这足以称为独立于因特网之外的第二个因特网, 周五之前同 Paul 一起再探讨一下? )(顺手让他帮我修好我的打印机)(顺手也问一下为什么我的打印机驱动文件夹是加密的)\n"
                                        "－未来路线图: 自顶而下的电子化处理方式, 将我们的客户基础成功变现, 重新划分市场, 提高公司收入. ");
     auto IRC_Log_178890_14081 = new HackTxtFile("IRC_Log:178890+(14081)",
-                                                L"(译者注: 这段涉及到圣经历史, 汉化组无力)\n"
-                                                "*** Now talking in #christian\n"
+                                                L"*** Now talking in #christian\n"
                                                 " -Word_of_God- Welcome Abstruse to #christian I am a Bible Bot. For more info type: /msg Word_of_God !info\n"
                                                 " <Abstruse> !kjv numbers 22:21\n"
                                                 " <Word_of_God>  Numbers 22:21 -- And Balaam rose up in the morning, and saddled his ass, and went with the princes of Moab. -  (KJV)\n"
@@ -101,6 +100,10 @@ HacknetApplication *StarterCreator::createStarterOS()
     tutorialServer->getRootDirectory().AppendDirectory(tutorial_bin);
     tutorialServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
     tutorialServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+
+    app->serverList.push_back(tutorialServer);
+
+    app->serverList[0]->getConnectedNodes().push_back(tutorialServer);
     //教程关服务器
 
     app->serverList.push_back(tutorialServer);
