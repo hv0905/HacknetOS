@@ -51,7 +51,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     auto NewFolder_64 = new HackDirectory("NewFolder_64");
 
     auto IRC_Log_583977_8977 = new HackTxtFile("IRC_Log:583977(8977)",
-                                              L"\n"
+                                               L"\n"
                                                "<DannyB> 我在街上碰到个妹子问我是否还保有处男之身(if i was saved)\n"
                                                "\n"
                                                " <DannyB> 我跟她说几分钟前我刚经过一个检查点\n"
@@ -132,16 +132,16 @@ HacknetApplication *StarterCreator::createStarterOS()
     //毒蛇——作战基地服务器
 
     //Bitwise测试PC
-    auto Bitwise =new HackServer("210.175.139.250","Bitwise测试PC",1);
-    auto IRC_Log_139697_8593=new HackTxtFile("IRC_Log:139697+(8593)",L"<frank> 你能教我安装GTA3吗? \n"
-                                                                     "\n"
-                                                                     "<knightmare> 首先, 把你现在不用的程序都关掉\n"
-                                                                     "\n"
-                                                                     "frank离开了IRC聊天室. \n"
-                                                                     "\n"
-                                                                     "<knightmare> ... 智障");
-    auto NewFolder24=new HackDirectory("NewFolder24");
-    auto Bitwise_home=new HackDirectory("home");
+    auto Bitwise = new HackServer("210.175.139.250", "Bitwise测试PC", 1);
+    auto IRC_Log_139697_8593 = new HackTxtFile("IRC_Log:139697+(8593)", L"<frank> 你能教我安装GTA3吗? \n"
+                                                                        "\n"
+                                                                        "<knightmare> 首先, 把你现在不用的程序都关掉\n"
+                                                                        "\n"
+                                                                        "frank离开了IRC聊天室. \n"
+                                                                        "\n"
+                                                                        "<knightmare> ... 智障");
+    auto NewFolder24 = new HackDirectory("NewFolder24");
+    auto Bitwise_home = new HackDirectory("home");
 
     NewFolder24->AppendFile(IRC_Log_139697_8593);
     Bitwise_home->AppendDirectory(NewFolder24);
@@ -153,5 +153,55 @@ HacknetApplication *StarterCreator::createStarterOS()
 
     app->serverList.push_back(Bitwise);
     //Bitwise测试PC
+
+    //Anderson的卧室电脑
+    auto AndersonServer = new HackServer("247.112.153.237", "Anderson的卧室电脑", 1);
+    auto Anderson_Documents = new HackDirectory("Documents");
+    auto Anderson_home = new HackDirectory("home");
+
+    Anderson_Documents->AppendFile(new HackTxtFile("charlog.txt", L"[HotRice] 准备好出去浪了吗? \n"
+                                                                  "[Kiah] 那取决于. . . \n"
+                                                                  "[Kiah] 你准备好去死了吗\n"
+                                                                  "[M4cr0b4t] 哈哈哈\n"
+                                                                  "[HotRice] 闭嘴, Johnson! \n"
+                                                                  "[HotRice] 忘了你上次打翻花生酱的事情了? \n"
+                                                                  "[M4cr0b4t] 别提那次的事情了\n"
+                                                                  "[HotRice] 就那一次就够你受的了\n"
+                                                                  "[HotRice] 有谁知道Hellerphant在哪里吗? \n"
+                                                                  "[Kiah] 没有人知道他去哪了\n"
+                                                                  "[Kiah] 我估计是有个魔法怪物把他抓走了. \n"
+                                                                  "[HotRice] 严肃点, 我们的计划被打乱了. \n"
+                                                                  "[HotRice] 为什么每次我担心的事情总会发生? "));
+
+    Anderson_home->AppendDirectory(Anderson_Documents);
+
+    AndersonServer->getRootDirectory().AppendDirectory(Anderson_home);
+    AndersonServer->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
+    AndersonServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
+    AndersonServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+
+    app->serverList.push_back(AndersonServer);
+    //Anderson的卧室电脑
+
+    //Entropy测试服务器
+    auto EntropyServer=new HackServer("247.112.153.237","Entropy测试服务器",1);
+    auto Entropy_home=new HackDirectory("home");
+    auto Entropy_bin=new HackDirectory("bin");
+
+    Entropy_home->AppendFile(new HackTxtFile("Entropy_Induction_Test",L"祝贺你, \n"
+                                                                           "  下载此文件以完成您的入组测试. \n"
+                                                                           "  Entropy马上就会联系你. "));
+    Entropy_bin->AppendFile(new HackTxtFile("BIT_PLZ_READ.txt",L"Bit, 别躲藏在阴影里了, 出来见见我吧, 我有事要跟你谈. \n"
+                                                               "Vap0r不会放过我的, 我觉得有点儿不对劲--她肯定有什么事瞒着我, 可以告诉我吗? \n"
+                                                               "-T"));
+
+    EntropyServer->getRootDirectory().AppendDirectory(Entropy_home);
+    EntropyServer->getRootDirectory().AppendDirectory(Entropy_bin);
+    EntropyServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
+    EntropyServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+
+    app->serverList.push_back(EntropyServer);
+
+    //Entropy测试服务器
     return app;
 }
