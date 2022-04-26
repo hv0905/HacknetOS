@@ -184,16 +184,16 @@ HacknetApplication *StarterCreator::createStarterOS()
     //Anderson的卧室电脑
 
     //Entropy测试服务器
-    auto EntropyServer=new HackServer("247.112.153.237","Entropy测试服务器",1);
-    auto Entropy_home=new HackDirectory("home");
-    auto Entropy_bin=new HackDirectory("bin");
+    auto EntropyServer = new HackServer("247.112.153.237", "Entropy测试服务器", 1);
+    auto Entropy_home = new HackDirectory("home");
+    auto Entropy_bin = new HackDirectory("bin");
 
-    Entropy_home->AppendFile(new HackTxtFile("Entropy_Induction_Test",L"祝贺你, \n"
-                                                                           "  下载此文件以完成您的入组测试. \n"
-                                                                           "  Entropy马上就会联系你. "));
-    Entropy_bin->AppendFile(new HackTxtFile("BIT_PLZ_READ.txt",L"Bit, 别躲藏在阴影里了, 出来见见我吧, 我有事要跟你谈. \n"
-                                                               "Vap0r不会放过我的, 我觉得有点儿不对劲--她肯定有什么事瞒着我, 可以告诉我吗? \n"
-                                                               "-T"));
+    Entropy_home->AppendFile(new HackTxtFile("Entropy_Induction_Test", L"祝贺你, \n"
+                                                                       "  下载此文件以完成您的入组测试. \n"
+                                                                       "  Entropy马上就会联系你. "));
+    Entropy_bin->AppendFile(new HackTxtFile("BIT_PLZ_READ.txt", L"Bit, 别躲藏在阴影里了, 出来见见我吧, 我有事要跟你谈. \n"
+                                                                "Vap0r不会放过我的, 我觉得有点儿不对劲--她肯定有什么事瞒着我, 可以告诉我吗? \n"
+                                                                "-T"));
 
     EntropyServer->getRootDirectory().AppendDirectory(Entropy_home);
     EntropyServer->getRootDirectory().AppendDirectory(Entropy_bin);
@@ -203,5 +203,53 @@ HacknetApplication *StarterCreator::createStarterOS()
     app->serverList.push_back(EntropyServer);
 
     //Entropy测试服务器
+
+    //Slash-Bot 新闻服务器
+    auto SlashServer = new HackServer("183.198.0.210", "Slash-Bot 新闻服务器", 1);
+    auto Slash_MsgBoard = new HackDirectory("MsgBoard");
+    auto listings=new HackDirectory("listings");
+    listings->AppendFile(new HackTxtFile("Entropy_Group_engaged_in_malicious_Hacking?",L"Entropy 黑客组织要转型为骇客了?\n"
+                                                                                           "\n"
+                                                                                           "最近的报道称, 黑客组织\"Entropy\"收留了一个臭名昭著的骇客, 并且为他提供了工作. \n"
+                                                                                           "我们还不能确认这个消息的真实性. 如果消息属实, 那么Entropy组织在将来一定会面临严峻的法律问题. \n"
+                                                                                           "在我看来, 这样的举动会破坏现在的良好网络环境, 遏制那些富有创造力的黑客组织的发展. Entropy应当受到严厉的谴责. \n"
+                                                                                           "记者 :  Tom Wilkins"));
+    listings->AppendFile(new HackTxtFile("Suspicions_arise_over_Entropy",L"Entropy引起了公众的疑心\n"
+                                                                         "\n"
+                                                                         "在当今的网络世界中, 黑客组织Entropy因长期提供大量可靠的资源信息而出名. 然而, 该组织最近采购了一些可疑的信息之后, 就关闭了他们的公共信息终端. 这样的行为引起了同行们的疑心. \n"
+                                                                         "虽然这个组织长时间以来因信息开源而在公众间享有良好的名誉, 但如果该组织真的做出不正当行为的话, 相关人士就必须采取措施了. \n"
+                                                                         "我们将跟踪报道事态的发展. \n"
+                                                                         "记者 : Tom Wilkins"));
+    listings->AppendFile(new HackTxtFile("New_Macrosoft_Phone:_About_as_bad_as_you_expecte",L"巨硬公司发布新款手机 : 要多烂有多烂\n"
+                                                                                            "\n"
+                                                                                            "看起来巨硬公司的开发脚步根本停不下来. 我们的员工有幸得到一台最新的样品机\"Waterfall\", 然而经过我们的测试, 已经发现了很多严重的安全漏洞. \n"
+                                                                                            "手机用户已经习惯于这个无处不在的科技巨头所开发的操作系统了, 然而这些安全漏洞使得任何安装在手机上的app都可以不受限制的控制手机, 该漏洞会让你的私人信息在未加密的情况下发送到网络上任何一个位置. \n"
+                                                                                            "巨硬公司的第四代手机\"Waterfall\"本将在两星期后发售, 但由于漏洞的存在, 专家声称发售日期将延后一个月. 更多信息, 请关注我们的空间. "));
+    listings->AppendFile(new HackTxtFile("Is_your_data_at_risk?",L"你的数据有风险吗?\n"
+                                                                 "\n"
+                                                                 "最近有一个恶意黑客组织非常活跃, 它致力于损害各种形式的网络社区媒体. 著名的网络交友社区FriendHole就是最近一次的受害者. \n"
+                                                                 "对于网警来说这个组织的身份和位置仍然是个谜. 不过他们组织传达的信息很明确: \"在我们面前, 没有什么是安全的\". \n"
+                                                                 "FaceSpace的CEO炸克伯格今天尝试安抚紧张的用户群, 他解释说, FaceSpace的安全措施是无懈可击的, 能查看用户个人信息的只有用户自己或用户指定的人, 还有FaceSpace 12000个值得信任的广告合作商. "));
+    Slash_MsgBoard->AppendFile(new HackTxtFile("Config_CAUTION.txt",L"  ----- 警告 -----\n"
+                                                                    "\n"
+                                                                    "该文件夹中的config.sys是一个关键的系统文件. \n"
+                                                                    "\n"
+                                                                    "不要删除或者重命名这个文件\n"
+                                                                    "\n"
+                                                                    "这样做会使面板和主进程崩溃\n"
+                                                                    "\n"
+                                                                    "应在计划停机时间来更改该配置文件, 以避免机器崩溃. "));
+    Slash_MsgBoard->AppendFile(new HackTxtFile("config.sys",L"010100110100101"));
+
+    Slash_MsgBoard->AppendDirectory(listings);
+
+    SlashServer->getRootDirectory().AppendDirectory(Slash_MsgBoard);
+    SlashServer->getRootDirectory().AppendDirectory(new HackDirectory("home"));
+    SlashServer->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
+    SlashServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    SlashServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
+
+    app->serverList.push_back(SlashServer);
+    //Slash-Bot 新闻服务器
     return app;
 }

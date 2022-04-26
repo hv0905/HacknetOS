@@ -769,7 +769,7 @@ std::string HacknetApplication::getFilenameAutoComplete(const std::string &comma
     if (possibleResult.empty())
         return command;
     else
-        return StringUtil::getPublicPrefix(possibleResult);
+        return command.substr(0,pos+1)+StringUtil::getPublicPrefix(possibleResult);
 }
 
 void HacknetApplication::executive_sshcrack(std::stringstream &commandStream)
