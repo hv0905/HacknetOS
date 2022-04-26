@@ -21,6 +21,8 @@ class HackMenuPanel
 public:
     // Return selected index
     // -1: No selection
+    HackMenuPanel(const std::string &title, const std::vector<std::string> &items);
+
     int Exec();
 
     void upItem();
