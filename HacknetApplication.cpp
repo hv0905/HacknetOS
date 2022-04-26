@@ -12,6 +12,7 @@
 #include "BackgroundTasks/PortHackBackgroundTask.h"
 #include "BackgroundTasks/SshCrackBgTask.h"
 #include "BackgroundTasks/FtpBounceBgTask.h"
+#include "HackMenuPanel.h"
 #include <algorithm>
 
 const HackCommand globalCommands[] = {
@@ -31,7 +32,8 @@ const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_dc, "dc", "断开连接"),
         HackCommand(&HacknetApplication::command_cat, "cat", "显示文件内容", "[filename]", true, true),
         HackCommand(&HacknetApplication::command_porthack, "porthack", "通过已开放的端口破解计算机管理员密码"),
-        HackCommand(&HacknetApplication::command_clear, "clear", "清除终端")
+        HackCommand(&HacknetApplication::command_clear, "clear", "清除终端"),
+        HackCommand(&HacknetApplication::command_mailbox, "mailbox", "打开Jmail邮箱(注意: 这将断开您与现有计算机的连接)"),
 };
 
 
@@ -845,4 +847,13 @@ void HacknetApplication::pushLog(const std::string &log)
     std::lock_guard lock(commandMutex);
     commandBuffer.push_back(log);
     renderService.requireUpdate = true;
+}
+
+void HacknetApplication::command_mailbox(std::stringstream &)
+{
+    internalDisconnect();
+    pushLog("JMail initialzing...");
+    auto select = HackMenuPanel(":: MailBox ::", {"Mail1", "Mail2", "Mail3"});
+    int i = select.Exec();
+    pushLog(std::to_string(i));
 }

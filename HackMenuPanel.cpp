@@ -74,20 +74,22 @@ void HackMenuPanel::Draw()
     cout << "[R] Reverse order     [Q / ESC] Quit    [ENTER] Go to selection";
 
     // menu
-    for (int i = 0; i < items.size(); i++)
+    for (int i = currentSkip, j = 1;
+         i < std::min(static_cast<int>(items.size()), currentSkip + MAX_VISIBLE_ITEMS); i++, j++)
     {
-        setCursorPos(0, i + 1);
-        if (currentSelection == i)
+        int ii = reverse ? items.size() - i - 1 : i;
+        setCursorPos(0, j);
+        if (currentSelection == ii)
         {
             setColorAttr(BG_WHITE);
             setColorAttr(FG_BLACK);
-            cout << items[i];
+            cout << items[ii];
             clearLine(getCursorPos(), UIUtil::SIZE_ALL.width - getCursorPos().x);
             setColorAttr(ATTR_NORMAL);
         }
         else
         {
-            cout << items[i];
+            cout << items[ii];
         }
     }
 }
@@ -116,3 +118,7 @@ void HackMenuPanel::downItem()
     }
 
 }
+
+HackMenuPanel::HackMenuPanel(const std::string &title, const std::vector<std::string> &items) : title(title),
+                                                                                                items(items)
+{}
