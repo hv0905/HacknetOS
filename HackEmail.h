@@ -5,14 +5,23 @@
 #define HACKNETOS_HACKEMAIL_H
 #include "string"
 #include"HacknetApplication.h"
-class HackEmail {
+class HackEmail
+{
 public:
     HackEmail(const std::wstring &title = L"", const std::wstring &sender = L"", const std::wstring &content = L"",
-                         int mid = 1000);
+              int mid = 1000);
 
     static void lsMail(int missionid);
 
     static void cdMail(const std::wstring &title);
+
+    const std::wstring &getEmailTitle() const;
+
+    const std::wstring &getSender() const;
+
+    const std::wstring &getEmailContent() const;
+
+    int getMissionId() const;
 
 private:
     std::wstring emailTitle;

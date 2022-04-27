@@ -537,9 +537,12 @@ void HacknetApplication::command_scp(std::stringstream &command)
 
 void HacknetApplication::internalDisconnect()
 {
+    if (CurrentConnected != nullptr)
+    {
+        pushLog("Disconnected");
+    }
     CurrentDir = nullptr;
     CurrentConnected = nullptr;
-    pushLog("Disconnected");
 }
 
 HackDirectory *HacknetApplication::locateDir(const std::string &path, bool local)
@@ -852,8 +855,9 @@ void HacknetApplication::pushLog(const std::string &log)
 void HacknetApplication::command_mailbox(std::stringstream &)
 {
     internalDisconnect();
-    pushLog("JMail initialzing...");
+    pushLog("JMail initializing...");
+
     auto select = HackMenuPanel(":: MailBox ::", {"Mail1", "Mail2", "Mail3"});
     int i = select.Exec();
-    pushLog(std::to_string(i));
+    if (i == -1) return;
 }

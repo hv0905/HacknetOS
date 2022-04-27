@@ -156,5 +156,25 @@ void HackEmail::cdMail(const std::wstring &title)
         }
 }
 
+const std::wstring &HackEmail::getEmailTitle() const
+{
+    return emailTitle;
+}
+
+const std::wstring &HackEmail::getSender() const
+{
+    return sender;
+}
+
+const std::wstring &HackEmail::getEmailContent() const
+{
+    return emailContent;
+}
+
+int HackEmail::getMissionId() const
+{
+    return missionId;
+}
+
 
 
