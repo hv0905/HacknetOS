@@ -295,7 +295,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     PointClickerSave->AppendFile(new HackTxtFile("Bit.pcsav", L"4252423425463534\n"
                                                               "45411423441432323\n"));
     PointClickerSave->AppendFile(new HackTxtFile("Blizz.pcsav", L"75363456653633534\n"
-                                                              "857736345252342342\n"));
+                                                                "857736345252342342\n"));
     PointClicker->AppendDirectory(PointClickerSave);
     PointClickerServer->getRootDirectory().AppendDirectory(new HackDirectory("home"));
     PointClickerServer->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
@@ -304,5 +304,52 @@ HacknetApplication *StarterCreator::createStarterOS()
 
     app->serverList.push_back(PointClickerServer);
     //Point Clicker服务器
+
+    //PP市场服务器
+    auto PPServer = new HackServer("234.228.181.58", "PP市场公司", 2);
+    auto PP_home = new HackDirectory("home");
+    auto PP_WORKSPACE = new HackDirectory("WORKSPACE");
+    auto PP_document = new HackDirectory("documents");
+    PP_WORKSPACE->AppendFile(new HackTxtFile("SECURE_MAILLIST.dec", L"010100101010101010\n"
+                                                                    "010010101010100101\n"
+                                                                    "010100101010101010\n"
+                                                                    "010010101010010101\n"
+                                                                    "100101010010101010\n"
+                                                                    "010101010010101010\n"
+                                                                    "The file content is too long to display"));
+    PP_WORKSPACE->AppendFile(new HackTxtFile("Maillist_info.txt",
+                                             L"这就是我们从黑客手中得到的邮件列表(顺便一提, 我们给这家伙付了不少钱). 结果这邮件列表还是加密的? 那我们到底为啥要付钱给这个黑客? \n"
+                                             "HR说他会找其他人来尝试解码这个邮件列表, 或者只要有人能从中提取出有用的东西都行. 根据黑客的说法, 这个文本的大小是正确的, 所以只要我们能破解开这个文件, 我们就能得到正确的数据. \n"
+                                             "真麻烦. 好吧, 至少这邮件列表确实在我们手里了, 虽然我们还打不开...  ."));
+    PP_document->AppendFile(new HackTxtFile("IncidentLog1.txt", L"[nem] 你周末登录了S3吗? \n"
+                                                                "\n"
+                                                                "[felix] 没, 怎么了? \n"
+                                                                "\n"
+                                                                "[nem] 有些文件丢失了, 我们的宽带使用率也显示错误. 然而我并没有查到相应的操作日志. \n"
+                                                                "\n"
+                                                                "[felix] 这有点奇怪啊. \n"
+                                                                "\n"
+                                                                "[felix] 你有没有查看过防火墙的完整性? \n"
+                                                                "\n"
+                                                                "[nem] 还没. \n"
+                                                                "\n"
+                                                                "[nem] 糟了. \n"
+                                                                "\n"
+                                                                "[felix] 怎么了? \n"
+                                                                "\n"
+                                                                "[nem] 邮件服务器的RDP服务已经宕机了. \n"
+                                                                "\n"
+                                                                "[nem] 我去机房瞅瞅. \n"
+                                                                "\n"
+                                                                "[nem] 马上回来. "));
+    PP_home->AppendDirectory(PP_WORKSPACE);
+    PP_home->AppendDirectory(PP_document);
+    PPServer->getRootDirectory().AppendDirectory(PP_home);
+    PPServer->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
+    PPServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
+    PPServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+
+    app->serverList.push_back(PPServer);
+    //PP市场服务器
     return app;
 }

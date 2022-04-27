@@ -18,7 +18,7 @@ void FTPBounceBgTask::drawMemory(Coord begin)
     if (currentFrame == FRAME_COUNT * 2)
     {
         // unlock the permission
-        ref->getCurrentConnected()->setSshLocked(false);
+        ref->getCurrentConnected()->setFtpLocked(false);
         ref->pushLog("FTPBounce: Operation Complete.");
         ref->getRenderService().setRequireUpdate(true);
     }
