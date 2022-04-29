@@ -3,15 +3,17 @@
 //
 #ifndef HACKNETOS_HACKEMAIL_H
 #define HACKNETOS_HACKEMAIL_H
+
+#include <vector>
 #include "string"
-#include"HacknetApplication.h"
+
 class HackEmail
 {
 public:
     HackEmail(const std::wstring &title = L"", const std::wstring &sender = L"", const std::wstring &content = L"",
               int mid = 1000);
 
-    static void lsMail(int missionid);
+    static std::vector<const HackEmail *> getAvailMail(int missionid);
 
     static void cdMail(const std::wstring &title);
 

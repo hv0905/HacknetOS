@@ -115,18 +115,18 @@ const HackEmail Email[] = {
 };
 std::wstring displayedEmail[1000];
 
-void HackEmail::lsMail(int missionid)
+std::vector<const HackEmail *> HackEmail::getAvailMail(int missionid)
 {
-    int pos = 0;
+    std::vector<const HackEmail *> result;
     for (const auto &i: Email)
     {
         if (i.missionId <= missionid)
         {
-            if (pos >= 40)
-                break;
-            displayedEmail[pos++] = i.emailTitle;
+            result.push_back(&i);
         }
     }
+
+    return result;
 }
 
 void HackEmail::cdMail(const std::wstring &title)

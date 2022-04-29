@@ -11,6 +11,7 @@
 void HackMailViewer::Render()
 {
     using namespace Util;
+    clearScreen();
     // Title
     setCursorPos(0, 0);
     setColorAttr(BG_WHITE);
@@ -63,3 +64,6 @@ bool HackMailViewer::Exec()
         }
     }
 }
+
+HackMailViewer::HackMailViewer(const HackEmail &content) : content(content)
+{}

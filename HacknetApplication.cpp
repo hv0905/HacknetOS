@@ -13,6 +13,8 @@
 #include "BackgroundTasks/SshCrackBgTask.h"
 #include "BackgroundTasks/FtpBounceBgTask.h"
 #include "HackMenuPanel.h"
+#include "HackEmail.h"
+#include "HackMailViewer.h"
 #include <algorithm>
 
 const HackCommand globalCommands[] = {
@@ -857,7 +859,18 @@ void HacknetApplication::command_mailbox(std::stringstream &)
     internalDisconnect();
     pushLog("JMail initializing...");
 
-    auto select = HackMenuPanel(":: MailBox ::", {"Mail1", "Mail2", "Mail3"});
+    auto avail = HackEmail::getAvailMail(1001);
+    std::vector<std::string> titles;
+    titles.reserve(avail.size());
+    for (auto &i: avail)
+    {
+        titles.push_back("   " + StringUtil::ws2s(i->getEmailTitle()));
+    }
+
+    auto select = HackMenuPanel(":: MailBox ::", titles);
     int i = select.Exec();
     if (i == -1) return;
+    auto viewer = HackMailViewer(*avail[i]);
+
+    viewer.Exec();
 }

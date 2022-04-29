@@ -11,6 +11,10 @@ class HackMailViewer
 {
     HackEmail content;
 
+public:
+
+    HackMailViewer(const HackEmail &content);
+
     bool Exec();
 
     void Render();
