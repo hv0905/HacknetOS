@@ -10,6 +10,9 @@
 class TutorialBgTask : public HackBackgroundTask
 {
     int status = 0;
+
+    void checkStatus();
+
 public:
     void drawMemory(Coord begin) override;
 

@@ -75,6 +75,12 @@ public:
 
     RenderService &getRenderService();
 
+    const InputService &getInputService() const;
+
+    HackServer *getLocalSever() const;
+
+    HackDirectory *getCurrentDir() const;
+
     std::string getPrompt();
 
     std::vector<HackCommand> getAvailExecutiveCommand();

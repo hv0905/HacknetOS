@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include "../HacknetApplication.h"
 #include "TutorialBgTask.h"
 #include "../Utility/Util.h"
 
@@ -81,6 +82,7 @@ const char *StepsText[] = {
 
 void TutorialBgTask::drawMemory(Coord begin)
 {
+    checkStatus();
     Util::setCursorPos(begin);
     std::cout << StepsText[status];
 }
@@ -93,4 +95,91 @@ int TutorialBgTask::getMemorySize()
 void TutorialBgTask::kill()
 {
     HackBackgroundTask::kill();
+}
+
+void TutorialBgTask::checkStatus()
+{
+    switch (status)
+    {
+        case 0:
+            if (ref->getCurrentConnected() == ref->getLocalSever())
+            {
+                ++status;
+            }
+            break;
+        case 1:
+            if (ref->getInputService().getHistory().back() == "scan")
+            {
+                ++status;
+            }
+            break;
+        case 2:
+            if (ref->getCurrentConnected() == nullptr)
+            {
+                ++status;
+            }
+            break;
+        case 3:
+            if (std::find(ref->getLocalSever()->getConnectedNodes().begin(),
+                          ref->getLocalSever()->getConnectedNodes().end(), ref->getCurrentConnected()) !=
+                ref->getLocalSever()->getConnectedNodes().end())
+            {
+                ++status;
+            }
+            break;
+        case 4:
+            if (ref->getInputService().getHistory().back() == "nmap")
+            {
+                ++status;
+            }
+            break;
+        case 5:
+            if (ref->getCurrentConnected() && ref->getCurrentConnected()->isAccessible())
+            {
+                ++status;
+            }
+            break;
+        case 6:
+            if (ref->getInputService().getHistory().back() == "ls")
+            {
+                ++status;
+            }
+            break;
+        case 7:
+            if (ref->getCurrentDir() && ref->getCurrentDir()->getDirName() == "bin")
+            {
+                ++status;
+            }
+            break;
+        case 8:
+            if (ref->getInputService().getHistory().back() == "cat config.txt")
+            {
+                ++status;
+            }
+            break;
+        case 9:
+            if (ref->getCurrentConnected() && ref->getCurrentDir() == &ref->getCurrentConnected()->getRootDirectory())
+            {
+                ++status;
+            }
+            break;
+        case 10:
+            if (ref->getCurrentDir() && ref->getCurrentDir()->getDirName() == "log")
+            {
+                ++status;
+            }
+            break;
+        case 11:
+            if (ref->getInputService().getHistory().back() == "rm *")
+            {
+                ++status;
+            }
+            break;
+        case 12:
+            if (ref->getCurrentConnected() == nullptr)
+            {
+                ++status;
+            }
+            break;
+    }
 }

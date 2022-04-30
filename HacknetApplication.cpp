@@ -876,3 +876,18 @@ void HacknetApplication::command_mailbox(std::stringstream &)
 
     viewer.Exec();
 }
+
+const InputService &HacknetApplication::getInputService() const
+{
+    return inputService;
+}
+
+HackServer *HacknetApplication::getLocalSever() const
+{
+    return localSever;
+}
+
+HackDirectory *HacknetApplication::getCurrentDir() const
+{
+    return CurrentDir;
+}
