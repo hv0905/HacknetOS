@@ -9,15 +9,17 @@
 
 class HackMailViewer
 {
-    HackEmail content;
+    const HackEmail *content;
 
 public:
 
-    HackMailViewer(const HackEmail &content);
+    HackMailViewer(const HackEmail *content);
 
     bool Exec();
 
     void Render();
+
+    void DoReply();
 
 
 };

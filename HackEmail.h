@@ -6,6 +6,9 @@
 
 #include <vector>
 #include "string"
+#include "MissionCheckService.h"
+
+typedef bool (MissionCheckService::*checkMethod)();
 
 class HackEmail
 {

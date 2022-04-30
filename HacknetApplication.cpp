@@ -36,6 +36,7 @@ const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_porthack, "porthack", "通过已开放的端口破解计算机管理员密码"),
         HackCommand(&HacknetApplication::command_clear, "clear", "清除终端"),
         HackCommand(&HacknetApplication::command_mailbox, "mailbox", "打开Jmail邮箱(注意: 这将断开您与现有计算机的连接)"),
+        HackCommand(nullptr, "netmap", "打开网络地图"),
 };
 
 
@@ -352,6 +353,7 @@ void HacknetApplication::command_help(std::stringstream &ss)
 
 void HacknetApplication::command_clear(std::stringstream &)
 {
+    std::lock_guard lg(commandMutex);
     commandBuffer.clear();
 }
 
@@ -870,7 +872,7 @@ void HacknetApplication::command_mailbox(std::stringstream &)
     auto select = HackMenuPanel(":: MailBox ::", titles);
     int i = select.Exec();
     if (i == -1) return;
-    auto viewer = HackMailViewer(*avail[i]);
+    auto viewer = HackMailViewer(avail[i]);
 
     viewer.Exec();
 }

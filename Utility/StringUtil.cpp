@@ -142,7 +142,7 @@ bool StringUtil::endsWith(std::string src, std::string suffix)
 std::string StringUtil::getPublicPrefix(std::vector<std::string> &elements)
 {
     std::string prefix;
-    if (elements.size() == 0)
+    if (elements.empty())
     {
         return "";
     }

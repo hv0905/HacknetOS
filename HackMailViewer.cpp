@@ -22,11 +22,11 @@ void HackMailViewer::Render()
 
     // Title Sender
     setCursorPos(0, 1);
-    std::wcout << content.getEmailTitle();
+    std::wcout << content->getEmailTitle();
 
     setCursorPos(0, 2);
     std::cout << "From: ";
-    std::wcout << content.getSender();
+    std::wcout << content->getSender();
 
     setCursorPos(0, 3);
     std::cout << "To: Aiden Pearce";
@@ -37,7 +37,7 @@ void HackMailViewer::Render()
 
     // Content
     setCursorPos(0, 5);
-    std::wcout << content.getEmailContent();
+    std::wcout << content->getEmailContent();
 
     // Operations
     setCursorPos(0, UIUtil::SIZE_ALL.height - 1);
@@ -54,7 +54,7 @@ bool HackMailViewer::Exec()
             case 13:
             case 'r':
             case 'R':
-                return true;
+                DoReply();
             case 'q':
             case 'Q':
             case 0x1B:
@@ -65,5 +65,10 @@ bool HackMailViewer::Exec()
     }
 }
 
-HackMailViewer::HackMailViewer(const HackEmail &content) : content(content)
+HackMailViewer::HackMailViewer(const HackEmail *content) : content(content)
 {}
+
+void HackMailViewer::DoReply()
+{
+
+}

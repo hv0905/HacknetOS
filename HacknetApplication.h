@@ -15,6 +15,7 @@
 #include "RenderService.h"
 #include "BackgroundTasks/HackBackgroundTask.h"
 #include "HackCommand.h"
+#include "MissionCheckService.h"
 
 class HacknetApplication
 {
@@ -28,6 +29,7 @@ class HacknetApplication
     std::vector<std::string> commandBuffer{};
     InputService inputService{};
     RenderService renderService{this};
+    MissionCheckService checkService{this};
     std::vector<HackBackgroundTask *> backgroundTasks{};
     std::vector<HackServer *> serverList{};
     std::vector<std::thread *> threadPool{};
@@ -125,6 +127,9 @@ public:
     friend class RenderService;
 
     friend class InputService;
+
+    friend class MissionCheckService;
+
     //endregion static
 };
 

@@ -5,14 +5,17 @@
 #ifndef HACKNETOS_MISSIONCHECKSERVICE_H
 #define HACKNETOS_MISSIONCHECKSERVICE_H
 
+class __single_inheritance HacknetApplication;
 
-#include "HacknetApplication.h"
 
 class MissionCheckService
 {
     HacknetApplication *ref;
 
     bool check_mission_1();
+
+public:
+    MissionCheckService(HacknetApplication *ref);
 };
 
 
