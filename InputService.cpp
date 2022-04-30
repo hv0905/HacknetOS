@@ -135,3 +135,8 @@ void InputService::renderCMD(std::string prompt, Coord start)
     std::cout << commandBuffer;
     Util::moveCursorPos(-position, 0);
 }
+
+const std::vector<std::string> &InputService::getHistory() const
+{
+    return history;
+}

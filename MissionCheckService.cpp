@@ -3,8 +3,14 @@
 //
 
 #include "MissionCheckService.h"
+#include "HacknetApplication.h"
 
-MissionCheckService::MissionCheckService(HacknetApplication * ref)
-:
-ref(ref)
-        {}
+MissionCheckService::MissionCheckService(HacknetApplication *ref)
+        :
+        ref(ref)
+{}
+
+bool MissionCheckService::check_mission_1()
+{
+    return false;
+}

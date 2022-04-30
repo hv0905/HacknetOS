@@ -3,10 +3,9 @@
 //
 #include"HackEmail.h"
 
-#include <utility>
-
-HackEmail::HackEmail(const std::wstring &title, const std::wstring &sender, const std::wstring &content, int mid) :
-        emailTitle(title), sender(sender), emailContent(content), missionId(mid)
+HackEmail::HackEmail(const std::wstring &title, const std::wstring &sender, const std::wstring &content, int mid,
+                     MissionMode mode, CheckerHandler handler) :
+        emailTitle(title), sender(sender), emailContent(content), parentMissionId(mid), mode(mode), checker(handler)
 {}
 
 const HackEmail Email[] = {
@@ -113,47 +112,19 @@ const HackEmail Email[] = {
                                                  "-Entropy 管理员")
 
 };
-std::wstring displayedEmail[1000];
 
 std::vector<const HackEmail *> HackEmail::getAvailMail(int missionid)
 {
     std::vector<const HackEmail *> result;
     for (const auto &i: Email)
     {
-        if (i.missionId <= missionid)
+        if (i.parentMissionId <= missionid)
         {
             result.push_back(&i);
         }
     }
 
     return result;
-}
-
-void HackEmail::cdMail(const std::wstring &title)
-{
-    for (const auto &i: Email)
-        if (i.emailTitle == title)
-        {
-            displayedEmail[0] = i.emailTitle;
-            displayedEmail[1] = i.sender;
-            int pos = 2;
-            int num = 60;
-            int len = i.emailContent.length();//字符串长度
-            int end = num;//分割定长大小
-            std::wstring s;
-            for (int start = 0; start < len;)
-            {
-                if (start > len)
-                {
-                    break;
-                }
-                s = i.emailContent.substr(start, num);//从0开始，分割num位字符串
-                start = end;
-                end = end + num;
-                displayedEmail[pos++] = s;
-            }
-            break;
-        }
 }
 
 const std::wstring &HackEmail::getEmailTitle() const
@@ -173,7 +144,7 @@ const std::wstring &HackEmail::getEmailContent() const
 
 int HackEmail::getMissionId() const
 {
-    return missionId;
+    return parentMissionId;
 }
 
 

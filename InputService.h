@@ -50,6 +50,8 @@ public:
         return lastKey;
     }
 
+    [[nodiscard]] const std::vector<std::string> &getHistory() const;
+
 };
 
 

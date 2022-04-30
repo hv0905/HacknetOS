@@ -12,10 +12,10 @@ class MissionCheckService
 {
     HacknetApplication *ref;
 
-    bool check_mission_1();
-
 public:
     MissionCheckService(HacknetApplication *ref);
+
+    bool check_mission_1();
 };
 
 

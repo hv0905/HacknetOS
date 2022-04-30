@@ -9,7 +9,7 @@
 
 class TutorialBgTask : public HackBackgroundTask
 {
-
+    int status = 0;
 public:
     void drawMemory(Coord begin) override;
 
