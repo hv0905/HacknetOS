@@ -915,3 +915,18 @@ bool HacknetApplication::pushBackgroundTask(HackBackgroundTask *task)
     backgroundTasks.push_back(task);
     return true;
 }
+
+void HacknetApplication::updateMissionId(int newId)
+{
+    if (newId > missionId && HackEmail::getAvailMail(newId).size() > HackEmail::getAvailMail(missionId).size())
+    { // notif
+        pushLog("***你收到了新的邮件.***");
+        pushLog("请使用指令mailbox打开邮箱进行确认.");
+    }
+    missionId = newId;
+}
+
+int HacknetApplication::getMissionId() const
+{
+    return missionId;
+}

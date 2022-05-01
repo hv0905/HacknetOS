@@ -59,35 +59,35 @@ public:
 
     void rmDir(const std::string &dirName);
 
-    void command_Scan(std::stringstream &s);
-
-    void command_porthack(std::stringstream &s);
-
     void processCommand(const std::string &command);
 
     [[nodiscard]] bool isEnding() const;
 
     void setEnding(bool ending);
 
-    HackServer *getCurrentConnected() const;
+    [[nodiscard]] HackServer *getCurrentConnected() const;
 
-    const std::vector<std::string> &getCommandBuffer() const;
+    [[nodiscard]] const std::vector<std::string> &getCommandBuffer() const;
 
     std::vector<std::string> &getCommandBuffer();
 
     RenderService &getRenderService();
 
-    const InputService &getInputService() const;
+    [[nodiscard]] const InputService &getInputService() const;
 
-    HackServer *getLocalSever() const;
+    [[nodiscard]] HackServer *getLocalSever() const;
 
-    HackDirectory *getCurrentDir() const;
+    [[nodiscard]] HackDirectory *getCurrentDir() const;
 
     std::string getPrompt();
 
     std::vector<HackCommand> getAvailExecutiveCommand();
 
     void pushLog(const std::string &log);
+
+    int getMissionId() const;
+
+    void updateMissionId(int missionId);
 
     // region handler for global commands
 
@@ -116,6 +116,10 @@ public:
     void command_cat(std::stringstream &commandStream);
 
     void command_mailbox(std::stringstream &commandStream);
+
+    void command_Scan(std::stringstream &s);
+
+    void command_porthack(std::stringstream &s);
 
     void executive_sshcrack(std::stringstream &commandStream);
 
