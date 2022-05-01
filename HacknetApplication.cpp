@@ -12,6 +12,7 @@
 #include "BackgroundTasks/PortHackBackgroundTask.h"
 #include "BackgroundTasks/SshCrackBgTask.h"
 #include "BackgroundTasks/FtpBounceBgTask.h"
+#include "BackgroundTasks/TutorialBgTask.h"
 #include "HackMenuPanel.h"
 #include "HackEmail.h"
 #include "HackMailViewer.h"
@@ -43,9 +44,12 @@ const HackCommand globalCommands[] = {
 void HacknetApplication::Exec()
 {
     // First, connect to local server
-    internalConnect(localSever);
+    //internalConnect(localSever);
     inputService.setAcceptCommand(true);
     renderService.requireUpdate = true;
+
+    pushBackgroundTask(new TutorialBgTask(this));
+
     while (true)
     {
         renderService.RenderTick();
@@ -220,7 +224,7 @@ void HacknetApplication::command_porthack(std::stringstream &s)
     HacknetApplication::pushLog("PortHack Initialized --Running");
     if (CurrentConnected->checkIfSecureBroken())
     {
-        backgroundTasks.push_back(new PortHackBackgroundTask(this, "PortHack"));
+        pushBackgroundTask(new PortHackBackgroundTask(this, "PortHack"));
     }
     else
     {
@@ -799,7 +803,7 @@ void HacknetApplication::executive_sshcrack(std::stringstream &commandStream)
     }
 
     pushLog("SecureShellCrack running...");
-    backgroundTasks.push_back(new SSHCrackBgTask(this, "SecureShellCrack"));
+    pushBackgroundTask(new SSHCrackBgTask(this, "SecureShellCrack"));
 
 }
 
@@ -821,7 +825,7 @@ void HacknetApplication::executive_ftpbounce(std::stringstream &commandStream)
     }
 
     pushLog("FTPBounce running...");
-    backgroundTasks.push_back(new FTPBounceBgTask(this, "FTPBounce"));
+    pushBackgroundTask(new FTPBounceBgTask(this, "FTPBounce"));
 }
 
 std::vector<HackCommand> HacknetApplication::getAvailExecutiveCommand()
@@ -890,4 +894,24 @@ HackServer *HacknetApplication::getLocalSever() const
 HackDirectory *HacknetApplication::getCurrentDir() const
 {
     return CurrentDir;
+}
+
+bool HacknetApplication::pushBackgroundTask(HackBackgroundTask *task)
+{
+    if (task == nullptr)
+        return false;
+    // checkMem
+    int totalMem = 0;
+    for (auto &i: backgroundTasks)
+    {
+        totalMem += i->getMemorySize() + 1;
+    }
+
+    if (totalMem + task->getMemorySize() + 1 > HackBackgroundTask::MAX_MEMORY)
+    {
+        pushLog("Fatal: Out of memory.");
+        return false;
+    }
+    backgroundTasks.push_back(task);
+    return true;
 }

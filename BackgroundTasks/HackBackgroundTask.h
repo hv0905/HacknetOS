@@ -21,6 +21,8 @@ protected:
 
 public:
 
+    static const int MAX_MEMORY = 43;
+
     HackBackgroundTask(HacknetApplication *ref, const std::string &threadName) : ref(ref),
                                                                                  thread_name(threadName),
                                                                                  pid(++pidPool),

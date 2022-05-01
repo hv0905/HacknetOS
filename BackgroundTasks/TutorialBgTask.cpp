@@ -38,8 +38,8 @@ const char *StepsText[] = {
         "在这里你可以看到活动端口, 已激活的安全\n"
         "系统和需要破解的端口数, 你需要破解规定\n"
         "数量的端口才能运行PortHack. \n"
-        "这台服务器没有已激活的安全系统, 需要破解"
-        "的端口数量为0. 使用"
+        "这台服务器没有已激活的安全系统, 需要破解\n"
+        "的端口数量为0. 使用\n"
         "\"PortHack\"开始破解. \n"
         "----------\n"
         "如果想要在你连接到的设备上运行你所拥有的程序, 可在终端上输入该程序的名字. \n"
@@ -55,8 +55,8 @@ const char *StepsText[] = {
         " \n"
         "\"cd [文件夹名]\" (注意空格)",
         "要查看当前文件夹的内容, 使用\"ls\"命令. \n"
-        "这里没有程序, 但你最好"
-        "查看config.txt"
+        "这里没有程序, 但你最好\n"
+        "查看config.txt\n"
         "以防止漏掉有用的信息. \n"
         "读取任何文件都可以使用cat命令. 例: \n"
         " \n"
@@ -182,4 +182,9 @@ void TutorialBgTask::checkStatus()
             }
             break;
     }
+}
+
+TutorialBgTask::TutorialBgTask(HacknetApplication *ref) : HackBackgroundTask(ref, "Tutorial")
+{
+
 }

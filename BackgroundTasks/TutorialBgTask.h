@@ -14,6 +14,9 @@ class TutorialBgTask : public HackBackgroundTask
     void checkStatus();
 
 public:
+
+    explicit TutorialBgTask(HacknetApplication *ref);
+
     void drawMemory(Coord begin) override;
 
     int getMemorySize() override;

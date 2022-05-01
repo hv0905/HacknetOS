@@ -45,6 +45,8 @@ class HacknetApplication
 
     HackFile *locateFile(std::string path);
 
+    bool pushBackgroundTask(HackBackgroundTask *task);
+
 public:
 
     virtual ~HacknetApplication();
