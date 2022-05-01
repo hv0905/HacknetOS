@@ -28,7 +28,7 @@ public:
 
     std::optional<std::string> tickInput();
 
-    void renderCMD(std::string prompt, Coord start);
+    void renderCMD(const std::string &prompt, Coord start);
 
     [[nodiscard]] const std::string &getCommandBuffer() const
     {

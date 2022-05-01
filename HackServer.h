@@ -21,7 +21,7 @@ class HackServer
 
     bool accessible = false;
 
-    int minRequired;
+    int minRequired{};
 
     bool SSHLocked = true;
     bool HTTPLocked = true;

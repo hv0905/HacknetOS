@@ -20,8 +20,9 @@ enum MissionMode
 class HackEmail
 {
 public:
-    HackEmail(const std::wstring &title = L"", const std::wstring &sender = L"", const std::wstring &content = L"",
-              int mid = 1000, MissionMode mode = MODE_NO_MISSION, CheckerHandler handler = nullptr);
+    explicit HackEmail(const std::wstring &title = L"", const std::wstring &sender = L"",
+                       const std::wstring &content = L"",
+                       int mid = 1000, MissionMode mode = MODE_NO_MISSION, CheckerHandler handler = nullptr);
 
     static std::vector<const HackEmail *> getAvailMail(int missionid);
 

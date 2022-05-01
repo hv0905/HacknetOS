@@ -128,7 +128,7 @@ InputService::InputService() : commandBuffer()
     commandBuffer.reserve(256);
 }
 
-void InputService::renderCMD(std::string prompt, Coord start)
+void InputService::renderCMD(const std::string &prompt, Coord start)
 {
     Util::setCursorPos(start);
     std::cout << prompt;

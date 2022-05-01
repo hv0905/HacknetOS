@@ -112,9 +112,7 @@ HackServer::HackServer()
 {}
 
 HackServer::~HackServer()
-{
-
-}
+= default;
 
 void HackServer::setAccessible(bool accessible)
 {

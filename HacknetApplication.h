@@ -39,7 +39,7 @@ class HacknetApplication
 
     void internalConnect(HackServer *target);
 
-    void wrapAppend(const std::string str);
+    void wrapAppend(std::string str);
 
     HackDirectory *locateDir(const std::string &path, bool local = false);
 
@@ -85,7 +85,7 @@ public:
 
     void pushLog(const std::string &log);
 
-    int getMissionId() const;
+    [[nodiscard]] int getMissionId() const;
 
     void updateMissionId(int missionId);
 

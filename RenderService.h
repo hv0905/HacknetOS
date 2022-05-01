@@ -26,7 +26,7 @@ public:
 
     void RenderMemory();
 
-    bool isRequireUpdate() const;
+    [[nodiscard]] bool isRequireUpdate() const;
 
     void setRequireUpdate(bool requireUpdate);
 };

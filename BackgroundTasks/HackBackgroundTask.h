@@ -54,9 +54,7 @@ public:
     }
 
     virtual ~HackBackgroundTask()
-    {
-
-    }
+    = default;
 };
 
 

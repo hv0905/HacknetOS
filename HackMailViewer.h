@@ -13,7 +13,7 @@ class HackMailViewer
 
 public:
 
-    HackMailViewer(const HackEmail *content);
+    explicit HackMailViewer(const HackEmail *content);
 
     bool Exec();
 

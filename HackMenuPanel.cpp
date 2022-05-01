@@ -77,7 +77,7 @@ void HackMenuPanel::Draw()
     for (int i = currentSkip, j = 1;
          i < std::min(static_cast<int>(items.size()), currentSkip + MAX_VISIBLE_ITEMS); i++, j++)
     {
-        int ii = reverse ? items.size() - i - 1 : i;
+        auto ii = reverse ? items.size() - i - 1 : i;
         setCursorPos(0, j);
         if (currentSelection == ii)
         {

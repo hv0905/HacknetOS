@@ -15,12 +15,10 @@ void HackFile::setParentDir(HackDirectory *parentDir)
 }
 
 HackFile::~HackFile()
-{
-
-}
+= default;
 
 HackFile::HackFile(const std::string &name) : name(name)
 {}
 
 HackFile::HackFile()
-{}
+= default;

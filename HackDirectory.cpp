@@ -4,8 +4,9 @@
 
 #include "HackDirectory.h"
 #include <algorithm>
+#include <utility>
 
-HackDirectory::HackDirectory(std::string name) : name(name)
+HackDirectory::HackDirectory(std::string name) : name(std::move(name))
 {
 }
 
@@ -27,11 +28,6 @@ std::vector<HackFile *> &HackDirectory::getfiles()
 HackDirectory *HackDirectory::getParentDir()
 {
     return parentDir;
-}
-
-[[maybe_unused]] HackDirectory *HackDirectory::getRootDir()
-{
-    return rootDirs;
 }
 
 std::string HackDirectory::setDirName(std::string newName)
@@ -66,7 +62,7 @@ HackDirectory *HackDirectory::LocateSonDir(std::string item)
     }
 }
 
-HackDirectory *HackDirectory::LocateOrCreateSonDir(std::string item)
+HackDirectory *HackDirectory::LocateOrCreateSonDir(const std::string &item)
 {
     auto d = LocateSonDir(item);
     if (d == nullptr && item != "..")

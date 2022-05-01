@@ -16,9 +16,9 @@ class AsciiAnimation
 public:
     AsciiAnimation();
 
-    AsciiAnimation(std::filesystem::path dir, int frames);
+    AsciiAnimation(const std::filesystem::path &dir, int frames);
 
-    const std::vector<AsciiArt> &getData() const;
+    [[nodiscard]] const std::vector<AsciiArt> &getData() const;
 
     void setData(const std::vector<AsciiArt> &data);
 };

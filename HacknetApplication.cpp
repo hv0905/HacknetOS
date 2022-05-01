@@ -424,7 +424,7 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
             // move & rename
             // /home/dsf
             HackDirectory *newDir;
-            int pos = dst.find_last_of('/');
+            auto pos = dst.find_last_of('/');
             if (pos == std::string::npos)
             {
                 newDir = CurrentDir;
@@ -472,7 +472,7 @@ void HacknetApplication::command_mv(std::stringstream &commandStream)
             dir->getParentDir()->getsubDirs().erase(
                     std::find(dir->getParentDir()->getsubDirs().begin(), dir->getParentDir()->getsubDirs().end(), dir));
 
-            int pos = dst.find_last_of('/');
+            auto pos = dst.find_last_of('/');
             if (pos == std::string::npos)
             {
                 dstDir = CurrentDir;
@@ -537,7 +537,7 @@ void HacknetApplication::command_scp(std::stringstream &command)
             return t->getName() == fileName;
         });
         if (it != newDir->getfiles().end())
-            copied->setName("_" + copied->getName());;
+            copied->setName("_" + copied->getName());
         locateDir(dst, true)->AppendFile(copied);
         pushLog("Downloading file " + fileName + "......Success."); // TODO ADD LATENCY
     }
@@ -597,7 +597,7 @@ HackFile *HacknetApplication::locateFile(std::string path)
         return nullptr; // Not a valid filepath
     }
 
-    int lastS = path.find_last_of('/');
+    auto lastS = path.find_last_of('/');
     if (lastS == std::string::npos)
     {
         // pure file name

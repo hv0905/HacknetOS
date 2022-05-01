@@ -13,7 +13,7 @@
 class HackDirectory
 {
 public:
-    HackDirectory(std::string name = "[root]");
+    explicit HackDirectory(std::string name = "[root]");
 
     std::string getDirName();
 
@@ -22,8 +22,6 @@ public:
     std::vector<HackFile *> &getfiles();
 
     HackDirectory *getParentDir();
-
-    [[maybe_unused]] HackDirectory *getRootDir();
 
     std::string setDirName(std::string newName);
 
@@ -39,7 +37,7 @@ public:
     // Only 1 elem, cannot include '/', for path, use locateDir in HApp instead.
     HackDirectory *LocateSonDir(std::string item);
 
-    HackDirectory *LocateOrCreateSonDir(std::string item);
+    HackDirectory *LocateOrCreateSonDir(const std::string &item);
 
     HackFile *LocateFile(std::string item);
 

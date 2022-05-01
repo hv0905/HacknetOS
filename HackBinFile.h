@@ -15,7 +15,7 @@ class HackBinFile : public HackFile
 public:
     HackBinFile(const std::string &name, const HackCommand &relatedCommand);
 
-    HackBinFile(const HackCommand &relatedCommand);
+    explicit HackBinFile(const HackCommand &relatedCommand);
 
     HackBinFile *clone() override;
 

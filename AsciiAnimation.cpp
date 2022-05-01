@@ -6,9 +6,9 @@
 #include <filesystem>
 
 AsciiAnimation::AsciiAnimation()
-{}
+= default;
 
-AsciiAnimation::AsciiAnimation(std::filesystem::path dir, int count)
+AsciiAnimation::AsciiAnimation(const std::filesystem::path &dir, int count)
 {
     data.reserve(count);
     for (int i = 0; i < count; ++i)

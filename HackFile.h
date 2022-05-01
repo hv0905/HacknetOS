@@ -18,7 +18,7 @@ protected:
     HackDirectory *parentDir;
 public:
 
-    HackFile(const std::string &name);
+    explicit HackFile(const std::string &name);
 
     HackFile();
 
