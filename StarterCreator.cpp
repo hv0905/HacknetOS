@@ -8,7 +8,9 @@
 
 HacknetApplication *StarterCreator::createStarterOS()
 {
+
     auto app = new HacknetApplication();
+    // region local
     auto *local = new HackServer("127.0.0.1", "Aiden Pearce", 4);
     auto local_home = new HackDirectory("home");
     auto local_bin = new HackDirectory("bin");
@@ -18,7 +20,12 @@ HacknetApplication *StarterCreator::createStarterOS()
     local->getRootDirectory().AppendDirectory(local_bin);
     local->getRootDirectory().AppendDirectory(new HackDirectory("log"));
     local->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    local->accessible = true;
+    local->setSearchable();
+    app->serverList.push_back(local);
+    app->localSever = app->serverList[0];
 
+    // end local
     auto cheater_zone = new HackServer("1337.1337.1337.1337", "Cheater Zone", 0);
     auto cheater_zone_bin = new HackDirectory("bin");
     cheater_zone_bin->AppendFile(
@@ -31,10 +38,8 @@ HacknetApplication *StarterCreator::createStarterOS()
     cheater_zone->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
 
 
-    local->accessible = true;
-    app->serverList.push_back(local);
     app->serverList.push_back(cheater_zone);
-    app->localSever = app->serverList[0];
+
 
     // Add Servers, Directories, and Files here...
     //教程关服务器

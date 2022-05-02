@@ -15,7 +15,6 @@
 #include "RenderService.h"
 #include "BackgroundTasks/HackBackgroundTask.h"
 #include "HackCommand.h"
-#include "MissionCheckService.h"
 
 class HacknetApplication
 {
@@ -120,6 +119,10 @@ public:
     void command_Scan(std::stringstream &s);
 
     void command_porthack(std::stringstream &s);
+
+    void command_exe(std::stringstream &);
+
+    void command_netmap(std::stringstream &);
 
     void executive_sshcrack(std::stringstream &commandStream);
 

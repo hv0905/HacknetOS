@@ -124,4 +124,9 @@ void HackServer::setSearchable()
     Searchable = true;
 }
 
+bool HackServer::isSearchable() const
+{
+    return Searchable;
+}
+
 

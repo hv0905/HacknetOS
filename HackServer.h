@@ -83,6 +83,8 @@ public:
 
     void setSearchable();
 
+    [[nodiscard]] bool isSearchable() const;
+
 };
 
 

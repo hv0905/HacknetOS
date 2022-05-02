@@ -19,7 +19,7 @@
 #include <algorithm>
 
 const HackCommand globalCommands[] = {
-        HackCommand(&HacknetApplication::command_help, "help", "显示本帮助列表"),
+        HackCommand(&HacknetApplication::command_help, "help", "显示本帮助列表", "[page (default: 1)]"),
         HackCommand(&HacknetApplication::command_scp, "scp", "从远程计算机复制文件[filename]至指定本地文件夹(/home或/bin为默认)",
                     "[filename] [OPTIONAL: dest]", true, true),
         HackCommand(&HacknetApplication::command_Scan, "scan", "在已连接计算机上扫描链接", "", true, true),
@@ -27,6 +27,7 @@ const HackCommand globalCommands[] = {
                     true, true),
         HackCommand(&HacknetApplication::command_ps, "ps", "列出正在运行的程序以及它们的PID"),
         HackCommand(&HacknetApplication::command_kill, "kill", "结束进程", "[PID]"),
+        HackCommand(&HacknetApplication::command_exe, "exe", "列出所有外部可执行文件(包括隐藏式可执行文件)"),
         HackCommand(&HacknetApplication::command_ls, "ls", "列出目录所有内容", "", true, true),
         HackCommand(&HacknetApplication::command_cd, "cd", "切换目录", "[dir]", true, true),
         HackCommand(&HacknetApplication::command_mv, "mv", "移动或重命名文件", "[src] [dst]", true, true),
@@ -37,7 +38,7 @@ const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_porthack, "porthack", "通过已开放的端口破解计算机管理员密码"),
         HackCommand(&HacknetApplication::command_clear, "clear", "清除终端"),
         HackCommand(&HacknetApplication::command_mailbox, "mailbox", "打开Jmail邮箱(注意: 这将断开您与现有计算机的连接)"),
-        HackCommand(nullptr, "netmap", "打开网络地图"),
+        HackCommand(&HacknetApplication::command_netmap, "netmap", "打开网络地图"),
 };
 
 
@@ -904,6 +905,7 @@ bool HacknetApplication::pushBackgroundTask(HackBackgroundTask *task)
     int totalMem = 0;
     for (auto &i: backgroundTasks)
     {
+        if (i->isStopped()) continue;
         totalMem += i->getMemorySize() + 1;
     }
 
@@ -929,4 +931,33 @@ void HacknetApplication::updateMissionId(int newId)
 int HacknetApplication::getMissionId() const
 {
     return missionId;
+}
+
+void HacknetApplication::command_exe(std::stringstream &)
+{
+    auto l = getAvailExecutiveCommand();
+    for (auto &i: l)
+    {
+        pushLog(":" + i.getPrefix());
+    }
+}
+
+void HacknetApplication::command_netmap(std::stringstream &)
+{
+    // collect avail ips
+    std::vector<HackServer *> ips;
+    std::vector<std::string> titles;
+
+    for (auto &i: serverList)
+    {
+        if (!i->isSearchable()) continue;
+        ips.push_back(i);
+        titles.push_back(i->getName() + " - " + i->getIp());
+    }
+
+    auto select = HackMenuPanel(" :: NetMap v1.3 ::", titles);
+    int i = select.Exec();
+    if (i == -1) return;
+    internalConnect(ips[i]);
+
 }
