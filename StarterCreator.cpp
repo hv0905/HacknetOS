@@ -352,5 +352,40 @@ HacknetApplication *StarterCreator::createStarterOS()
 
     app->serverList.push_back(PPServer);
     //PP市场服务器
+
+    //Milburg高中IT办公室
+    auto MilburgServer=new HackServer ("92.24.43.165","Milburg高中IT办公室",1);
+    auto Milburg_home=new HackDirectory("home");
+    auto MH_STAFF=new HackDirectory("MH_STAFF");
+    MH_STAFF->AppendFile(new HackTxtFile("pw_memo.log",L"4:37 PM - MBIT: 我一直在想咱学校的网络安全系统\n"
+                                                       "4:37 PM - JBrooks: 是么\n"
+                                                       "4:37 PM - MBIT: 嗯, 我觉得这些升级神马的全都是劳民伤财\n"
+                                                       "4:37 PM - MBIT: 你试试这个\n"
+                                                       "4:38 PM - MBIT: 最简单的办法\n"
+                                                       "4:38 PM - MBIT: 我们只需要把IT的密码设成这个\n"
+                                                       "4:38 PM - MBIT: *******\n"
+                                                       "4:38 PM - JBrooks: 什么鬼\n"
+                                                       "4:38 PM - MBIT: 就是这个啊! \n"
+                                                       "4:38 PM - MBIT: 就是7个*啊\n"
+                                                       "4:38 PM - MBIT: 这就是密码, 只有星号\n"
+                                                       "4:38 PM - MBIT: 谁会想到会是这个密码? ! 肯定没有人能猜的到! 就算有人黑到了密码, 那看起来也像是被加密了的密码. \n"
+                                                       "4:38 PM - MBIT: 这简直就是牢不可破啊! "));
+    MH_STAFF->AppendFile(new HackTxtFile("Announcements.txt",L"关于网络/代理服务器瘫痪的通知\n"
+                                                             "虽然我们的一部分员工不知道代理服务器瘫痪是什么意思, 但是很明显我们的一部分学生知道那意味着什么. \n"
+                                                             "在通知发出的那个晚上, 很明显发现了网络连接依然可用, 但是绿网并没有工作. 在接下来的20分钟里有22T的爱情动作片被下载到了学校的服务器和各个房间的电脑内. \n"
+                                                             "很明显我们想通过加强安全手段避免让这件事再一次发生. 也许, 不通知学生们这种事情会好很多. \n"
+                                                             "非常感谢\n"
+                                                             "\n"
+                                                             "-校长办公室"));
+    Milburg_home->AppendDirectory(MH_STAFF);
+
+    MilburgServer->getRootDirectory().AppendDirectory(Milburg_home);
+    MilburgServer->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
+    MilburgServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
+    MilburgServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+
+    app->serverList.push_back(MilburgServer);
+    //Milburg高中IT办公室
+
     return app;
 }
