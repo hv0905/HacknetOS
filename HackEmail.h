@@ -8,7 +8,9 @@
 #include "string"
 #include "MissionCheckService.h"
 
-typedef bool (MissionCheckService::*CheckerHandler)();
+//typedef bool (MissionCheckService::*CheckerHandler)();
+
+using CheckerHandler = bool (MissionCheckService::*)();
 
 enum MissionMode
 {
@@ -33,6 +35,10 @@ public:
     [[nodiscard]] const std::wstring &getEmailContent() const;
 
     [[nodiscard]] int getMissionId() const;
+
+    CheckerHandler getCheckerHandler() const;
+
+    const MissionMode getMode() const;
 
 private:
     const std::wstring emailTitle;

@@ -55,6 +55,7 @@ bool HackMailViewer::Exec()
             case 'r':
             case 'R':
                 DoReply();
+                break;
             case 'q':
             case 'Q':
             case 0x1B:
@@ -70,5 +71,22 @@ HackMailViewer::HackMailViewer(const HackEmail *content) : content(content)
 
 void HackMailViewer::DoReply()
 {
+    using namespace Util;
+    clearScreen();
+
+    // Title
+    setCursorPos(0, 0);
+    setColorAttr(BG_WHITE);
+    setColorAttr(FG_BLACK);
+    std::cout << " :: REPLY MAIL ::";
+    clearLine(getCursorPos(), UIUtil::SIZE_ALL.width - getCursorPos().x);
+    setColorAttr(ATTR_NORMAL);
+    setCursorPos(10, 2);
+
+    std::cout << "Additional Information: ";
+    setCursorPos(10, 3);
+    std::string replyText;
+    std::getline(std::cin, replyText);
+
 
 }

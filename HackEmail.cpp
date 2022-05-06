@@ -161,5 +161,15 @@ int HackEmail::getMissionId() const
     return parentMissionId;
 }
 
+CheckerHandler HackEmail::getCheckerHandler() const
+{
+    return checker;
+}
+
+const MissionMode HackEmail::getMode() const
+{
+    return mode;
+}
+
 
 

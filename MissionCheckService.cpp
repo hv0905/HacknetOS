@@ -12,5 +12,5 @@ MissionCheckService::MissionCheckService(HacknetApplication *ref)
 
 bool MissionCheckService::check_mission_1()
 {
-    return false;
+    return ref->localSever->getRootDirectory().LocateSonDir("bin")->LocateFile("SecurityTracer.exe") == nullptr;
 }
