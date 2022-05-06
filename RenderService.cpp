@@ -65,7 +65,7 @@ void RenderService::RenderStatusBar()
     else
     {
         // connected
-        serverLogos[1].draw(UIUtil::START_STATUSPANEL);
+        serverLogos[ref->CurrentConnected->getName().size() % 2].draw(UIUtil::START_STATUSPANEL);
         Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 0));
         std::cout << "连接到";
         Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 1));
