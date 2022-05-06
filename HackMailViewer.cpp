@@ -5,6 +5,8 @@
 #include <iostream>
 #include <conio.h>
 #include "HackMailViewer.h"
+#include "HacknetApplication.h"
+#include "AsciiArt.h"
 #include "Utility/Util.h"
 #include "Utility/UiUtil.h"
 
@@ -46,6 +48,7 @@ void HackMailViewer::Render()
 
 bool HackMailViewer::Exec()
 {
+    content->setRead(true);
     Render();
     while (true)
     {
@@ -54,7 +57,14 @@ bool HackMailViewer::Exec()
             case 13:
             case 'r':
             case 'R':
-                DoReply();
+                if (DoReply())
+                {
+                    return true;
+                }
+                else
+                {
+                    Render();
+                }
                 break;
             case 'q':
             case 'Q':
@@ -66,14 +76,20 @@ bool HackMailViewer::Exec()
     }
 }
 
-HackMailViewer::HackMailViewer(const HackEmail *content) : content(content)
+HackMailViewer::HackMailViewer(HackEmail *content, HacknetApplication *ref) : content(content), ref(ref)
 {}
 
-void HackMailViewer::DoReply()
+bool HackMailViewer::DoReply()
 {
     using namespace Util;
-    clearScreen();
 
+    if (content->getMode() == MODE_NO_MISSION)
+    {
+        // return directly
+        return false;
+    }
+
+    clearScreen();
     // Title
     setCursorPos(0, 0);
     setColorAttr(BG_WHITE);
@@ -82,11 +98,38 @@ void HackMailViewer::DoReply()
     clearLine(getCursorPos(), UIUtil::SIZE_ALL.width - getCursorPos().x);
     setColorAttr(ATTR_NORMAL);
     setCursorPos(10, 2);
-
-    std::cout << "Additional Information: ";
-    setCursorPos(10, 3);
     std::string replyText;
-    std::getline(std::cin, replyText);
+    if (content->getMode() == MODE_REPLY_MISSION)
+    {
+        std::cout << "Additional Information: ";
+        setCursorPos(10, 3);
+        std::getline(std::cin, replyText);
+        clearLine(Coord(10, 3), UIUtil::SIZE_ALL.width - 10);
+        clearLine(Coord(10, 2), UIUtil::SIZE_ALL.width - 10);
+        setCursorPos(10, 2);
+    }
+
+    // check
+    auto result = (ref->getCheckService().*(content->getCheckerHandler()))(replyText);
+    if (result)
+    {
+        return true;
+    }
+    else
+    {
+        // show a failed box
+        AsciiArt warningLogo("ASCII/warning.ascii");
+        setColorAttr(FG_RED);
+        warningLogo.draw(Coord(64, 3));
+        setCursorPos(105, 25);
+        setColorAttr(FG_WHITE);
+        setColorAttr(BG_RED);
+        std::cout << "任务未完成";
+        setColorAttr(ATTR_NORMAL);
+        while (_kbhit()) _getch();
+        _getch();
+        return false;
+    }
 
 
 }

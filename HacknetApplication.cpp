@@ -866,20 +866,23 @@ void HacknetApplication::command_mailbox(std::stringstream &)
     internalDisconnect();
     pushLog("JMail initializing...");
 
-    auto avail = HackEmail::getAvailMail(1001);
+    auto avail = getAvailEmail();
     std::vector<std::string> titles;
     titles.reserve(avail.size());
     for (auto &i: avail)
     {
-        titles.push_back("   " + StringUtil::ws2s(i->getEmailTitle()));
+        titles.push_back((i->isRead() ? "   " : " * ") + StringUtil::ws2s(i->getEmailTitle()));
     }
 
     auto select = HackMenuPanel(":: MailBox ::", titles);
     int i = select.Exec();
     if (i == -1) return;
-    auto viewer = HackMailViewer(avail[i]);
+    auto viewer = HackMailViewer(avail[i], this);
 
-    viewer.Exec();
+    if (viewer.Exec())
+    {
+        updateMissionId(getMissionId() + 1);
+    }
 }
 
 const InputService &HacknetApplication::getInputService() const
@@ -920,7 +923,7 @@ bool HacknetApplication::pushBackgroundTask(HackBackgroundTask *task)
 
 void HacknetApplication::updateMissionId(int newId)
 {
-    if (newId > missionId && HackEmail::getAvailMail(newId).size() > HackEmail::getAvailMail(missionId).size())
+    if (newId > missionId && getAvailEmail(newId).size() > getAvailEmail().size())
     { // notif
         pushLog("***你收到了新的邮件.***");
         pushLog("请使用指令mailbox打开邮箱进行确认.");
@@ -960,4 +963,28 @@ void HacknetApplication::command_netmap(std::stringstream &)
     if (i == -1) return;
     internalConnect(ips[i]);
 
+}
+
+std::vector<HackEmail *> HacknetApplication::getAvailEmail(int mid)
+{
+    std::vector<HackEmail *> result;
+    for (auto &i: emailList)
+    {
+        if (i->getMissionId() <= mid)
+        {
+            result.push_back(i);
+        }
+    }
+
+    return result;
+}
+
+std::vector<HackEmail *> HacknetApplication::getAvailEmail()
+{
+    return getAvailEmail(missionId);
+}
+
+MissionCheckService &HacknetApplication::getCheckService()
+{
+    return checkService;
 }

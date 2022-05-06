@@ -32,6 +32,7 @@ class HacknetApplication
     std::vector<HackBackgroundTask *> backgroundTasks{};
     std::vector<HackServer *> serverList{};
     std::vector<std::thread *> threadPool{};
+    std::vector<HackEmail *> emailList{};
     std::mutex commandMutex{};
 
     void internalDisconnect();
@@ -68,6 +69,8 @@ public:
 
     [[nodiscard]] const std::vector<std::string> &getCommandBuffer() const;
 
+    [[nodiscard]] MissionCheckService &getCheckService();
+
     std::vector<std::string> &getCommandBuffer();
 
     RenderService &getRenderService();
@@ -87,6 +90,11 @@ public:
     [[nodiscard]] int getMissionId() const;
 
     void updateMissionId(int missionId);
+
+    std::vector<HackEmail *> getAvailEmail(int mid);
+
+    std::vector<HackEmail *> getAvailEmail();
+
 
     // region handler for global commands
 

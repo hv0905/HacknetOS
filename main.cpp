@@ -96,19 +96,20 @@ int main()
     AdjustWindowsSize();
 
     MusicUtil::playBgm(0);
-    // Play the intro
-    DisplayStartPage();
-    PlayIntro();
 
     // create a starter
     auto app = StarterCreator::createStarterOS();
     HacknetApplication::current = app;
+    // Play the intro
+    DisplayStartPage();
+    PlayIntro();
+
+
     // start the event loop
     app->Exec();
 
     delete app;
 
-    UIUtil::drawFramework();
-    Util::sleep(10000);
+    cout << "Program exited successfully." << endl;
     return 0;
 }

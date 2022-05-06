@@ -9,17 +9,18 @@
 
 class HackMailViewer
 {
-    const HackEmail *content;
+    HackEmail *content;
+    HacknetApplication *ref;
 
 public:
 
-    explicit HackMailViewer(const HackEmail *content);
+    explicit HackMailViewer(HackEmail *content, HacknetApplication *ref);
 
     bool Exec();
 
     void Render();
 
-    void DoReply();
+    bool DoReply();
 
 
 };

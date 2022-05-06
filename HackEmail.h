@@ -10,7 +10,7 @@
 
 //typedef bool (MissionCheckService::*CheckerHandler)();
 
-using CheckerHandler = bool (MissionCheckService::*)();
+using CheckerHandler = bool (MissionCheckService::*)(const std::string &additionContent);
 
 enum MissionMode
 {
@@ -26,8 +26,6 @@ public:
                        const std::wstring &content = L"",
                        int mid = 1000, MissionMode mode = MODE_NO_MISSION, CheckerHandler handler = nullptr);
 
-    static std::vector<const HackEmail *> getAvailMail(int missionid);
-
     [[nodiscard]] const std::wstring &getEmailTitle() const;
 
     [[nodiscard]] const std::wstring &getSender() const;
@@ -40,6 +38,10 @@ public:
 
     const MissionMode getMode() const;
 
+    bool isRead() const;
+
+    void setRead(bool read);
+
 private:
     const std::wstring emailTitle;
     const std::wstring sender;
@@ -47,5 +49,7 @@ private:
     const int parentMissionId{};
     const MissionMode mode{};
     const CheckerHandler checker;
+
+    bool read = false;
 };
 #endif //HACKNETOS_HACKEMAIL_H

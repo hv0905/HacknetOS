@@ -10,7 +10,7 @@ MissionCheckService::MissionCheckService(HacknetApplication *ref)
         ref(ref)
 {}
 
-bool MissionCheckService::check_mission_1()
+bool MissionCheckService::check_mission_1(const std::string &)
 {
     return ref->localSever->getRootDirectory().LocateSonDir("bin")->LocateFile("SecurityTracer.exe") == nullptr;
 }

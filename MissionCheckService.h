@@ -5,6 +5,8 @@
 #ifndef HACKNETOS_MISSIONCHECKSERVICE_H
 #define HACKNETOS_MISSIONCHECKSERVICE_H
 
+#include <string>
+
 class __single_inheritance HacknetApplication;
 
 
@@ -15,7 +17,7 @@ class MissionCheckService
 public:
     MissionCheckService(HacknetApplication *ref);
 
-    bool check_mission_1();
+    bool check_mission_1(const std::string &);
 };
 
 
