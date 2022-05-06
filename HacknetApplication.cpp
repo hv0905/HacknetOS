@@ -8,7 +8,7 @@
 #include "Utility/Util.h"
 #include "Utility/StringUtil.h"
 #include "HackTxtFile.h"
-#include "HackBinFile.h"
+#include "HackExecutiveFile.h"
 #include "BackgroundTasks/PortHackBackgroundTask.h"
 #include "BackgroundTasks/SshCrackBgTask.h"
 #include "BackgroundTasks/FtpBounceBgTask.h"
@@ -519,7 +519,7 @@ void HacknetApplication::command_scp(std::stringstream &command)
     copied = copied->clone();
     if (dst.empty())
     {
-        dst = typeid(*copied) == typeid(HackBinFile) ? "/bin/" : "/home/";
+        dst = typeid(*copied) == typeid(HackExecutiveFile) ? "/bin/" : "/home/";
     }
     if (locateDir(dst, true) == nullptr)
     {
@@ -832,9 +832,9 @@ std::vector<HackCommand> HacknetApplication::getAvailExecutiveCommand()
     std::vector<HackCommand> result;
     for (auto &file: binDir->getfiles())
     {
-        if (typeid(*file) != typeid(HackBinFile))
+        if (typeid(*file) != typeid(HackExecutiveFile))
             continue;
-        auto binFile = dynamic_cast<HackBinFile *>(file);
+        auto binFile = dynamic_cast<HackExecutiveFile *>(file);
         auto cmd = binFile->getRelatedCommand();
 
         if (StringUtil::endsWith(file->getName(), ".exe"))

@@ -28,5 +28,5 @@ bool MissionCheckService::check_mission_3(const std::string &)
 
 bool MissionCheckService::check_mission_4(const std::string &)
 {
-
+    return false;
 }

@@ -4,7 +4,8 @@
 
 #include "StarterCreator.h"
 #include "HackTxtFile.h"
-#include "HackBinFile.h"
+#include "HackBinaryFile.h"
+#include "HackExecutiveFile.h"
 
 const HackEmail Email[] = {
         HackEmail(L"初次联系", L"Bit", L"Hi. \n"
@@ -34,7 +35,7 @@ const HackEmail Email[] = {
                                            "毒蛇作战基地服务器：176.198.61.104\n"
                                            "      \n"
                                            "--Bit\n"
-                                           "0"),
+                                           "0", 2, MODE_PURE_MISSION, &MissionCheckService::check_mission_2),
         HackEmail(L"初试牛刀", L"Bit", L"首先祝贺你! \n"
                                    "说实话...  .你这样回复我, 也不知道你到底成功了没, 不过既然你正在读这封邮件意味着你至少发现了一些东西, 我先假定你找到的那程序是有用的. \n"
                                    "\n"
@@ -44,7 +45,7 @@ const HackEmail Email[] = {
                                    "\n"
                                    "你可能会需要使用你的新工具. 你可以通过输入\"程序名 端口号\"来调用它, 就像这样: \n"
                                    "\n"
-                                   ">SSHCrack 22\n"
+                                   ">sshcrack 22\n"
                                    " ^文件名   ^端口号\n"
                                    "    \n"
                                    "黑掉你找到的端口. \n"
@@ -56,26 +57,27 @@ const HackEmail Email[] = {
                                    "Bitwise 测试PC@210.175.139.250\n"
                                    "\n"
                                    "--Bit\n"
-                                   "0"),
+                                   "0", 3, MODE_PURE_MISSION, &MissionCheckService::check_mission_3),
         HackEmail(L"善始善终", L"Bit", L"好样的! 从现在开始事情变得越来越复杂了. \n"
                                    "我需要你帮我一个忙. \n"
                                    "最近我因一点点小马虎而给自己惹了不少麻烦. 这就是为什么我给你写这封邮件. 总而言之, 我的意思是, 有几台电脑上有一些我本不想存放在那里的操作日志. \n"
                                    "你一定要记住这点 -- 不要忘记删除你的操作日志. 如果你之前从没删过, 那就从现在开始. 你在任何现代的操作系统上所做的一切都会被跟踪记载在日志文件夹(~/log)下. 只需要进入这个文件夹, 使用\"rm *\"命令删除所有信息即可. 永远不要忘记这点. \n"
                                    "Anderson的卧室电脑:247.112.153.237\n"
                                    "--Bit\n"
-                                   "0\n"
-                                   "   "),
+                                   "0\n", 4, MODE_PURE_MISSION, &MissionCheckService::check_mission_4),
         HackEmail(L"生涯起点", L"Bit", L"好样的! 如果你收到这封邮件, 说明你做的很好... 恩, 也许这一切真的是值得的. \n"
                                    "我对你抱有的期望是不是太大了? 也许吧. \n"
                                    "我知道我没有充裕的时间来一点点教你, 你要学的东西太多了. 所以, 我的决定如下. \n"
                                    "有一个叫'Entropy'的组织目前正在招收新成员. 他们会教你更多黑客知识. 当你的黑客技术足以帮我完成我的夙愿时, 我会再联系你. \n"
                                    "为了进入Entropy, 你需要绕过一个代理服务器, 在你已经得到管理员权限计算机上运行几个shell(使用shell命令), 它可以用来过载代理服务器. \n"
+                                   "这并不难, 你只需要在你有管理员权限的计算机上运行shell命令, 再在目标计算机上运行overload命令即可. \n"
+                                   "我的测试PC上也有相关的文档.\n"
                                    "祝你好运... \n"
                                    "还有, 谢谢. \n"
                                    "Entropy测试服务器:199.59.149.230\n"
                                    "--Bit\n"
                                    "0\n"
-                                   "\n"),
+                                   "\n", 5),
         HackEmail(L"任务完成", L"Entropy", L"你好,\n"
                                        "\n"
                                        "首先, 祝贺你成功通过了Entropy黑客组织的考试! 当然了, 这种程度的考试对于一个经验丰富的黑客来说是小事一桩. 然而令人惊讶的是, 能通过这场考试的人并不多. \n"
@@ -83,19 +85,19 @@ const HackEmail Email[] = {
                                        "最近, 有一家新闻网站摆明了同我们的对立立场. 我们希望你能临时瘫痪他们的服务器. 作为测试你能力的第二项任务, 我们要求你搞垮他们的新闻版块. 如果可以的话, 不要破坏无关的服务器和那些与Entropy无关的文章 -- 我们没必要把事情做的那么绝. \n"
                                        "这项任务可不是仅仅让你删除文章这么简单 -- 我们还要搞垮他们的程序. \n"
                                        "Slash-Bot 新闻服务器:183.198.0.210\n"
-                                       "-Tex"),
+                                       "-Tex", 6),
         HackEmail(L"欢迎", L"Entropy", L"\n"
                                      "恭喜, \n"
                                      "你出色及时地完成了你的第一项任务, 让我们见识到了你的能力. 现在, 我诚挚地欢迎你来到Entropy黑客组织. \n"
                                      "在我们的资源服务器里, 你可以找到管理员账户的详细资料. 作为组织送给你的见面礼, 你可以去资源服务器里面随意下载你所需要的程序, 同时记得阅读我们组织的宗旨. 一旦你准备好了, 请回复这封邮件. 我会给你安排一些真正有挑战的任务. \n"
                                      "再次的恭喜你通过测试. \n"
                                      "Entropy资源服务器:196.21.2.201\n"
-                                     "-Tex\n"),
+                                     "-Tex\n", 7),
         HackEmail(L"RE:欢迎", L"Entropy",
                   L"很好, 看来你拿到了你所需的东西. 那么, 你就可以正式地开始接受Enpropy黑客组织的各项任务了. 附件里我给出了我们组织的任务资源数据库的ip地址, 还一并给出了你的用户名和密码以用于获得登录权限. \n"
                   "当你有空的时候, 就去接受并完成你的第一项任务吧. \n"
                   "届时我将会再次联系你来评估你的任务进度. \n"
-                  "-Tex\n"),
+                  "-Tex\n", 8),
         HackEmail(L"Point_Clicker", L"Entropy MailBot", L"你好, \n"
                                                         "我现在有点郁闷, 但更倒霉的是, 我的那些同事没一个能帮的上忙的. \n"
                                                         "虽然我很反感向外界寻求帮助, 但是我只能这么做了. \n"
@@ -103,7 +105,7 @@ const HackEmail Email[] = {
                                                         "我希望你能黑进游戏服务器删掉我的存档, 这样我就能再爽一次了. 我的用户名是\"Mengsk\". 你要是想的话, 在你删之前可以先感受一下我的存档有多屌. \n"
                                                         "即将\"脱坑\"的, \n"
                                                         "PointClicker服务器:38.228.127.137\n"
-                                                        "-M"),
+                                                        "-M", 8),
         HackEmail(L"经典的反黑客攻击", L"Entropy MailBot", L"你好黑客, \n"
                                                    "\"PP市场\"公司最近雇佣了一名自由黑客, 他入侵了竞争对手公司的服务器窃取了一些敏感信息(我们猜测应该是邮件形式的简历列表). 他把这些简历从对手公司的服务器里删掉了, 并将简历转交到雇主公司的招聘部门. \n"
                                                    "这种商业间谍行为很明显是在给黑客的声誉抹黑. 虽然我们对他们公司之间的竞争并不感兴趣, 但是\"PP市场\"公司雇佣黑客的消息已经传遍了整个网络, 所以我们要确保\"PP市场\"这次吃不了兜着走. \n"
@@ -135,16 +137,23 @@ HacknetApplication *StarterCreator::createStarterOS()
     {
         app->emailList.push_back(new HackEmail(email));
     }
+
+    HackDirectory sys("sys");
+    sys.AppendFile(new HackBinaryFile("x-server.sys"));
+    sys.AppendFile(new HackBinaryFile("os-config.sys"));
+    sys.AppendFile(new HackBinaryFile("bootcfg.dll"));
+    sys.AppendFile(new HackBinaryFile("netcfgx.dll"));
+
     // region local
     auto *local = new HackServer("127.0.0.1", "Aiden Pearce", 4);
     auto local_home = new HackDirectory("home");
     auto local_bin = new HackDirectory("bin");
-    local_bin->AppendFile(new HackTxtFile("SecurityTracer.exe", L"#SECURITYTRACER_PROGRAM#"));
+    local_bin->AppendFile(new HackBinaryFile("SecurityTracer.exe"));
 
     local->getRootDirectory().AppendDirectory(local_home);
     local->getRootDirectory().AppendDirectory(local_bin);
     local->getRootDirectory().AppendDirectory(new HackDirectory("log"));
-    local->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    local->getRootDirectory().AppendDirectory(sys.clone());
     local->accessible = true;
     local->setSearchable();
     app->serverList.push_back(local);
@@ -154,13 +163,15 @@ HacknetApplication *StarterCreator::createStarterOS()
     auto cheater_zone = new HackServer("1337.1337.1337.1337", "Cheater Zone", 0);
     auto cheater_zone_bin = new HackDirectory("bin");
     cheater_zone_bin->AppendFile(
-            new HackBinFile("sshcrack.exe", HackCommand(&HacknetApplication::executive_sshcrack, "sshcrack", "-")));
+            new HackExecutiveFile("sshcrack.exe",
+                                  HackCommand(&HacknetApplication::executive_sshcrack, "sshcrack", "-")));
     cheater_zone_bin->AppendFile(
-            new HackBinFile("ftpbounce.exe", HackCommand(&HacknetApplication::executive_ftpbounce, "ftpbounce", "-")));
+            new HackExecutiveFile("ftpbounce.exe",
+                                  HackCommand(&HacknetApplication::executive_ftpbounce, "ftpbounce", "-")));
     cheater_zone->getRootDirectory().AppendDirectory(new HackDirectory("home"));
     cheater_zone->getRootDirectory().AppendDirectory(cheater_zone_bin);
     cheater_zone->getRootDirectory().AppendDirectory(new HackDirectory("log"));
-    cheater_zone->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    cheater_zone->getRootDirectory().AppendDirectory(sys.clone());
 
 
     app->serverList.push_back(cheater_zone);
@@ -225,7 +236,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     tutorialServer->getRootDirectory().AppendDirectory(tutorial_home);
     tutorialServer->getRootDirectory().AppendDirectory(tutorial_bin);
     tutorialServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
-    tutorialServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    tutorialServer->getRootDirectory().AppendDirectory(sys.clone());
 
     app->serverList.push_back(tutorialServer);
 
@@ -239,7 +250,8 @@ HacknetApplication *StarterCreator::createStarterOS()
     auto Viper_home = new HackDirectory("home");
 
     Viper_bin->AppendFile(
-            new HackBinFile("sshcrack.exe", HackCommand(&HacknetApplication::executive_sshcrack, "sshcrack", "-")));
+            new HackExecutiveFile("sshcrack.exe",
+                                  HackCommand(&HacknetApplication::executive_sshcrack, "sshcrack", "-")));
     Viper_home->AppendFile(new HackTxtFile("EmailDraft.txt", L"爸爸, \n"
                                                              "    很抱歉之前没有及时给你回信 - 我在学校真的很忙 - 今年非常难熬, 不过我想我熬过来了. \n"
                                                              "    我这次找你其实是想问你要点钱 - 我们学校今年有个新项目, 它叫 \"FTPBounce.exe\", 这个程序特别有用! 不过这个程序也很贵, 而且上次你给我的钱我也花完了... .IT这些项目软件都非常的贵. \n"
@@ -252,7 +264,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     ViperServer->getRootDirectory().AppendDirectory(Viper_home);
     ViperServer->getRootDirectory().AppendDirectory(Viper_bin);
     ViperServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
-    ViperServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    ViperServer->getRootDirectory().AppendDirectory(sys.clone());
 
     app->serverList.push_back(ViperServer);
     //毒蛇——作战基地服务器
@@ -275,7 +287,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     Bitwise->getRootDirectory().AppendDirectory(Bitwise_home);
     Bitwise->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
     Bitwise->getRootDirectory().AppendDirectory(new HackDirectory("log"));
-    Bitwise->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    Bitwise->getRootDirectory().AppendDirectory(sys.clone());
 
     app->serverList.push_back(Bitwise);
     //Bitwise测试PC
@@ -304,7 +316,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     AndersonServer->getRootDirectory().AppendDirectory(Anderson_home);
     AndersonServer->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
     AndersonServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
-    AndersonServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    AndersonServer->getRootDirectory().AppendDirectory(sys.clone());
 
     app->serverList.push_back(AndersonServer);
     //Anderson的卧室电脑
@@ -324,7 +336,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     EntropyServer->getRootDirectory().AppendDirectory(Entropy_home);
     EntropyServer->getRootDirectory().AppendDirectory(Entropy_bin);
     EntropyServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
-    EntropyServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    EntropyServer->getRootDirectory().AppendDirectory(sys.clone());
 
     app->serverList.push_back(EntropyServer);
 
@@ -365,14 +377,14 @@ HacknetApplication *StarterCreator::createStarterOS()
                                                                      "这样做会使面板和主进程崩溃\n"
                                                                      "\n"
                                                                      "应在计划停机时间来更改该配置文件, 以避免机器崩溃. "));
-    Slash_MsgBoard->AppendFile(new HackTxtFile("config.sys", L"010100110100101"));
+    Slash_MsgBoard->AppendFile(new HackBinaryFile("config.sys"));
 
     Slash_MsgBoard->AppendDirectory(listings);
 
     SlashServer->getRootDirectory().AppendDirectory(Slash_MsgBoard);
     SlashServer->getRootDirectory().AppendDirectory(new HackDirectory("home"));
     SlashServer->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
-    SlashServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    SlashServer->getRootDirectory().AppendDirectory(sys.clone());
     SlashServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
 
     app->serverList.push_back(SlashServer);
@@ -400,14 +412,16 @@ HacknetApplication *StarterCreator::createStarterOS()
                                                             "我们组织不会接受, 也不允许违背这三条准则的成员, 违反这三条准则的成员将会被直接开除. "));
     resource_home->AppendDirectory(NewFolder22);
     resource_bin->AppendFile(
-            new HackBinFile("sshcrack.exe", HackCommand(&HacknetApplication::executive_sshcrack, "sshcrack", "-")));
+            new HackExecutiveFile("sshcrack.exe",
+                                  HackCommand(&HacknetApplication::executive_sshcrack, "sshcrack", "-")));
     resource_bin->AppendFile(
-            new HackBinFile("ftpbounce.exe", HackCommand(&HacknetApplication::executive_ftpbounce, "ftpbounce", "-")));
+            new HackExecutiveFile("ftpbounce.exe",
+                                  HackCommand(&HacknetApplication::executive_ftpbounce, "ftpbounce", "-")));
 
     resourceServer->getRootDirectory().AppendDirectory(resource_home);
     resourceServer->getRootDirectory().AppendDirectory(resource_bin);
     resourceServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
-    resourceServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    resourceServer->getRootDirectory().AppendDirectory(sys.clone());
 
     app->serverList.push_back(resourceServer);
     //Entropy资源服务器
@@ -426,7 +440,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     PointClickerServer->getRootDirectory().AppendDirectory(new HackDirectory("home"));
     PointClickerServer->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
     PointClickerServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
-    PointClickerServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    PointClickerServer->getRootDirectory().AppendDirectory(sys.clone());
 
     app->serverList.push_back(PointClickerServer);
     //Point Clicker服务器
@@ -436,13 +450,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     auto PP_home = new HackDirectory("home");
     auto PP_WORKSPACE = new HackDirectory("WORKSPACE");
     auto PP_document = new HackDirectory("documents");
-    PP_WORKSPACE->AppendFile(new HackTxtFile("SECURE_MAILLIST.dec", L"010100101010101010\n"
-                                                                    "010010101010100101\n"
-                                                                    "010100101010101010\n"
-                                                                    "010010101010010101\n"
-                                                                    "100101010010101010\n"
-                                                                    "010101010010101010\n"
-                                                                    "The file content is too long to display"));
+    PP_WORKSPACE->AppendFile(new HackBinaryFile("SECURE_MAILLIST.dec"));
     PP_WORKSPACE->AppendFile(new HackTxtFile("Maillist_info.txt",
                                              L"这就是我们从黑客手中得到的邮件列表(顺便一提, 我们给这家伙付了不少钱). 结果这邮件列表还是加密的? 那我们到底为啥要付钱给这个黑客? \n"
                                              "HR说他会找其他人来尝试解码这个邮件列表, 或者只要有人能从中提取出有用的东西都行. 根据黑客的说法, 这个文本的大小是正确的, 所以只要我们能破解开这个文件, 我们就能得到正确的数据. \n"
@@ -473,7 +481,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     PPServer->getRootDirectory().AppendDirectory(PP_home);
     PPServer->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
     PPServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
-    PPServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    PPServer->getRootDirectory().AppendDirectory(sys.clone());
 
     app->serverList.push_back(PPServer);
     //PP市场服务器
@@ -507,7 +515,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     MilburgServer->getRootDirectory().AppendDirectory(Milburg_home);
     MilburgServer->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
     MilburgServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
-    MilburgServer->getRootDirectory().AppendDirectory(new HackDirectory("sys"));
+    MilburgServer->getRootDirectory().AppendDirectory(sys.clone());
 
     app->serverList.push_back(MilburgServer);
     //Milburg高中IT办公室
