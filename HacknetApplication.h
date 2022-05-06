@@ -35,6 +35,9 @@ class HacknetApplication
     std::vector<HackEmail *> emailList{};
     std::mutex commandMutex{};
 
+    // server session
+    bool nmapDetail = false;
+
     void internalDisconnect();
 
     void internalConnect(HackServer *target);

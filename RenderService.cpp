@@ -72,6 +72,7 @@ void RenderService::RenderStatusBar()
         std::cout << ref->CurrentConnected->getName();
         Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(11, 2));
         std::cout << "@" << ref->CurrentConnected->getIp();
+
         if (ref->CurrentConnected->isAccessible())
         {
             // :: 您是本系统的管理员 ::
@@ -89,6 +90,30 @@ void RenderService::RenderStatusBar()
                 std::cout << ' ';
             }
             Util::setColorAttr(Util::ATTR_NORMAL);
+        }
+        else if (ref->nmapDetail)
+        {
+            // show nmap detail
+            Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(100, 0));
+            Util::setColorAttr(ref->CurrentConnected->isHttpLocked() ? Util::FG_RED : Util::FG_GREEN);
+            std::cout << "#80: HTTP";
+            Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(100, 1));
+            Util::setColorAttr(ref->CurrentConnected->isSmtpLocked() ? Util::FG_RED : Util::FG_GREEN);
+            std::cout << "#25: SMTP";
+            Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(100, 2));
+            Util::setColorAttr(ref->CurrentConnected->isFtpLocked() ? Util::FG_RED : Util::FG_GREEN);
+            std::cout << "#21:  FTP";
+            Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(100, 3));
+            Util::setColorAttr(ref->CurrentConnected->isSshLocked() ? Util::FG_RED : Util::FG_GREEN);
+            std::cout << "#22:  SSH";
+            Util::setColorAttr(Util::ATTR_NORMAL);
+
+            Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(110, 0));
+            Util::setColorAttr(ref->CurrentConnected->checkIfSecureBroken() ? Util::BG_GREEN : Util::BG_RED);
+            Util::setColorAttr(Util::FG_WHITE);
+            std::cout << "Open ports required: " << ref->CurrentConnected->getMinRequired();
+            Util::setColorAttr(Util::ATTR_NORMAL);
+
         }
     }
 }

@@ -164,6 +164,7 @@ void HacknetApplication::command_nmap(std::stringstream &)
                                              Util::sleep(50);
                                              pushLog("Open Ports:Required for Crack:  " +
                                                      std::to_string(target->getMinRequired()));
+                                             nmapDetail = true;
                                          }));
 
 }
@@ -550,6 +551,7 @@ void HacknetApplication::internalDisconnect()
     }
     CurrentDir = nullptr;
     CurrentConnected = nullptr;
+    nmapDetail = false;
 }
 
 HackDirectory *HacknetApplication::locateDir(const std::string &path, bool local)
