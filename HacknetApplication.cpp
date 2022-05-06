@@ -7,6 +7,7 @@
 #include "HacknetApplication.h"
 #include "Utility/Util.h"
 #include "Utility/StringUtil.h"
+#include "Utility/MusicUtil.h"
 #include "HackTxtFile.h"
 #include "HackExecutiveFile.h"
 #include "BackgroundTasks/PortHackBackgroundTask.h"
@@ -780,7 +781,7 @@ std::string HacknetApplication::getFilenameAutoComplete(const std::string &comma
     if (possibleResult.empty())
         return command;
     else
-        return command.substr(0,pos+1)+StringUtil::getPublicPrefix(possibleResult);
+        return command.substr(0, pos + 1) + StringUtil::getPublicPrefix(possibleResult);
 }
 
 void HacknetApplication::executive_sshcrack(std::stringstream &commandStream)
@@ -922,6 +923,7 @@ void HacknetApplication::updateMissionId(int newId)
 {
     if (newId > missionId && getAvailEmail(newId).size() > getAvailEmail().size())
     { // notif
+        MusicUtil::playNotif(0);// You got mail
         pushLog("***你收到了新的邮件.***");
         pushLog("请使用指令mailbox打开邮箱进行确认.");
     }
