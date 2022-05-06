@@ -205,18 +205,15 @@ void HacknetApplication::command_connect(std::stringstream &ss)
 {
     std::string ip;
     ss >> ip;
-    auto it = std::find_if(serverList.begin(), serverList.end(), [&ip](HackServer *t)
-    {
-        return t->getIp() == ip;
-    });
-    if (it == serverList.end())
+    auto serv = locateServer(ip);
+    if (serv == nullptr)
     {
         pushLog("Don't find such server.");
     }
     else
     {
-        (*it)->setSearchable();
-        internalConnect(*it);
+        serv->setSearchable();
+        internalConnect(serv);
     }
 }
 
@@ -987,4 +984,14 @@ std::vector<HackEmail *> HacknetApplication::getAvailEmail()
 MissionCheckService &HacknetApplication::getCheckService()
 {
     return checkService;
+}
+
+HackServer *HacknetApplication::locateServer(std::string ip)
+{
+    auto it = std::find_if(serverList.begin(), serverList.end(), [&ip](HackServer *t)
+    {
+        return t->getIp() == ip;
+    });
+    if (it == serverList.end()) return nullptr;
+    return *it;
 }

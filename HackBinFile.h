@@ -10,7 +10,9 @@
 
 class HackBinFile : public HackFile
 {
+    static inline int _binarySeedPool = 0;
     HackCommand relatedCommand;
+    int binarySeed;
 
 public:
     HackBinFile(const std::string &name, const HackCommand &relatedCommand);

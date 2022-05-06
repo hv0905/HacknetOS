@@ -18,6 +18,13 @@ public:
     MissionCheckService(HacknetApplication *ref);
 
     bool check_mission_1(const std::string &);
+
+    bool check_mission_2(const std::string &);
+
+    bool check_mission_3(const std::string &);
+
+    bool check_mission_4(const std::string &);
+
 };
 
 

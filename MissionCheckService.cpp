@@ -14,3 +14,19 @@ bool MissionCheckService::check_mission_1(const std::string &)
 {
     return ref->localSever->getRootDirectory().LocateSonDir("bin")->LocateFile("SecurityTracer.exe") == nullptr;
 }
+
+bool MissionCheckService::check_mission_2(const std::string &)
+{
+    return ref->localSever->getRootDirectory().LocateSonDir("bin")->LocateFile("sshcrack.exe") != nullptr;
+}
+
+bool MissionCheckService::check_mission_3(const std::string &)
+{
+    auto target = ref->locateServer("210.175.139.250");
+    return target && target->isAccessible();
+}
+
+bool MissionCheckService::check_mission_4(const std::string &)
+{
+
+}

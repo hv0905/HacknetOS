@@ -61,6 +61,8 @@ public:
 
     void processCommand(const std::string &command);
 
+    HackServer *locateServer(std::string ip);
+
     [[nodiscard]] bool isEnding() const;
 
     void setEnding(bool ending);
