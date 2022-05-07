@@ -280,7 +280,21 @@ HacknetApplication *StarterCreator::createStarterOS()
                                                                         "<knightmare> ... 智障");
     auto NewFolder24 = new HackDirectory("NewFolder24");
     auto Bitwise_home = new HackDirectory("home");
-
+    Bitwise_home->AppendFile(new HackTxtFile("doc_shells.txt", L"Shell: \n"
+                                                               "Shell是运行在单一主机上的低内存占用的小型进程, 可以用任何连接方式在本地对它进行操控. \n"
+                                                               "这个极其方便的程序在许多任务中都是极其有用的, 当然它们能干什么取决于运行的shell的种类. \n"
+                                                               "\n"
+                                                               "常规跨网络的功能有: \n"
+                                                               "\n"
+                                                               "Overload(过载):\n"
+                                                               "过载用于测试网络和代理服务器, 这个功能可以使得运行shell的节点向目标机器发起泛洪攻击 - 用大量垃圾网络流量占满代理服务器的内存并耗尽其CPU时间.  \n"
+                                                               "\n"
+                                                               "Trap(陷阱):\n"
+                                                               "该模式会提醒用户是否有外来用户在本机器运行shell, 并允许对所有远程连接到本计算机的用户执行\"forkbomb\"攻击. \n"
+                                                               "该模式在远程维护计算机安全又同时进行其他工作的时候非常有用. "
+                                                               ""
+                                                               "使用shell命令可在节点计算机上运行shell(因为需要进行网络操作, 必须有管理员权限), 使用overload命令即可使所有节点对目标计算机发起过载攻击."
+                                                               "使用shellkill可以断开与所有节点的连接, 在下次使用时必须重新连接所有节点. 直接结束shell进程有着同样的效果."));
     NewFolder24->AppendFile(IRC_Log_139697_8593);
     Bitwise_home->AppendDirectory(NewFolder24);
 

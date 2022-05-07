@@ -15,6 +15,7 @@
 #include "RenderService.h"
 #include "BackgroundTasks/HackBackgroundTask.h"
 #include "HackCommand.h"
+#include "BackgroundTasks/ShellBgTask.h"
 
 class HacknetApplication
 {
@@ -37,10 +38,13 @@ class HacknetApplication
 
     // server session
     bool nmapDetail = false;
+    int shellProgress = -1;
 
     void internalDisconnect();
 
     void internalConnect(HackServer *target);
+
+    ShellBgTask *findShellTask();
 
     void wrapAppend(std::string str);
 
@@ -100,6 +104,10 @@ public:
 
     std::vector<HackEmail *> getAvailEmail();
 
+    int getShellProgress() const;
+
+    void setShellProgress(int shellProgress);
+
 
     // region handler for global commands
 
@@ -136,6 +144,12 @@ public:
     void command_exe(std::stringstream &);
 
     void command_netmap(std::stringstream &);
+
+    void command_shell(std::stringstream &);
+
+    void command_overload(std::stringstream &);
+
+    void command_shellkill(std::stringstream &);
 
     void executive_sshcrack(std::stringstream &commandStream);
 

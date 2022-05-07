@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <utility>
 #include "RenderService.h"
 #include "Utility/Util.h"
 #include "Utility/UiUtil.h"
@@ -21,8 +22,8 @@ void RenderService::RenderTick()
     {
         Util::clearScreen();
         UIUtil::drawFramework();
-        RenderStatusBar();
     }
+    RenderStatusBar();
     RenderTerminal();
 
     requireUpdate = false;
@@ -108,8 +109,28 @@ void RenderService::RenderStatusBar()
             std::cout << "#22:  SSH";
             Util::setColorAttr(Util::ATTR_NORMAL);
 
-            Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(110, 0));
-            Util::setColorAttr(ref->CurrentConnected->checkIfSecureBroken() ? Util::BG_GREEN : Util::BG_RED);
+            if (ref->CurrentConnected->getShellLife() != 0)
+            {
+                // detected shell
+                int prog = std::min(std::max(ref->shellProgress, 0), ref->getCurrentConnected()->getShellLife()) * 30 /
+                           ref->CurrentConnected->getShellLife();
+                std::string text = ref->shellProgress == -1 ? "Proxy detected" : "Proxy overloading...";
+                Util::setColorAttr(Util::FG_WHITE);
+                Util::setColorAttr(Util::BG_LIGHT_GREEN);
+                for (int i = 0; i < 30; ++i)
+                {
+                    if (i == prog)
+                    {
+                        Util::setColorAttr(Util::BG_LIGHT_RED);
+                    }
+                    std::cout << (i >= text.size() ? ' ' : text[i]);
+                }
+
+            }
+
+            Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(110, 2));
+            Util::setColorAttr(
+                    ref->CurrentConnected->checkIfSecureBroken(ref->shellProgress) ? Util::BG_GREEN : Util::BG_RED);
             Util::setColorAttr(Util::FG_WHITE);
             std::cout << "Open ports required: " << ref->CurrentConnected->getMinRequired();
             Util::setColorAttr(Util::ATTR_NORMAL);

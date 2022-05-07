@@ -40,6 +40,9 @@ const HackCommand globalCommands[] = {
         HackCommand(&HacknetApplication::command_clear, "clear", "清除终端"),
         HackCommand(&HacknetApplication::command_mailbox, "mailbox", "打开Jmail邮箱(注意: 这将断开您与现有计算机的连接)"),
         HackCommand(&HacknetApplication::command_netmap, "netmap", "打开网络地图"),
+        HackCommand(&HacknetApplication::command_shell, "shell", "在当前计算机挂载shell节点", "", true, false),
+        HackCommand(&HacknetApplication::command_overload, "overload", "使所有shell节点向目标计算机发起过载攻击", ""),
+        HackCommand(&HacknetApplication::command_shellkill, "shellkill", "断开与所有shell节点的连接", ""),
 };
 
 
@@ -222,7 +225,7 @@ void HacknetApplication::command_connect(std::stringstream &ss)
 void HacknetApplication::command_porthack(std::stringstream &s)
 {
     HacknetApplication::pushLog("PortHack Initialized --Running");
-    if (CurrentConnected->checkIfSecureBroken())
+    if (CurrentConnected->checkIfSecureBroken(shellProgress))
     {
         pushBackgroundTask(new PortHackBackgroundTask(this, "PortHack"));
     }
@@ -552,6 +555,7 @@ void HacknetApplication::internalDisconnect()
     CurrentDir = nullptr;
     CurrentConnected = nullptr;
     nmapDetail = false;
+    shellProgress = -1;
 }
 
 HackDirectory *HacknetApplication::locateDir(const std::string &path, bool local)
@@ -998,4 +1002,73 @@ HackServer *HacknetApplication::locateServer(std::string ip)
     });
     if (it == serverList.end()) return nullptr;
     return *it;
+}
+
+void HacknetApplication::command_shell(std::stringstream &)
+{
+    auto shellProc = findShellTask();
+    if (shellProc == nullptr)
+    {
+        // Try to create the proc
+        if (!pushBackgroundTask(new ShellBgTask(this, "Shell")))
+        {
+            pushLog("Fatal: Out of memory.");
+            return;
+        }
+        shellProc = dynamic_cast<ShellBgTask *>(backgroundTasks.back());
+    }
+
+    if (std::find(shellProc->getConnectedServers().begin(), shellProc->getConnectedServers().end(), CurrentConnected) ==
+        shellProc->getConnectedServers().end())
+    {
+        shellProc->getConnectedServers().push_back(CurrentConnected);
+    }
+}
+
+void HacknetApplication::command_overload(std::stringstream &)
+{
+    if (findShellTask() == nullptr)
+    {
+        pushLog("Fatal: No shells are mounted.");
+    }
+    else
+    {
+        shellProgress = std::max(shellProgress, 0);
+    }
+}
+
+void HacknetApplication::command_shellkill(std::stringstream &)
+{
+    auto shellProc = findShellTask();
+    if (shellProc != nullptr)
+    {
+        shellProc->kill();
+    }
+}
+
+ShellBgTask *HacknetApplication::findShellTask()
+{
+    auto it = std::find_if(backgroundTasks.begin(), backgroundTasks.end(), [](HackBackgroundTask *p)
+    {
+        return !p->isStopped() && typeid(*p) == typeid(ShellBgTask);
+    });
+    if (it != backgroundTasks.end())
+    {
+        return dynamic_cast<ShellBgTask *>(*it);
+    }
+    else
+    {
+        return nullptr;
+    }
+
+}
+
+int HacknetApplication::getShellProgress() const
+{
+    return shellProgress;
+}
+
+void HacknetApplication::setShellProgress(int shellProgress)
+{
+    HacknetApplication::shellProgress = shellProgress;
 }

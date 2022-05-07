@@ -28,9 +28,11 @@ class HackServer
     bool FTPLocked = true;
     bool SMTPLocked = true;
 
+    int shellLife = 0;
+
     std::vector<HackServer *> ConnectedNodes;
 
-    bool Searchable= false;
+    bool Searchable = false;
 public:
 
     HackServer(const std::string &ip, const std::string &name, int minRequired);
@@ -41,7 +43,7 @@ public:
 
     [[nodiscard]] const std::string &getIp() const;
 
-    [[nodiscard]] bool checkIfSecureBroken() const;
+    [[nodiscard]] bool checkIfSecureBroken(int shellProg) const;
 
     [[nodiscard]] const std::string &getName() const;
 
@@ -84,6 +86,10 @@ public:
     void setSearchable();
 
     [[nodiscard]] bool isSearchable() const;
+
+    int getShellLife() const;
+
+    void setShellLife(int shellLife);
 
 };
 

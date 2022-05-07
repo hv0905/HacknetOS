@@ -12,12 +12,25 @@
 
 class ShellBgTask : public HackBackgroundTask
 {
-    std::vector<HackServer *> connectedServers;
+    std::vector<HackServer *> connectedServers{};
 
 public:
+
+    ShellBgTask(HacknetApplication *ref, const std::string &tname) : HackBackgroundTask(ref, tname)
+    {
+    }
+
     void drawMemory(Coord begin) override;
 
     int getMemorySize() override;
+
+    [[nodiscard]] const std::vector<HackServer *> &getConnectedServers() const;
+
+    std::vector<HackServer *> &getConnectedServers();
+
+    void setConnectedServers(const std::vector<HackServer *> &connectedServers);
+
+    [[nodiscard]] bool isAttackingActive() const;
 };
 
 

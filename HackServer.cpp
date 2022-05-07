@@ -9,8 +9,9 @@ const std::string &HackServer::getIp() const
     return ip;
 }
 
-bool HackServer::checkIfSecureBroken() const
+bool HackServer::checkIfSecureBroken(int shellProg) const
 {
+    if (shellLife != 0 && shellProg < shellLife) return false;
     return !HTTPLocked + !SSHLocked + !FTPLocked + !SMTPLocked >= minRequired;
 }
 
@@ -127,6 +128,16 @@ void HackServer::setSearchable()
 bool HackServer::isSearchable() const
 {
     return Searchable;
+}
+
+int HackServer::getShellLife() const
+{
+    return shellLife;
+}
+
+void HackServer::setShellLife(int shellLife)
+{
+    HackServer::shellLife = shellLife;
 }
 
 
