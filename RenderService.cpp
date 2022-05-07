@@ -111,10 +111,14 @@ void RenderService::RenderStatusBar()
 
             if (ref->CurrentConnected->getShellLife() != 0)
             {
+                Util::setCursorPos(UIUtil::START_STATUSPANEL + Coord(110, 1));
                 // detected shell
                 int prog = std::min(std::max(ref->shellProgress, 0), ref->getCurrentConnected()->getShellLife()) * 30 /
                            ref->CurrentConnected->getShellLife();
-                std::string text = ref->shellProgress == -1 ? "Proxy detected" : "Proxy overloading...";
+                std::string text = ref->shellProgress == -1 ? "Proxy detected" : (ref->shellProgress >
+                                                                                  ref->CurrentConnected->getShellLife()
+                                                                                  ? "Proxy failed"
+                                                                                  : "Proxy overloading...");
                 Util::setColorAttr(Util::FG_WHITE);
                 Util::setColorAttr(Util::BG_LIGHT_GREEN);
                 for (int i = 0; i < 30; ++i)
@@ -133,6 +137,8 @@ void RenderService::RenderStatusBar()
                     ref->CurrentConnected->checkIfSecureBroken(ref->shellProgress) ? Util::BG_GREEN : Util::BG_RED);
             Util::setColorAttr(Util::FG_WHITE);
             std::cout << "Open ports required: " << ref->CurrentConnected->getMinRequired();
+            Util::clearLine(Util::getCursorPos(),
+                            (UIUtil::START_STATUSPANEL + Coord(140, 2)).x - Util::getCursorPos().x);
             Util::setColorAttr(Util::ATTR_NORMAL);
 
         }

@@ -475,6 +475,7 @@ HacknetApplication *StarterCreator::createStarterOS()
     PointClickerSave->AppendFile(new HackTxtFile("Blizz.pcsav", L"75363456653633534\n"
                                                                 "857736345252342342\n"));
     PointClicker->AppendDirectory(PointClickerSave);
+    PointClickerServer->getRootDirectory().AppendDirectory(PointClicker);
     PointClickerServer->getRootDirectory().AppendDirectory(new HackDirectory("home"));
     PointClickerServer->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
     PointClickerServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));

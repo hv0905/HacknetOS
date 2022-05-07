@@ -17,12 +17,12 @@ void ShellBgTask::drawMemory(Coord begin)
 
     using namespace Util;
     setCursorPos(begin);
-    setColorAttr(FG_WHITE);
-    setColorAttr(BG_BLACK);
+    setColorAttr(BG_WHITE);
+    setColorAttr(FG_BLACK);
 
     std::cout << "Connected Shells: ";
 
-    clearLine(getCursorPos(), UIUtil::SIZE_MEMORYPANEL.width - getCursorPos().x);
+    clearLine(getCursorPos(), UIUtil::SIZE_MEMORYPANEL.width - getCursorPos().x, true);
 
     setColorAttr(ATTR_NORMAL);
 

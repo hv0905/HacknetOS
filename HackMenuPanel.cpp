@@ -47,7 +47,7 @@ int HackMenuPanel::Exec()
 
                 case 'r':
                 case 'R':
-                    reverse = !reverse;
+                    setReverse(!reverse);
                     break;
                 default:
                     break;
@@ -122,3 +122,9 @@ void HackMenuPanel::downItem()
 HackMenuPanel::HackMenuPanel(const std::string &title, const std::vector<std::string> &items) : title(title),
                                                                                                 items(items)
 {}
+
+void HackMenuPanel::setReverse(bool reverse)
+{
+    HackMenuPanel::reverse = reverse;
+    currentSelection = reverse ? items.size() - 1 : 0;
+}

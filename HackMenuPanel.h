@@ -31,6 +31,8 @@ public:
 
     void Draw();
 
+    void setReverse(bool reverse);
+
 
 };
 

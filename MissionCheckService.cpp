@@ -81,7 +81,9 @@ bool MissionCheckService::check_mission_8(const std::string &)
 bool MissionCheckService::check_mission_9(const std::string &)
 {
     auto target = ref->locateServer("234.228.181.58");
-    auto workspace = target->getRootDirectory().LocateSonDir("WORKSPACE");
+    auto home = target->getRootDirectory().LocateSonDir("home");
+    if (!home) return true;
+    auto workspace = home->LocateSonDir("WORKSPACE");
     if (!workspace) return true;
     return workspace->LocateFile("SECURE_MAILLIST.dec") == nullptr;
 }

@@ -746,11 +746,13 @@ std::string HacknetApplication::getCommandAutoComplete(const std::string &comman
             possibleResult.emplace_back(i.getPrefix());
         }
     }
-
-    for (int i = 1; i < possibleResult.size(); i++)
+    if (possibleResult.size() > 1)
     {
-        pushLog(possibleResult[i]);
-        renderService.requireUpdate = true;
+        for (auto &i: possibleResult)
+        {
+            pushLog(i);
+            renderService.requireUpdate = true;
+        }
     }
     if (possibleResult.empty())
         return command;
@@ -795,10 +797,13 @@ std::string HacknetApplication::getFilenameAutoComplete(const std::string &comma
             possibleResult.emplace_back(i->getName());
         }
     }
-    for (auto &i: possibleResult)
+    if (possibleResult.size() > 1)
     {
-        pushLog(i);
-        renderService.requireUpdate = true;
+        for (auto &i: possibleResult)
+        {
+            pushLog(i);
+            renderService.requireUpdate = true;
+        }
     }
     if (possibleResult.empty())
         return command;
@@ -903,10 +908,10 @@ void HacknetApplication::command_mailbox(std::stringstream &)
     }
 
     auto select = HackMenuPanel(":: MailBox ::", titles);
+    select.setReverse(true);
     int i = select.Exec();
     if (i == -1) return;
     auto viewer = HackMailViewer(avail[i], this);
-
     if (viewer.Exec())
     {
         updateMissionId(getMissionId() + 1);

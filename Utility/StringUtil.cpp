@@ -155,9 +155,10 @@ std::string StringUtil::getPublicPrefix(std::vector<std::string> &elements)
     for (int i = 0; i < minLen; i++)
     {
         char c = elements[0][i];
+        char ccp = std::tolower(c);
         for (auto &item: elements)
         {
-            if (item[i] != c)
+            if (std::tolower(item[i]) != ccp)
             {
                 return prefix;
             }
