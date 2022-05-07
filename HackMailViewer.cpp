@@ -83,7 +83,7 @@ bool HackMailViewer::DoReply()
 {
     using namespace Util;
 
-    if (content->getMode() == MODE_NO_MISSION)
+    if (content->getMode() == MODE_NO_MISSION || content->isCompleted())
     {
         // return directly
         return false;
@@ -113,6 +113,7 @@ bool HackMailViewer::DoReply()
     auto result = (ref->getCheckService().*(content->getCheckerHandler()))(replyText);
     if (result)
     {
+        content->setCompleted(true);
         return true;
     }
     else

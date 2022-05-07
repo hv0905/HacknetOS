@@ -22,6 +22,7 @@ void PortHackBackgroundTask::drawMemory(Coord begin)
     {
         // unlock the permission
         ref->getCurrentConnected()->setAccessible(true);
+        ref->setShellProgress(-1);
         ref->pushLog("--PortHack complete--");
         ref->getRenderService().setRequireUpdate(true);
     }

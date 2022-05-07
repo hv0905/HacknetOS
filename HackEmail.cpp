@@ -47,3 +47,13 @@ void HackEmail::setRead(bool read)
 {
     HackEmail::read = read;
 }
+
+bool HackEmail::isCompleted() const
+{
+    return completed;
+}
+
+void HackEmail::setCompleted(bool completed)
+{
+    HackEmail::completed = completed;
+}

@@ -42,6 +42,10 @@ public:
 
     void setRead(bool read);
 
+    bool isCompleted() const;
+
+    void setCompleted(bool completed);
+
 private:
     const std::wstring emailTitle;
     const std::wstring sender;
@@ -51,5 +55,6 @@ private:
     const CheckerHandler checker;
 
     bool read = false;
+    bool completed = false;
 };
 #endif //HACKNETOS_HACKEMAIL_H

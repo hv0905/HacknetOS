@@ -50,30 +50,43 @@ bool MissionCheckService::check_mission_4(const std::string &)
 
 bool MissionCheckService::check_mission_5(const std::string &)
 {
-    return false;
+    return ref->localSever->getRootDirectory().LocateSonDir("home") &&
+           ref->localSever->getRootDirectory().LocateSonDir("home")->LocateFile("Entropy_Induction_Test");
 }
 
 bool MissionCheckService::check_mission_6(const std::string &)
 {
-    return false;
+    auto target = ref->locateServer("183.198.0.210");
+    return target->getRootDirectory().LocateSonDir("MsgBoard") == nullptr ||
+           target->getRootDirectory().LocateSonDir("MsgBoard")->LocateFile("config.sys") ==
+           nullptr;
 }
 
 bool MissionCheckService::check_mission_7(const std::string &)
 {
-    return false;
+    auto bin = ref->getLocalSever()->getRootDirectory().LocateSonDir("bin");
+    return bin && bin->LocateFile("ftpbounce.exe");
 }
 
 bool MissionCheckService::check_mission_8(const std::string &)
 {
-    return false;
+    auto target = ref->locateServer("38.228.127.137");
+    auto pc = target->getRootDirectory().LocateSonDir("PointClicker");
+    if (!pc) return true;
+    auto save = pc->LocateSonDir("Save");
+    if (!save) return true;
+    return save->LocateFile("Mengsk.pcsav") == nullptr;
 }
 
 bool MissionCheckService::check_mission_9(const std::string &)
 {
-    return false;
+    auto target = ref->locateServer("234.228.181.58");
+    auto workspace = target->getRootDirectory().LocateSonDir("WORKSPACE");
+    if (!workspace) return true;
+    return workspace->LocateFile("SECURE_MAILLIST.dec") == nullptr;
 }
 
-bool MissionCheckService::check_mission_10(const std::string &)
+bool MissionCheckService::check_mission_10(const std::string &input)
 {
-    return false;
+    return input == "*******";
 }

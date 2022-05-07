@@ -228,6 +228,10 @@ void HacknetApplication::command_connect(std::stringstream &ss)
 
 void HacknetApplication::command_porthack(std::stringstream &s)
 {
+    if (CurrentConnected == nullptr)
+    {
+        pushLog("Fatal: No available connections.");
+    }
     HacknetApplication::pushLog("PortHack Initialized --Running");
     if (CurrentConnected->checkIfSecureBroken(shellProgress))
     {
@@ -242,6 +246,10 @@ void HacknetApplication::command_porthack(std::stringstream &s)
 
 void HacknetApplication::command_Scan(std::stringstream &s)
 {
+    if (CurrentConnected == nullptr)
+    {
+        pushLog("Fatal: No available connections.");
+    }
     HacknetApplication::pushLog("Scanning For " + CurrentConnected->getIp());
     if (CurrentConnected->getConnectedNodes().empty())
         HacknetApplication::pushLog("This node does not connect to other nodes");
@@ -555,6 +563,10 @@ void HacknetApplication::internalDisconnect()
     if (CurrentConnected != nullptr)
     {
         pushLog("Disconnected");
+        CurrentConnected->setSshLocked(true);
+        CurrentConnected->setFtpLocked(true);
+        CurrentConnected->setSmtpLocked(true);
+        CurrentConnected->setHttpLocked(true);
     }
     CurrentDir = nullptr;
     CurrentConnected = nullptr;
@@ -798,6 +810,10 @@ void HacknetApplication::executive_sshcrack(std::stringstream &commandStream)
 {
     int port;
     commandStream >> port;
+    if (CurrentConnected == nullptr)
+    {
+        pushLog("Fatal: No available connections.");
+    }
     if (!commandStream)
     {
         pushLog("未提供端口号.");
@@ -820,6 +836,10 @@ void HacknetApplication::executive_ftpbounce(std::stringstream &commandStream)
 {
     int port;
     commandStream >> port;
+    if (CurrentConnected == nullptr)
+    {
+        pushLog("Fatal: No available connections.");
+    }
     if (!commandStream)
     {
         pushLog("未提供端口号.");
@@ -1034,6 +1054,14 @@ void HacknetApplication::command_overload(std::stringstream &)
     if (findShellTask() == nullptr)
     {
         pushLog("Fatal: No shells are mounted.");
+    }
+    else if (CurrentConnected == nullptr)
+    {
+        pushLog("Fatal: No available connections.");
+    }
+    else if (CurrentConnected->getShellLife() == 0)
+    {
+        pushLog("Fatal: No active proxy.");
     }
     else
     {
