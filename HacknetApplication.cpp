@@ -146,10 +146,14 @@ void HacknetApplication::command_nmap(std::stringstream &)
     threadPool.push_back(new std::thread([this, target]
                                          {
                                              pushLog("Probing......");
-                                             Util::sleep(200);
-                                             pushLog("Probe Complete-Open ports:");
+                                             Util::sleep(300);
+                                             pushLog("Probe Complete");
                                              Util::sleep(50);
-                                             pushLog("----------------------------------");
+                                             if (target->getShellLife() != 0)
+                                             {
+                                                 pushLog("Proxy detected.");
+                                             }
+                                             pushLog("OPEN PORTS:-----------------------");
                                              Util::sleep(50);
                                              pushLog("Port# 80: - HTTP WebServer: " +
                                                      (std::string) ((target->isHttpLocked()) ? "locked" : "unlocked"));

@@ -25,6 +25,18 @@ public:
 
     bool check_mission_4(const std::string &);
 
+    bool check_mission_5(const std::string &);
+
+    bool check_mission_6(const std::string &);
+
+    bool check_mission_7(const std::string &);
+
+    bool check_mission_8(const std::string &);
+
+    bool check_mission_9(const std::string &);
+
+    bool check_mission_10(const std::string &);
+
 };
 
 

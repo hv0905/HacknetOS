@@ -77,7 +77,7 @@ const HackEmail Email[] = {
                                    "Entropy测试服务器:199.59.149.230\n"
                                    "--Bit\n"
                                    "0\n"
-                                   "\n", 5),
+                                   "\n", 5, MODE_PURE_MISSION, &MissionCheckService::check_mission_5),
         HackEmail(L"任务完成", L"Entropy", L"你好,\n"
                                        "\n"
                                        "首先, 祝贺你成功通过了Entropy黑客组织的考试! 当然了, 这种程度的考试对于一个经验丰富的黑客来说是小事一桩. 然而令人惊讶的是, 能通过这场考试的人并不多. \n"
@@ -85,14 +85,14 @@ const HackEmail Email[] = {
                                        "最近, 有一家新闻网站摆明了同我们的对立立场. 我们希望你能临时瘫痪他们的服务器. 作为测试你能力的第二项任务, 我们要求你搞垮他们的新闻版块. 如果可以的话, 不要破坏无关的服务器和那些与Entropy无关的文章 -- 我们没必要把事情做的那么绝. \n"
                                        "这项任务可不是仅仅让你删除文章这么简单 -- 我们还要搞垮他们的程序. \n"
                                        "Slash-Bot 新闻服务器:183.198.0.210\n"
-                                       "-Tex", 6),
+                                       "-Tex", 6, MODE_PURE_MISSION, &MissionCheckService::check_mission_6),
         HackEmail(L"欢迎", L"Entropy", L"\n"
                                      "恭喜, \n"
                                      "你出色及时地完成了你的第一项任务, 让我们见识到了你的能力. 现在, 我诚挚地欢迎你来到Entropy黑客组织. \n"
                                      "在我们的资源服务器里, 你可以找到管理员账户的详细资料. 作为组织送给你的见面礼, 你可以去资源服务器里面随意下载你所需要的程序, 同时记得阅读我们组织的宗旨. 一旦你准备好了, 请回复这封邮件. 我会给你安排一些真正有挑战的任务. \n"
                                      "再次的恭喜你通过测试. \n"
                                      "Entropy资源服务器:196.21.2.201\n"
-                                     "-Tex\n", 7),
+                                     "-Tex\n", 7, MODE_PURE_MISSION, &MissionCheckService::check_mission_7),
         HackEmail(L"RE:欢迎", L"Entropy",
                   L"很好, 看来你拿到了你所需的东西. 那么, 你就可以正式地开始接受Enpropy黑客组织的各项任务了. 附件里我给出了我们组织的任务资源数据库的ip地址, 还一并给出了你的用户名和密码以用于获得登录权限. \n"
                   "当你有空的时候, 就去接受并完成你的第一项任务吧. \n"
@@ -103,28 +103,36 @@ const HackEmail Email[] = {
                                                         "虽然我很反感向外界寻求帮助, 但是我只能这么做了. \n"
                                                         "把你们组织介绍给我的那个人向我保证你们会保密, 所以我就简要说明一下: 我在PointClicker里已经刷到无敌了, 我希望我能再刷一遍二周目来证明我在这个游戏里的王者地位. 然而这个游戏并没有重置按钮. \n"
                                                         "我希望你能黑进游戏服务器删掉我的存档, 这样我就能再爽一次了. 我的用户名是\"Mengsk\". 你要是想的话, 在你删之前可以先感受一下我的存档有多屌. \n"
-                                                        "即将\"脱坑\"的, \n"
+                                                        "即将\"脱坑\"的, Mengsk\n"
                                                         "PointClicker服务器:38.228.127.137\n"
-                                                        "-M", 8),
+                                                        "-M", 8, MODE_PURE_MISSION,
+                  &MissionCheckService::check_mission_8),
         HackEmail(L"经典的反黑客攻击", L"Entropy MailBot", L"你好黑客, \n"
                                                    "\"PP市场\"公司最近雇佣了一名自由黑客, 他入侵了竞争对手公司的服务器窃取了一些敏感信息(我们猜测应该是邮件形式的简历列表). 他把这些简历从对手公司的服务器里删掉了, 并将简历转交到雇主公司的招聘部门. \n"
                                                    "这种商业间谍行为很明显是在给黑客的声誉抹黑. 虽然我们对他们公司之间的竞争并不感兴趣, 但是\"PP市场\"公司雇佣黑客的消息已经传遍了整个网络, 所以我们要确保\"PP市场\"这次吃不了兜着走. \n"
                                                    "我们不知道那些文件的确切名字, 所以你找的时候要费点心思. 记住, 你要找的是一份被偷走的邮件列表 -- 它们可能被加密或归档了. 注意, PP公司可能会对此有所防范, 他们应该会采取相应的安全措施. \n"
                                                    "PP市场:234.228.181.58\n"
-                                                   "-Entropy 管理员"),
+                                                   "-Entropy 管理员", 9, MODE_PURE_MISSION,
+                  &MissionCheckService::check_mission_9),
         HackEmail(L"重返校园", L"Entropy MailBot", L"各位黑客, \n"
                                                "Milburgh高中的管理层联系到我们, 希望我们能悄悄地搞到他们IT部门员工的管理员密码, 以此就IT部门都保存了学生的什么数据来展开一项调查. \n"
                                                "当你入侵时, 务必使一切数据保留原样 -- 任何的篡改将会影响到管理层人员的判断. \n"
                                                "而你所需要做的, 就是黑进去, 找到密码, 然后清除你的操作日志, 把密码回复给我. 至于如何把密码交给学校的管理层就不需要你操心了. \n"
                                                "祝你好运, \n"
                                                "Milburg高中IT办公室：92.24.43.165\n"
-                                               "-Entropy 管理员"),
+                                               "-Entropy 管理员", 10, MODE_REPLY_MISSION,
+                  &MissionCheckService::check_mission_10),
         HackEmail(L"RE:重返校园", L"Entropy MailBot", L"你确定? \n"
                                                   "*******... . 我不知道想出这种密码的人是天才还是白痴, 还是说两者都是? \n"
                                                   "妈的, 我是说, 当初我也找到了这个密码, 而且我的核验脚本显示这个密码的正确的, 然而我还在继续独自破解那些星号! \n"
                                                   "这就他妈的尴尬了... .这你叫我怎么去跟学校的头头们解释? \n"
                                                   "不论怎么说... 问题解决了, 你做的不错. \n"
-                                                  "-管理员")
+                                                  "-管理员", 11),
+        HackEmail(L"结局", L"EdgeNeko", L"恭喜! 你通关了! 就目前而言的话.\n"
+                                      "这个游戏其实是对HackNet游戏的一个纯C++控制台模仿, 事实上我们只实现了原版游戏极小部分的开头内容, 后面还有更多精彩剧情没在本游戏中呈现.\n"
+                                      "如果你对这类游戏感兴趣的话, 你一定要去玩玩原版的Hacknet (hacknet-os.com)\n"
+                                      "总之, Thanks for playing! 如果有什么想说的欢迎来discussion聊, 或者直接给我发邮件.\n"
+                                      "-EdgeNeko", 11),
 
 };
 
@@ -280,21 +288,23 @@ HacknetApplication *StarterCreator::createStarterOS()
                                                                         "<knightmare> ... 智障");
     auto NewFolder24 = new HackDirectory("NewFolder24");
     auto Bitwise_home = new HackDirectory("home");
-    Bitwise_home->AppendFile(new HackTxtFile("doc_shells.txt", L"Shell: \n"
-                                                               "Shell是运行在单一主机上的低内存占用的小型进程, 可以用任何连接方式在本地对它进行操控. \n"
-                                                               "这个极其方便的程序在许多任务中都是极其有用的, 当然它们能干什么取决于运行的shell的种类. \n"
-                                                               "\n"
-                                                               "常规跨网络的功能有: \n"
-                                                               "\n"
-                                                               "Overload(过载):\n"
-                                                               "过载用于测试网络和代理服务器, 这个功能可以使得运行shell的节点向目标机器发起泛洪攻击 - 用大量垃圾网络流量占满代理服务器的内存并耗尽其CPU时间.  \n"
-                                                               "\n"
-                                                               "Trap(陷阱):\n"
-                                                               "该模式会提醒用户是否有外来用户在本机器运行shell, 并允许对所有远程连接到本计算机的用户执行\"forkbomb\"攻击. \n"
-                                                               "该模式在远程维护计算机安全又同时进行其他工作的时候非常有用. "
-                                                               ""
-                                                               "使用shell命令可在节点计算机上运行shell(因为需要进行网络操作, 必须有管理员权限), 使用overload命令即可使所有节点对目标计算机发起过载攻击."
-                                                               "使用shellkill可以断开与所有节点的连接, 在下次使用时必须重新连接所有节点. 直接结束shell进程有着同样的效果."));
+    Bitwise_home->AppendFile(new HackTxtFile("doc_shells.txt",
+                                             L"代理服务器的作用相当于在目标计算机和对应连接设备之间形成一个缓冲层, 能够监控并过滤传入的流量, 起到缓冲作用. 它可以通过优化重复访问来提高网络性能, 并能够阻止某些类型的攻击. \n"
+                                             "\n"
+                                             "代理服务器最广为人知的缺点就是它的存储上限, 一旦代理服务器的存储空间占满, 它就无法再阻止数据流的通过. \n"
+                                             "\n"
+                                             "为了利用这个缺陷, 黑客和测试人员往往在其他计算机上运行Shell(通常使用\"shell\"指令). 当你在足够多的肉鸡上运行了shell后, 就可以连接到目标计算机并使用shell的\"overload\"功能来发动泛洪攻击, 用大量垃圾数据填满目标的代理服务器, 这样就可以让有害的数据流通过. \n"
+                                             "Shell: \n"
+                                             "Shell是运行在单一主机上的低内存占用的小型进程, 可以用任何连接方式在本地对它进行操控. \n"
+                                             "这个极其方便的程序在许多任务中都是极其有用的, 当然它们能干什么取决于运行的shell的种类. \n"
+                                             "\n"
+                                             "常规跨网络的功能有: \n"
+                                             "\n"
+                                             "Overload(过载):\n"
+                                             "过载用于测试网络和代理服务器, 这个功能可以使得运行shell的节点向目标机器发起泛洪攻击 - 用大量垃圾网络流量占满代理服务器的内存并耗尽其CPU时间.  \n"
+                                             "\n"
+                                             "使用shell命令可在节点计算机上运行shell(因为需要进行网络操作, 必须有管理员权限), 使用overload命令即可使所有节点对目标计算机发起过载攻击.\n"
+                                             "使用shellkill可以断开与所有节点的连接, 在下次使用时必须重新连接所有节点. 直接结束shell进程有着同样的效果."));
     NewFolder24->AppendFile(IRC_Log_139697_8593);
     Bitwise_home->AppendDirectory(NewFolder24);
 
@@ -310,6 +320,17 @@ HacknetApplication *StarterCreator::createStarterOS()
     auto AndersonServer = new HackServer("247.112.153.237", "Anderson的卧室电脑", 1);
     auto Anderson_Documents = new HackDirectory("Documents");
     auto Anderson_home = new HackDirectory("home");
+    auto Anderson_log = new HackDirectory("log");
+    Anderson_log->AppendFile(
+            new HackTxtFile("@18907_Connection_From_XXX.XXX.XXX.XXX", L"Connection from [IP MASKED] established."));
+    Anderson_log->AppendFile(new HackTxtFile("@18922_XXX.XXX.XXX.XXX_Given_Administrator_Access",
+                                             L"Connection from [IP MASKED] given administrator privileges."));
+    Anderson_log->AppendFile(new HackTxtFile("@18928_XXX.XXX.XXX.XXX_Accessed_File_[Valence_Dossier.pdf]",
+                                             L"File [Valence_Dossier.pdf] was read by [IP MASKED] -- System Administrator"));
+    Anderson_log->AppendFile(new HackTxtFile("@19002_XXX.XXX.XXX.XXX_Deleted_File_[Valence_Dossier.pdf]",
+                                             L"File [Valence_Dossier.pdf] was deleted by [IP MASKED] -- System Administrator"));
+    Anderson_log->AppendFile(
+            new HackTxtFile("@19002_XXX.XXX.XXX.XXX_Disconnected", L"[IP MASKED] Disconnected from system"));
 
     Anderson_Documents->AppendFile(new HackTxtFile("charlog.txt", L"[HotRice] 准备好出去浪了吗? \n"
                                                                   "[Kiah] 那取决于. . . \n"
@@ -329,14 +350,15 @@ HacknetApplication *StarterCreator::createStarterOS()
 
     AndersonServer->getRootDirectory().AppendDirectory(Anderson_home);
     AndersonServer->getRootDirectory().AppendDirectory(new HackDirectory("bin"));
-    AndersonServer->getRootDirectory().AppendDirectory(new HackDirectory("log"));
+    AndersonServer->getRootDirectory().AppendDirectory(Anderson_log);
     AndersonServer->getRootDirectory().AppendDirectory(sys.clone());
 
     app->serverList.push_back(AndersonServer);
     //Anderson的卧室电脑
 
     //Entropy测试服务器
-    auto EntropyServer = new HackServer("247.112.153.237", "Entropy测试服务器", 1);
+    auto EntropyServer = new HackServer("199.59.149.230", "Entropy测试服务器", 1);
+    EntropyServer->setShellLife(80);
     auto Entropy_home = new HackDirectory("home");
     auto Entropy_bin = new HackDirectory("bin");
 
@@ -358,6 +380,7 @@ HacknetApplication *StarterCreator::createStarterOS()
 
     //Slash-Bot 新闻服务器
     auto SlashServer = new HackServer("183.198.0.210", "Slash-Bot 新闻服务器", 1);
+    SlashServer->setShellLife(120);
     auto Slash_MsgBoard = new HackDirectory("MsgBoard");
     auto listings = new HackDirectory("listings");
     listings->AppendFile(new HackTxtFile("Entropy_Group_engaged_in_malicious_Hacking?", L"Entropy 黑客组织要转型为骇客了?\n"
@@ -442,6 +465,7 @@ HacknetApplication *StarterCreator::createStarterOS()
 
     //Point Clicker服务器
     auto PointClickerServer = new HackServer("38.228.127.137", "Point Clicker", 2);
+    PointClickerServer->setShellLife(90);
     auto PointClicker = new HackDirectory("PointClicker");
     auto PointClickerSave = new HackDirectory("Save");
     PointClickerSave->AppendFile(new HackTxtFile("Mengsk.pcsav", L"12312312412312312\n"
@@ -461,6 +485,7 @@ HacknetApplication *StarterCreator::createStarterOS()
 
     //PP市场服务器
     auto PPServer = new HackServer("234.228.181.58", "PP市场公司", 2);
+    PPServer->setShellLife(120);
     auto PP_home = new HackDirectory("home");
     auto PP_WORKSPACE = new HackDirectory("WORKSPACE");
     auto PP_document = new HackDirectory("documents");
@@ -502,6 +527,7 @@ HacknetApplication *StarterCreator::createStarterOS()
 
     //Milburg高中IT办公室
     auto MilburgServer=new HackServer ("92.24.43.165","Milburg高中IT办公室",1);
+    MilburgServer->setShellLife(120);
     auto Milburg_home=new HackDirectory("home");
     auto MH_STAFF=new HackDirectory("MH_STAFF");
     MH_STAFF->AppendFile(new HackTxtFile("pw_memo.log",L"4:37 PM - MBIT: 我一直在想咱学校的网络安全系统\n"
