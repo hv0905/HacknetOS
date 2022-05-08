@@ -142,6 +142,11 @@ void HacknetApplication::rmDir(const std::string &dirName)
 
 void HacknetApplication::command_nmap(std::stringstream &)
 {
+    if (CurrentConnected == nullptr)
+    {
+        pushLog("Fatal: No available connections.");
+        return;
+    }
     auto target = CurrentConnected;
     threadPool.push_back(new std::thread([this, target]
                                          {
@@ -231,6 +236,7 @@ void HacknetApplication::command_porthack(std::stringstream &s)
     if (CurrentConnected == nullptr)
     {
         pushLog("Fatal: No available connections.");
+        return;
     }
     HacknetApplication::pushLog("PortHack Initialized --Running");
     if (CurrentConnected->checkIfSecureBroken(shellProgress))
@@ -819,6 +825,7 @@ void HacknetApplication::executive_sshcrack(std::stringstream &commandStream)
     if (CurrentConnected == nullptr)
     {
         pushLog("Fatal: No available connections.");
+        return;
     }
     if (!commandStream)
     {
@@ -845,6 +852,7 @@ void HacknetApplication::executive_ftpbounce(std::stringstream &commandStream)
     if (CurrentConnected == nullptr)
     {
         pushLog("Fatal: No available connections.");
+        return;
     }
     if (!commandStream)
     {
