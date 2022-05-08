@@ -306,6 +306,7 @@ HacknetApplication *StarterCreator::createStarterOS()
                                              "使用shell命令可在节点计算机上运行shell(因为需要进行网络操作, 必须有管理员权限), 使用overload命令即可使所有节点对目标计算机发起过载攻击.\n"
                                              "使用shellkill可以断开与所有节点的连接, 在下次使用时必须重新连接所有节点. 直接结束shell进程有着同样的效果."));
     NewFolder24->AppendFile(IRC_Log_139697_8593);
+    Bitwise_home->AppendFile(new HackTxtFile("Bit.txt", L"恭喜你, 你赢了!"));
     Bitwise_home->AppendDirectory(NewFolder24);
 
     Bitwise->getRootDirectory().AppendDirectory(Bitwise_home);
