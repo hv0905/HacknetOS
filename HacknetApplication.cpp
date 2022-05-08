@@ -315,6 +315,7 @@ void HacknetApplication::processCommand(const std::string &command)
             std::string logString = std::to_string(time(nullptr));
             logString += "@" + localSever->getIp() + "@" + command;
             std::wstring logContent = StringUtil::s2ws(logString);
+            std::replace(logString.begin(), logString.end(), '/', '_');
             std::replace(logString.begin(), logString.end(), ' ', '_');
             CurrentConnected->getRootDirectory().LocateOrCreateSonDir("log")->AppendFile(
                     new HackTxtFile(logString, logContent));
