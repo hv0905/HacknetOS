@@ -770,7 +770,6 @@ std::string HacknetApplication::getCommandAutoComplete(const std::string &comman
 std::string HacknetApplication::getFilenameAutoComplete(const std::string &command)
 {
     auto pos = command.find_last_of('/');
-    bool flag = false;
     std::vector<std::string> possibleResult;
     HackDirectory *newDir;
     if (pos == std::string::npos)
@@ -839,6 +838,12 @@ void HacknetApplication::executive_sshcrack(std::stringstream &commandStream)
         pushLog("Execution failed.");
         return;
     }
+    if (getCurrentConnected()->getShellLife() != 0 && shellProgress < getCurrentConnected()->getShellLife())
+    {
+        pushLog("代理已激活, 无法与目标端口建立连接.");
+        pushLog("Execution failed.");
+        return;
+    }
 
     pushLog("SecureShellCrack running...");
     pushBackgroundTask(new SSHCrackBgTask(this, "SecureShellCrack"));
@@ -863,6 +868,13 @@ void HacknetApplication::executive_ftpbounce(std::stringstream &commandStream)
     if (port != 21)
     {
         pushLog("无法连接到目标端口或目标端口正在运行不与此程序兼容的服务.");
+        pushLog("Execution failed.");
+        return;
+    }
+
+    if (getCurrentConnected()->getShellLife() != 0 && shellProgress < getCurrentConnected()->getShellLife())
+    {
+        pushLog("代理已激活, 无法与目标端口建立连接.");
         pushLog("Execution failed.");
         return;
     }
