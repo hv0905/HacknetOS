@@ -98,12 +98,12 @@ void HacknetApplication::command_ls(std::stringstream &)
 
 void HacknetApplication::rmAll()
 {
-    while (!CurrentDir->getsubDirs().empty())
-    {
-        pushLog("Deleting " + CurrentDir->getsubDirs().back()->getDirName());
-        delete CurrentDir->getsubDirs().back();
-        CurrentDir->getsubDirs().pop_back();
-    }
+//    while (!CurrentDir->getsubDirs().empty())
+//    {
+//        pushLog("Deleting " + CurrentDir->getsubDirs().back()->getDirName());
+//        delete CurrentDir->getsubDirs().back();
+//        CurrentDir->getsubDirs().pop_back();
+//    }
 
     while (!CurrentDir->getfiles().empty())
     {
