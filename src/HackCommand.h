@@ -44,7 +44,6 @@ public:
 
     void setPrefix(const std::string &prefix);
 
-
 };
 
 
