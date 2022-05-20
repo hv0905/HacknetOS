@@ -14,6 +14,8 @@ A pure C++ command-line version of the original [Hacknet](https://hacknet-os.com
 
 ## ✈️ Try it
 
+### Download & Run
+
 Download the newest build from the [Release](https://github.com/hv0905/HacknetOS/releases) page or from
 our [continuous integration](https://github.com/hv0905/HacknetOS/actions/workflows/Build.yml).
 
@@ -25,6 +27,16 @@ You have to set the size of the console to at lease 220 x 50 characters to execu
 too small to display full of the game, consider reducing the font size or DPI scaling settings.
 
 Currently, some part of the game supports Chinese only, the i18n is on the way, stay tuned!
+
+### Enable BGM Feature
+
+> This step is optional, the game can work properly without BGM feature.
+
+1. Purchase and download [Hacknet OST](https://store.steampowered.com/app/408710/Hacknet_Official_Soundtrack/)
+2. Create a directory called bgm on the program path.
+3. Copy `Cinematrik - Hacknet OST - 09 Revole (R Mix).mp3` from OST directory to bgm directory and rename it to `0.mp3`.
+4. Copy `Bit - Hacknet OST - 08 You Got Mail.mp3` from OST directory to bgm directory and rename it to `n0.mp3`.
+5. Restart the game, now bgm should function properly.
 
 ## 📷 Screenshots
 
@@ -57,6 +69,12 @@ cmake .. # Initialize CMake project
 cmake --build . # Build the project
 ```
 
+> Currently, the project is only supported to be built on windows platfrom, using MSVC toolchain.(But using other
+> generator such as Ninja is supported)
+>
+> The cross-platform support is under consideration!
+>
+
 We are strongly suggest using the following Code Editor to develop:
 
 - CLion
@@ -84,4 +102,4 @@ Don't forget to try it if you like these type of games!
 ## Copyright
 
 Copyright 2022 EdgeNeko  
-Licensed under GPL license.
+Licensed under GPLv3 license.
