@@ -4,7 +4,7 @@
 
 游戏 [Hacknet](https://hacknet-os.com) 的纯C++控制台复刻.
 
-[English document](readme.md)
+[English document](index.md)
 
 ## ✨ 特性
 
