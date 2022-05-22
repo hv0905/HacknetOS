@@ -33,10 +33,8 @@ Currently, some part of the game supports Chinese only, the i18n is on the way, 
 > This step is optional, the game can work properly without BGM feature.
 
 1. Purchase and download [Hacknet OST](https://store.steampowered.com/app/408710/Hacknet_Official_Soundtrack/)
-2. Create a directory called bgm on the program path.
-3. Copy `Cinematrik - Hacknet OST - 09 Revole (R Mix).mp3` from OST directory to bgm directory and rename it to `0.mp3`.
-4. Copy `Bit - Hacknet OST - 08 You Got Mail.mp3` from OST directory to bgm directory and rename it to `n0.mp3`.
-5. Restart the game, now bgm should function properly.
+2. Run `generate_bgm.ps1` using PowerShell to generate bgm directory automatically.
+3. Restart the game if started, now bgm should function properly.
 
 ## 📷 Screenshots
 

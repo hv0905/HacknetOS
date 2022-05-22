@@ -12,3 +12,7 @@ add_executable(HackNetOS
 add_custom_command(TARGET HackNetOS POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/ASCII $<TARGET_FILE_DIR:HackNetOS>/ASCII)
+
+add_custom_command(TARGET HackNetOS POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/Scripts $<TARGET_FILE_DIR:HackNetOS>)

@@ -30,10 +30,8 @@
 > 这步是可选的, 游戏在没有bgm文件的情况下也可正常工作.
 
 1. 从Steam购买并下载 [Hacknet OST](https://store.steampowered.com/app/408710/Hacknet_Official_Soundtrack/)
-2. 在游戏目录中创建一个文件夹, 名字为 `bgm`.
-3. 从OST中复制 `Cinematrik - Hacknet OST - 09 Revole (R Mix).mp3` 到bgm目录并将其重命名为 `0.mp3`.
-4. 从OST中复制 `Bit - Hacknet OST - 08 You Got Mail.mp3` 到bgm目录并将其重命名为 `n0.mp3`.
-5. 如果你已经打开了HacknetOS, 重启游戏.
+2. 使用PowerShell运行`generate_bgm.ps1`即可自动生成bgm目录.
+3. 如果你已经打开了HacknetOS, 重启游戏.
 
 ## 📷 截图
 
