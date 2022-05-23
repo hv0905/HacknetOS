@@ -17,11 +17,13 @@ public:
 
     explicit TutorialBgTask(HacknetApplication *ref);
 
-    void drawMemory(Coord begin) override;
+    void renderMemory(Coord begin) override;
 
     int getMemorySize() override;
 
     void kill() override;
+
+    void tick() override;
 };
 
 

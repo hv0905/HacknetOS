@@ -19,7 +19,9 @@ public:
 
     PortHackBackgroundTask(HacknetApplication *ref, const std::string &threadName);
 
-    void drawMemory(Coord begin) override;
+    void renderMemory(Coord begin) override;
+
+    void tick() override;
 
     int getMemorySize() override;
 };

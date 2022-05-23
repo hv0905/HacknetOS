@@ -18,9 +18,11 @@ class FTPBounceBgTask : public HackBackgroundTask
 public:
     FTPBounceBgTask(HacknetApplication *ref, const std::string &threadName);
 
-    void drawMemory(Coord begin) override;
+    void renderMemory(Coord begin) override;
 
     int getMemorySize() override;
+
+    void tick() override;
 };
 
 

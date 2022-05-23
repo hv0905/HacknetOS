@@ -20,7 +20,7 @@ public:
     {
     }
 
-    void drawMemory(Coord begin) override;
+    void renderMemory(Coord begin) override;
 
     int getMemorySize() override;
 
@@ -31,6 +31,8 @@ public:
     void setConnectedServers(const std::vector<HackServer *> &connectedServers);
 
     [[nodiscard]] bool isAttackingActive() const;
+
+    void tick() override;
 };
 
 

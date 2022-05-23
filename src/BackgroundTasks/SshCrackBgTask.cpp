@@ -6,9 +6,24 @@
 #include "../HacknetApplication.h"
 #include "../Utility/Util.h"
 
-void SSHCrackBgTask::drawMemory(Coord begin)
+void SSHCrackBgTask::renderMemory(Coord begin)
 {
-    animation.getData()[std::min(currentFrame++ / 2, FRAME_COUNT - 1)].draw(begin);
+    animation.getData()[std::min((currentFrame - 1) / 2, FRAME_COUNT - 1)].draw(begin);
+
+}
+
+int SSHCrackBgTask::getMemorySize()
+{
+    return 13;
+}
+
+SSHCrackBgTask::SSHCrackBgTask(HacknetApplication *ref, const std::string &threadName) : HackBackgroundTask(ref,
+                                                                                                            threadName)
+{}
+
+void SSHCrackBgTask::tick()
+{
+    currentFrame++;
     if (ref->getCurrentConnected() == nullptr)
     {
         // failed
@@ -29,12 +44,3 @@ void SSHCrackBgTask::drawMemory(Coord begin)
         stopped = true;
     }
 }
-
-int SSHCrackBgTask::getMemorySize()
-{
-    return 13;
-}
-
-SSHCrackBgTask::SSHCrackBgTask(HacknetApplication *ref, const std::string &threadName) : HackBackgroundTask(ref,
-                                                                                                            threadName)
-{}

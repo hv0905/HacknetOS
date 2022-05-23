@@ -29,7 +29,9 @@ public:
                                                                                  stopped(false)
     {}
 
-    virtual void drawMemory(Coord begin) = 0;
+    virtual void renderMemory(Coord begin) = 0;
+
+    virtual void tick() = 0;
 
     virtual int getMemorySize() = 0;
 

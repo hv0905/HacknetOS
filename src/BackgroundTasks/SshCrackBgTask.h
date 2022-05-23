@@ -18,9 +18,11 @@ class SSHCrackBgTask : public HackBackgroundTask
 public:
     SSHCrackBgTask(HacknetApplication *ref, const std::string &threadName);
 
-    void drawMemory(Coord begin) override;
+    void renderMemory(Coord begin) override;
 
     int getMemorySize() override;
+
+    void tick() override;
 };
 
 

@@ -57,6 +57,14 @@ void HacknetApplication::Exec()
 
     while (true)
     {
+        // tick for all bg task
+        for (auto &item: backgroundTasks)
+        {
+            if (!item->isStopped())
+            {
+                item->tick();
+            }
+        }
         renderService.RenderTick();
         auto result = inputService.tickInput();
         if (result.has_value())

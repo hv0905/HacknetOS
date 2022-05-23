@@ -5,9 +5,24 @@
 #include "FtpBounceBgTask.h"
 #include "../HacknetApplication.h"
 
-void FTPBounceBgTask::drawMemory(Coord begin)
+void FTPBounceBgTask::renderMemory(Coord begin)
 {
-    animation.getData()[std::min(currentFrame++ / 2, FRAME_COUNT - 1)].draw(begin);
+    animation.getData()[std::min((currentFrame - 1) / 2, FRAME_COUNT - 1)].draw(begin);
+
+}
+
+int FTPBounceBgTask::getMemorySize()
+{
+    return 12;
+}
+
+FTPBounceBgTask::FTPBounceBgTask(HacknetApplication *ref, const std::string &threadName) : HackBackgroundTask(ref,
+                                                                                                              threadName)
+{}
+
+void FTPBounceBgTask::tick()
+{
+    currentFrame++;
     if (ref->getCurrentConnected() == nullptr)
     {
         // failed
@@ -28,12 +43,3 @@ void FTPBounceBgTask::drawMemory(Coord begin)
         stopped = true;
     }
 }
-
-int FTPBounceBgTask::getMemorySize()
-{
-    return 12;
-}
-
-FTPBounceBgTask::FTPBounceBgTask(HacknetApplication *ref, const std::string &threadName) : HackBackgroundTask(ref,
-                                                                                                              threadName)
-{}

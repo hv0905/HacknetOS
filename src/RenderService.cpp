@@ -17,12 +17,13 @@ const AsciiArt serverLogos[] = {
 
 void RenderService::RenderTick()
 {
-    RenderMemory();
+
     if (requireUpdate)
     {
         Util::clearScreen();
         UIUtil::drawFramework();
     }
+    RenderMemory();
     RenderStatusBar();
     RenderTerminal();
 
@@ -167,7 +168,7 @@ void RenderService::RenderMemory()
         Util::clearLine(Util::getCursorPos(),
                         UIUtil::SIZE_MEMORYPANEL.width - Util::getCursorPos().x + UIUtil::START_MEMORYPANEL.x);
         Util::setColorAttr(Util::ATTR_NORMAL);
-        item->drawMemory(UIUtil::START_MEMORYPANEL + Coord(0, totalHeight + 1));
+        item->renderMemory(UIUtil::START_MEMORYPANEL + Coord(0, totalHeight + 1));
         totalHeight += item->getMemorySize() + 1;
     }
     // clear empty area

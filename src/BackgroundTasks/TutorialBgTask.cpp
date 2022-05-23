@@ -77,9 +77,8 @@ const wchar_t *StepsText[] = {
         "\"help\"命令可以给你列出完整的命令列表. "
 };
 
-void TutorialBgTask::drawMemory(Coord begin)
+void TutorialBgTask::renderMemory(Coord begin)
 {
-    checkStatus();
     auto lines = StringUtil::splitLines(StepsText[status], 40);
     for (int i = 0; i < lines.size(); ++i)
     {
@@ -195,4 +194,9 @@ void TutorialBgTask::checkStatus()
 TutorialBgTask::TutorialBgTask(HacknetApplication *ref) : HackBackgroundTask(ref, "Tutorial")
 {
 
+}
+
+void TutorialBgTask::tick()
+{
+    checkStatus();
 }

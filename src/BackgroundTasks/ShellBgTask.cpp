@@ -8,12 +8,8 @@
 #include "../Utility/UiUtil.h"
 #include "../HacknetApplication.h"
 
-void ShellBgTask::drawMemory(Coord begin)
+void ShellBgTask::renderMemory(Coord begin)
 {
-    if (isAttackingActive())
-    {
-        ref->setShellProgress(ref->getShellProgress() + connectedServers.size());
-    }
 
     using namespace Util;
     setCursorPos(begin);
@@ -70,4 +66,12 @@ std::vector<HackServer *> &ShellBgTask::getConnectedServers()
 bool ShellBgTask::isAttackingActive() const
 {
     return ref->getShellProgress() != -1;
+}
+
+void ShellBgTask::tick()
+{
+    if (isAttackingActive())
+    {
+        ref->setShellProgress(ref->getShellProgress() + connectedServers.size());
+    }
 }
