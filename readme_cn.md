@@ -28,6 +28,7 @@
 ### 启用bgm功能
 
 > 这步是可选的, 游戏在没有bgm文件的情况下也可正常工作.
+
 1. 从Steam购买并下载 [Hacknet OST](https://store.steampowered.com/app/408710/Hacknet_Official_Soundtrack/)
 2. 使用PowerShell运行`generate_bgm.ps1`即可自动生成bgm目录.
 3. 如果你已经打开了HacknetOS, 重启游戏.
@@ -67,6 +68,7 @@ cmake --build . # Build the project
 >
 > 跨平台支持已列入计划!
 >
+
 强烈建议使用以下编辑器或ide完成开发:
 
 - CLion

@@ -31,6 +31,7 @@ Currently, some part of the game supports Chinese only, the i18n is on the way, 
 ### Enable BGM Feature
 
 > This step is optional, the game can work properly without BGM feature.
+
 1. Purchase and download [Hacknet OST](https://store.steampowered.com/app/408710/Hacknet_Official_Soundtrack/)
 2. Run `generate_bgm.ps1` using PowerShell to generate bgm directory automatically.
 3. Restart the game if started, now bgm should function properly.
@@ -71,6 +72,7 @@ cmake --build . # Build the project
 >
 > The cross-platform support is under consideration!
 >
+
 We are strongly suggest using the following Code Editor to develop:
 
 - CLion
