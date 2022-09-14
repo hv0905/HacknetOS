@@ -3,6 +3,8 @@ name: Build
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
   workflow_dispatch:
     
 
@@ -50,12 +52,4 @@ jobs:
         name: hacknetos-build-release # optional, default is artifact
         # A file, directory or wildcard pattern that describes what to upload
         path: ${{github.workspace}}/build/release.zip
-        
-    - name: Upload to relase
-      uses: softprops/action-gh-release@v1
-      with:
-        prerelease: true
-        files: ${{github.workspace}}/build/release.zip
-        name: HacknetOS Alpha
-        body: Auto prerelease
         
