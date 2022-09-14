@@ -37,10 +37,15 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C ${{env.BUILD_TYPE}}
       
+    - name: Archive artifacts
+      working-directory: ${{github.workspace}}/build
+      run: Compress-Archive ./Release release.zip
+      
+      
     - name: Upload artifacts
       uses: actions/upload-artifact@v3.0.0
       with:
         # Artifact name
         name: hacknetos-build-release # optional, default is artifact
         # A file, directory or wildcard pattern that describes what to upload
-        path: ${{github.workspace}}/build/Release
+        path: ${{github.workspace}}/build/release.zip
