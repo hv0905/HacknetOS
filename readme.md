@@ -1,6 +1,11 @@
 # HacknetOS
 
+[![Cover](web/cover.min.jpg)](web/cover.png)
+
+_cover created by Stable Diffusion + Anything v4.5_
+
 [![Build](https://github.com/hv0905/HacknetOS/actions/workflows/Build.yml/badge.svg)](https://github.com/hv0905/HacknetOS/actions/workflows/Build.yml)
+[![Release](https://img.shields.io/github/v/release/hv0905/HacknetOS)](https://github.com/hv0905/HacknetOS/releases)
 
 A pure C++ command-line version of the original [Hacknet](https://hacknet-os.com) game.
 
