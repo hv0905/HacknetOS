@@ -1,6 +1,11 @@
 # HacknetOS
 
+[![Cover](web/cover.min.jpg)](web/cover.png)
+
+_封面作品使用Stable Diffusion + Anything v4.5制作_
+
 [![Build](https://github.com/hv0905/HacknetOS/actions/workflows/Build.yml/badge.svg)](https://github.com/hv0905/HacknetOS/actions/workflows/Build.yml)
+[![Release](https://img.shields.io/github/v/release/hv0905/HacknetOS)](https://github.com/hv0905/HacknetOS/releases)
 
 游戏 [Hacknet](https://hacknet-os.com) 的纯C++控制台复刻.
 
