@@ -6,6 +6,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <iostream>
+#include <algorithm>
 #include "Utility/Util.h"
 
 void AsciiArt::draw(Coord begin) const
