@@ -147,3 +147,6 @@ fabric.properties
 # Visual Studio Project stuff
 
 .vs/
+.build/
+build/
+src/.vscode

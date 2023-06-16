@@ -284,6 +284,7 @@ void HacknetApplication::processCommand(const std::string &command)
     std::stringstream ss(command);
     std::string prefix;
     ss >> prefix;
+    std::transform(prefix.begin(), prefix.end(), prefix.begin(), tolower);
     // Phrase 1: global
     int globalSize = std::extent<decltype(globalCommands)>::value;
     auto targetCommand = std::find_if(globalCommands, globalCommands + globalSize, [&prefix](const HackCommand &cmd)

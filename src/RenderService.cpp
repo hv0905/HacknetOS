@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <algorithm>
 #include <utility>
 #include "RenderService.h"
 #include "Utility/Util.h"

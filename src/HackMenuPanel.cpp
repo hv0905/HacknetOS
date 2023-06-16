@@ -5,6 +5,7 @@
 #include "HackMenuPanel.h"
 #include <conio.h>
 #include <iostream>
+#include <algorithm>
 #include "Utility/UiUtil.h"
 #include "Utility/Util.h"
 
