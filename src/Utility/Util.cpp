@@ -31,6 +31,7 @@ void Util::clearScreen()
 {
 //    setCursorPos(0,0);
 //    std::cout << "\033[2J\033[1;1H";
+//    std::cout << "\033[H\033[2J\033[3J";
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD coordScreen = {0, 0};    // home for the cursor
     DWORD cCharsWritten;
